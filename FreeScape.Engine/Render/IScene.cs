@@ -1,11 +1,9 @@
 using System;
-using SFML.Graphics;
 
-namespace FreeScape.Engine
+namespace FreeScape.Engine.Render
 {
-    public interface IScene :IDisposable
+    public interface IScene :IDisposable, IRenderable
     {
-        void Render(RenderTarget target);
         bool Tick();
     }
 }

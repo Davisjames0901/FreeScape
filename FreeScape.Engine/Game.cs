@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using FreeScape.Engine.Render;
 
 namespace FreeScape.Engine
 {

@@ -1,12 +1,9 @@
-using SFML.Graphics;
-
-namespace FreeScape.Engine
+namespace FreeScape.Engine.Render
 {
-    public interface ILayer
+    public interface ILayer :IRenderable
     {
         int ZIndex { get; set; }
 
-        void Render(RenderTarget target);
-        bool Tick();
+        void Tick();
     }
 }
