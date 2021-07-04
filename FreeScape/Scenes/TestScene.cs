@@ -9,6 +9,7 @@ namespace FreeScape.Scenes
     {
         private readonly TiledMapRenderer _mapRenderer;
         private readonly MapInfo _map;
+        private bool _isDirty = true;
 
         public TestScene(MapProvider mapProvider, TiledMapRenderer mapRenderer)
         {
@@ -23,6 +24,13 @@ namespace FreeScape.Scenes
 
         public bool Tick()
         {
+            // if (_isDirty)
+            // {
+            //     _isDirty = false;
+            //     return true;
+            // }
+            //
+            // return false;
             return true;
         }
         

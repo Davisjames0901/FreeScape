@@ -22,7 +22,7 @@ namespace FreeScape
                 ScreenWidth = 1920,
                 Name = "FreeScape",
                 RefreshRate = 60,
-                AssetDirectory = $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}/Assets"
+                AssetDirectory = $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}{Path.DirectorySeparatorChar}Assets"
             });
             services.AddTransient<Menu>();
             services.AddTransient<TestScene>();
