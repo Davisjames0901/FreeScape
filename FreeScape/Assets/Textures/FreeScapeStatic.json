@@ -1,0 +1,25 @@
+[{
+  "X": 0,
+  "Y": 0,
+  "Width": 16,
+  "Height": 16,
+  "Name": "dirt"
+},{
+  "X": 0,
+  "Y": 16,
+  "Width": 16,
+  "Height": 16,
+  "Name": "sparse"
+},{
+  "X": 0,
+  "Y": 32,
+  "Width": 16,
+  "Height": 16,
+  "Name": "overgrown"
+},{
+  "X": 0,
+  "Y": 48,
+  "Width": 16,
+  "Height": 16,
+  "Name": "grass"
+}]

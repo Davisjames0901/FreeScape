@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeScape", "FreeScape\FreeScape.csproj", "{6B06B77B-32E1-4C85-986B-0A15CE78796B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeScape.Engine", "FreeScape.Engine\FreeScape.Engine.csproj", "{0BC831F7-BC95-4C32-AC48-D466010F747D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B06B77B-32E1-4C85-986B-0A15CE78796B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B06B77B-32E1-4C85-986B-0A15CE78796B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B06B77B-32E1-4C85-986B-0A15CE78796B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B06B77B-32E1-4C85-986B-0A15CE78796B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BC831F7-BC95-4C32-AC48-D466010F747D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BC831F7-BC95-4C32-AC48-D466010F747D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BC831F7-BC95-4C32-AC48-D466010F747D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BC831F7-BC95-4C32-AC48-D466010F747D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

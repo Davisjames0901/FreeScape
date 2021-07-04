@@ -1,0 +1,46 @@
+{
+  "Tiles": [
+    {
+      "X": 0,
+      "Y": 0,
+      "Size": 16,
+      "Texture": "FreeScapeStatic:dirt"
+    },
+    {
+      "X": 16,
+      "Y": 0,
+      "Size": 16,
+      "Texture": "FreeScapeStatic:grass"
+    },
+    {
+      "X": 0,
+      "Y": 16,
+      "Size": 16,
+      "Texture": "FreeScapeStatic:sparse"
+    },
+    {
+      "X": 0,
+      "Y": 32,
+      "Size": 16,
+      "Texture": "FreeScapeStatic:dirt"
+    },
+    {
+      "X": 32,
+      "Y": 0,
+      "Size": 16,
+      "Texture": "FreeScapeStatic:sparse"
+    },
+    {
+      "X": 16,
+      "Y": 48,
+      "Size": 16,
+      "Texture": "FreeScapeStatic:grass"
+    },
+    {
+      "X": 16,
+      "Y": 16,
+      "Size": 32,
+      "Texture": "FreeScapeStatic:overgrown"
+    }
+  ]
+}
