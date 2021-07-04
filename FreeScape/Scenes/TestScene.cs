@@ -16,7 +16,7 @@ namespace FreeScape.Scenes
         private readonly List<ILayer> _layers;
         private bool _isDirty = true;
 
-        public TestScene(MapProvider mapProvider, TiledMapRenderer mapRenderer, EventManager events)
+        public TestScene(MapProvider mapProvider, TiledMapRenderer mapRenderer, EventManager events, DisplayManager displayManager)
         {
             _layers = new List<ILayer>();
             _mapRenderer = mapRenderer;
@@ -24,6 +24,7 @@ namespace FreeScape.Scenes
             var player = new Player();
             _layers.Add(player);
             events.RegisterEventListener(player);
+            displayManager.Track(x=> x.Name == "main", player);
         }
         
         public void Render(RenderTarget target)

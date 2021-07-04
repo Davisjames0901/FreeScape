@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using FreeScape.Engine.Event;
+using FreeScape.Engine.GameObjects;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -27,6 +30,7 @@ namespace FreeScape.Engine.Render
             _renderTarget.DispatchEvents();
             foreach (var view in _perspectives)
             {
+                view.Tick();
                 _renderTarget.SetView(view.View);
                 renderable.Render(_renderTarget);
                 _renderTarget.Display();
@@ -45,6 +49,11 @@ namespace FreeScape.Engine.Render
 
             _renderTarget.KeyPressed += _events.TriggerKeyPressed;
             _renderTarget.KeyReleased += _events.TriggerKeyReleased;
+        }
+
+        public void Track(Func<Perspective, bool> selector, IGameObject target)
+        {
+            _perspectives.FirstOrDefault(selector)?.Track(target);
         }
     }
 }

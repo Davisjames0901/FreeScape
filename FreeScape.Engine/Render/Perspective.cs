@@ -1,9 +1,11 @@
+using FreeScape.Engine.GameObjects;
 using SFML.Graphics;
 
 namespace FreeScape.Engine.Render
 {
-    public class Perspective
+    public class Perspective : ITickable
     {
+        private IGameObject _target;
         public Perspective(string name, View view)
         {
             Name = name;
@@ -12,5 +14,15 @@ namespace FreeScape.Engine.Render
         
         public string Name { get; }
         public View View { get; }
+
+        public void Track(IGameObject go)
+        {
+            _target = go;
+        }
+        public void Tick()
+        {
+            if (_target != null)
+                View.Center = _target.Location;
+        }
     }
 }

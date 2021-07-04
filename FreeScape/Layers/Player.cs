@@ -1,6 +1,7 @@
 using System;
 using FreeScape.Engine;
 using FreeScape.Engine.Event;
+using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Render;
 using SFML.Graphics;
 using SFML.System;
@@ -31,6 +32,7 @@ namespace FreeScape.Layers
             target.Draw(player);
         }
 
+        //Yeah yeah, shitty I know
         public void KeyPressed(object sender, KeyEventArgs args)
         {
             switch (args.Code)
