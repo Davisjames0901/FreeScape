@@ -2,6 +2,7 @@ using System.IO;
 using System.Reflection;
 using AsperandLabs.UnitStrap.Core.Extenstions;
 using FreeScape.Engine;
+using FreeScape.Layers;
 using FreeScape.Scenes;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,6 +27,8 @@ namespace FreeScape
 
             services.AddTransient<Menu>();
             services.AddTransient<TestScene>();
+            services.AddTransient<Player>();
+            services.AddTransient<TestTileMap>();
 
             return services;
         }

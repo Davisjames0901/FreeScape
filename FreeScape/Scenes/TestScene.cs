@@ -1,53 +1,33 @@
-using System.Collections.Generic;
-using System.Linq;
-using FreeScape.Engine;
-using FreeScape.Engine.Actions;
+using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
-using FreeScape.Engine.Render;
+using FreeScape.Engine.Render.Scenes;
 using FreeScape.Layers;
-using SFML.Graphics;
 
 namespace FreeScape.Scenes
 {
-    public class TestScene : IScene
+    public class TestScene : LayeredGameScene
     {
-        private readonly TiledMapRenderer _mapRenderer;
-        private readonly ActionProvider _actionProvider;
-        private readonly MapInfo _map;
-        private readonly List<ILayer> _layers;
-        private bool _isDirty = true;
+        private readonly DisplayManager _displayManager;
+        private readonly LayerProvider _layerProvider;
 
-        public TestScene(MapProvider mapProvider, TiledMapRenderer mapRenderer, EventManager events, DisplayManager displayManager, ActionProvider actionProvider)
+        public TestScene(DisplayManager displayManager, ActionProvider actionProvider, LayerProvider layerProvider)
         {
-            _layers = new List<ILayer>();
-            _mapRenderer = mapRenderer;
-            _actionProvider = actionProvider;
-            _map = mapProvider.GetMap("TestMap");
-            _actionProvider.SwitchActionMap("Player");
-            var player = new Player(_actionProvider);
-            _layers.Add(player);
-            displayManager.Track(x=> x.Name == "main", player);
-        }
-        
-        public void Render(RenderTarget target)
-        {
-            _mapRenderer.RenderTileMap(target, _map);
-            foreach (var layer in _layers.OrderBy(x => x.ZIndex))
-            {
-                layer.Render(target);
-            }
+            _displayManager = displayManager;
+            _layerProvider = layerProvider;
+            actionProvider.SwitchActionMap("Player");
         }
 
-        public bool Tick()
+        public override void Init()
         {
-            foreach (var layer in _layers.OrderBy(x => x.ZIndex))
-            {
-                layer.Tick();
-            }
-            return true;
+            var player = _layerProvider.Provide<Player>();
+            Layers.Add(player);
+            _displayManager.Track(x=> x.Name == "main", player);
+
+            var map = _layerProvider.Provide<TestTileMap>();
+            Layers.Add(map);
         }
-        
-        public void Dispose()
+
+        public override void Dispose()
         {
         }
     }

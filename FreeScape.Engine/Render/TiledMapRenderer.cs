@@ -1,22 +1,25 @@
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
+using FreeScape.Engine.Render.Layers;
 using SFML.Graphics;
 using SFML.System;
 
 namespace FreeScape.Engine.Render
 {
-    public class TiledMapRenderer
+    public abstract class TiledMapLayer : ILayer
     {
         private readonly TextureProvider _textureProvider;
-        private readonly int _size;
-        public TiledMapRenderer(TextureProvider textureProvider)
+        public abstract MapInfo Map { get; }
+        public abstract int ZIndex { get; }
+
+        public TiledMapLayer(TextureProvider textureProvider)
         {
             _textureProvider = textureProvider;
         }
 
-        public void RenderTileMap(RenderTarget target, MapInfo info)
+        public virtual void Render(RenderTarget target)
         {
-            foreach(var tile in info.Tiles)
+            foreach(var tile in Map.Tiles)
             {
                 RenderTile(target, tile);
             }
@@ -38,5 +41,7 @@ namespace FreeScape.Engine.Render
             }
             target.Draw(tile);
         }
+
+        public abstract void Tick();
     }
 }

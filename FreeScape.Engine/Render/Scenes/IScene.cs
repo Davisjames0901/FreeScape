@@ -1,9 +1,10 @@
 using System;
 
-namespace FreeScape.Engine.Render
+namespace FreeScape.Engine.Render.Scenes
 {
     public interface IScene :IDisposable, IRenderable
     {
-        bool Tick();
+        void Tick();
+        void Init();
     }
 }

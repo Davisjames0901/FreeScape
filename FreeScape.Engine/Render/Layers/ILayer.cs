@@ -1,8 +1,8 @@
-namespace FreeScape.Engine.Render
+namespace FreeScape.Engine.Render.Layers
 {
     public interface ILayer :IRenderable
     {
-        int ZIndex { get; set; }
+        int ZIndex { get; }
 
         void Tick();
     }

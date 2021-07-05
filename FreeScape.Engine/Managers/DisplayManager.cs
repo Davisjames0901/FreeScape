@@ -1,25 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FreeScape.Engine.Actions;
 using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Render;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
-namespace FreeScape.Engine.Render
+namespace FreeScape.Engine.Managers
 {
     public class DisplayManager
     {
         private readonly GameInfo _info;
-        private readonly EventManager _events;
         private RenderWindow _renderTarget;
         private readonly List<Perspective> _perspectives;
 
-        public DisplayManager(GameInfo info, EventManager events)
+        public DisplayManager(GameInfo info)
         {
             _info = info;
-            _events = events;
             _perspectives = new List<Perspective>();
             Reset();
         }
@@ -46,9 +44,6 @@ namespace FreeScape.Engine.Render
             _perspectives.Add(new Perspective("main", view));
 
             _renderTarget.SetFramerateLimit(_info.RefreshRate);
-
-            _renderTarget.KeyPressed += _events.TriggerKeyPressed;
-            _renderTarget.KeyReleased += _events.TriggerKeyReleased;
         }
 
         public void Track(Func<Perspective, bool> selector, IGameObject target)

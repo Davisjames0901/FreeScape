@@ -1,10 +1,8 @@
-using System;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
-using FreeScape.Engine.Render;
+using FreeScape.Engine.Render.Layers;
 using SFML.Graphics;
 using SFML.System;
-using SFML.Window;
 
 namespace FreeScape.Layers
 {
