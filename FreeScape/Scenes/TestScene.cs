@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FreeScape.Engine;
-using FreeScape.Engine.Event;
+using FreeScape.Engine.Actions;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
 using FreeScape.Layers;
@@ -12,18 +12,20 @@ namespace FreeScape.Scenes
     public class TestScene : IScene
     {
         private readonly TiledMapRenderer _mapRenderer;
+        private readonly ActionProvider _actionProvider;
         private readonly MapInfo _map;
         private readonly List<ILayer> _layers;
         private bool _isDirty = true;
 
-        public TestScene(MapProvider mapProvider, TiledMapRenderer mapRenderer, EventManager events, DisplayManager displayManager)
+        public TestScene(MapProvider mapProvider, TiledMapRenderer mapRenderer, EventManager events, DisplayManager displayManager, ActionProvider actionProvider)
         {
             _layers = new List<ILayer>();
             _mapRenderer = mapRenderer;
+            _actionProvider = actionProvider;
             _map = mapProvider.GetMap("TestMap");
-            var player = new Player();
+            _actionProvider.SwitchActionMap("Player");
+            var player = new Player(_actionProvider);
             _layers.Add(player);
-            events.RegisterEventListener(player);
             displayManager.Track(x=> x.Name == "main", player);
         }
         

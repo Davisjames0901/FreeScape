@@ -1,5 +1,5 @@
 using AsperandLabs.UnitStrap.Core.Abstracts;
-using FreeScape.Engine.Event;
+using FreeScape.Engine.Actions;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +21,8 @@ namespace FreeScape.Engine
             services.AddSingleton<TiledMapRenderer>();
             services.AddSingleton<DisplayManager>();
             services.AddSingleton<EventManager>();
+            services.AddSingleton<SfmlActionResolver>();
+            services.AddTransient<ActionProvider>();
             
             return services;
         }

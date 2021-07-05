@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SFML.Window;
 
-namespace FreeScape.Engine.Event
+namespace FreeScape.Engine.Actions
 {
     public class EventManager
     {
