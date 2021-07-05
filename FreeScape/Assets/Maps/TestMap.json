@@ -4,43 +4,43 @@
       "X": 0,
       "Y": 0,
       "Size": 16,
-      "Texture": "FreeScapeStatic:dirt"
+      "Texture": "dirt:bare"
     },
     {
       "X": 16,
       "Y": 0,
       "Size": 16,
-      "Texture": "FreeScapeStatic:grass"
+      "Texture": "dirt:grass"
     },
     {
       "X": 0,
       "Y": 16,
       "Size": 16,
-      "Texture": "FreeScapeStatic:sparse"
+      "Texture": "dirt:sparse"
     },
     {
       "X": 0,
       "Y": 32,
       "Size": 16,
-      "Texture": "FreeScapeStatic:dirt"
+      "Texture": "dirt:bare"
     },
     {
       "X": 32,
       "Y": 0,
       "Size": 16,
-      "Texture": "FreeScapeStatic:sparse"
+      "Texture": "dirt:sparse"
     },
     {
       "X": 16,
       "Y": 48,
       "Size": 16,
-      "Texture": "FreeScapeStatic:grass"
+      "Texture": "dirt:grass"
     },
     {
       "X": 16,
       "Y": 16,
       "Size": 32,
-      "Texture": "FreeScapeStatic:overgrown"
+      "Texture": "dirt:overgrown"
     }
   ]
 }

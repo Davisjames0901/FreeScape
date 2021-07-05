@@ -5,9 +5,9 @@ using SFML.Graphics;
 
 namespace FreeScape.Engine.Render.Scenes
 {
-    public abstract class LayeredGameScene : IScene
+    public abstract class LayeredScene : IScene
     {
-        public LayeredGameScene()
+        public LayeredScene()
         {
             Layers = new List<ILayer>();
         }
@@ -30,6 +30,7 @@ namespace FreeScape.Engine.Render.Scenes
             }
         }
         public abstract void Init();
+
         public abstract void Dispose();
     }
 }

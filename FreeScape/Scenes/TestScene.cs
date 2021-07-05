@@ -5,7 +5,7 @@ using FreeScape.Layers;
 
 namespace FreeScape.Scenes
 {
-    public class TestScene : LayeredGameScene
+    public class TestScene : LayeredScene
     {
         private readonly DisplayManager _displayManager;
         private readonly LayerProvider _layerProvider;
