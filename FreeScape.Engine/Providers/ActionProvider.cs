@@ -4,64 +4,52 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using FreeScape.Engine.Actions;
+using FreeScape.Engine.Managers;
 using SFML.Window;
 
 namespace FreeScape.Engine.Providers
 {
     public class ActionProvider
     {
-        private readonly GameInfo _info;
+        private readonly ActionMaps _actionMap;
         private readonly SfmlActionResolver _actionResolver;
-        private readonly Dictionary<string, List<MappedAction>> _actionMaps;
-        private Dictionary<string, MappedAction> _currentMap;
+        private List<Action<string>> _actionPressedSubscribers;
+        private List<Action<string>> _actionReleasedSubscribers;
         private string _currentMapLocation;
-        public ActionProvider(GameInfo info, SfmlActionResolver actionResolver)
+        public ActionProvider(GameInfo info, SfmlActionResolver actionResolver, DisplayManager displayManager)
         {
-            _info = info;
             _actionResolver = actionResolver;
-            _actionMaps = new Dictionary<string, List<MappedAction>>();
-            foreach (var file in Directory.EnumerateFiles(info.ActionMapDirectory).Where(x => x.EndsWith(".json", StringComparison.CurrentCultureIgnoreCase)))
-            {
-                var name = file.Split(Path.DirectorySeparatorChar).Last().Split('.').First();
-                _actionMaps.Add(name, GetActionMap(file));
-            }
+            _actionPressedSubscribers = new List<Action<string>>();
+            _actionReleasedSubscribers = new List<Action<string>>();
+            _actionMap = new ActionMaps(info.ActionMapDirectory);
+            displayManager.RegisterOnPressed(OnKeyPressed);
+            displayManager.RegisterOnReleased(OnKeyReleased);
         }
 
-        private List<MappedAction> GetActionMap(string path)
+        public void SwitchActionMap(string map)
         {
-            var text = File.ReadAllText(path);
-            var descriptor = JsonSerializer.Deserialize<List<MappedAction>>(text);
-            return descriptor;
+            _actionMap.SwitchActionMap(map);
         }
-
-        public void SwitchActionMap(string actionMap)
-        {
-            if (!_actionMaps.ContainsKey(actionMap))
-                throw new Exception($"Could not find {actionMap}.json in {_info.ActionMapDirectory}");
-            
-            _currentMap = _actionMaps[actionMap].ToDictionary(x => x.Action, x => x);
-            _currentMapLocation = $"{_info.ActionMapDirectory}{Path.DirectorySeparatorChar}{actionMap}.json";
-        }
-
+        
         public bool IsActionActivated(string action)
         {
-            if (_currentMap == null)
-                throw new Exception("There is no action map selected");
-            if(!_currentMap.ContainsKey(action))
-                ConvertActionAndThrowException(action);
-            var mappedAction = _currentMap[action];
-            
+            var mappedAction = _actionMap.GetMappedAction(action);
             return ConvertActionAndCheckIfActioned(mappedAction);
         }
 
-        private void ConvertActionAndThrowException(string action)
+        public void SubscribeOnPressed(Action<string> callback)
         {
-            
+            _actionPressedSubscribers.Add(callback);
+        }
+
+        public void SubscribeOnReleased(Action<string> callback)
+        {
+            _actionReleasedSubscribers.Add(callback);
         }
 
         private bool ConvertActionAndCheckIfActioned(MappedAction action)
         {
-            switch (action.Device)
+            switch (action?.Device)
             {
                 case "mouse":
                     return CheckMouseAction(action);
@@ -69,6 +57,8 @@ namespace FreeScape.Engine.Providers
                     return CheckKeyboardAction(action);
                 case "wheel":
                     return CheckWheelAction(action);
+                case null:
+                    return false;
                 default:
                     throw new Exception(
                         $"Unknown device type in File: {_currentMapLocation}, Action: {action.Action}, Device: {action.Device}");
@@ -91,6 +81,30 @@ namespace FreeScape.Engine.Providers
         {
             var key = _actionResolver.GetKeyboardKey(action.Button);
             return Keyboard.IsKeyPressed(key);
+        }
+
+        private void Notify(List<Action<string>> subscribers, MappedAction action)
+        {
+            foreach (var subscriber in subscribers)
+                subscriber(action.Action);
+        }
+
+        private void OnKeyPressed(object sender, KeyEventArgs args)
+        {
+            var actionName = _actionResolver.GetAction(args.Code);
+            var action = _actionMap.GetMappedPressedAction(actionName);
+            if(action == null)
+                return;
+            Notify(_actionPressedSubscribers, action);
+        }
+
+        private void OnKeyReleased(object sender, KeyEventArgs args)
+        {
+            var actionName = _actionResolver.GetAction(args.Code);
+            var action = _actionMap.GetMappedPressedAction(actionName);
+            if(action == null)
+                return;
+            Notify(_actionPressedSubscribers, action);
         }
     }
 }

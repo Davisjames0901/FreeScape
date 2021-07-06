@@ -50,5 +50,14 @@ namespace FreeScape.Engine.Managers
         {
             _perspectives.FirstOrDefault(selector)?.Track(target);
         }
+
+        internal void RegisterOnPressed(EventHandler<KeyEventArgs> handle)
+        {
+            _renderTarget.KeyPressed += handle;
+        }
+        internal void RegisterOnReleased(EventHandler<KeyEventArgs> handle)
+        {
+            _renderTarget.KeyPressed += handle;
+        }
     }
 }
