@@ -26,7 +26,6 @@ namespace FreeScape.Engine.Managers
         }
         public void Tick()
         {
-            Console.WriteLine(_frameTime.TimeSinceLastTick);
             _currentScene.Tick();
             _frameTime.Tick();
         }
