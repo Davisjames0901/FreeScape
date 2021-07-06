@@ -12,8 +12,9 @@ namespace FreeScape.Layers
         public int ZIndex { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
+        public float Size { get; set; }
         public Vector2f Velocity;
-        public float PlayerSpeed { get; set; }
+        public float Speed { get; set; }
         
 
         public Player(ActionProvider actionProvider)
@@ -21,12 +22,22 @@ namespace FreeScape.Layers
             _actionProvider = actionProvider;
             ZIndex = 999;
             Velocity = new Vector2f(0, 0);
-            PlayerSpeed = 4.0f;
+            Speed = 1.0f;
+            Size = 3.0f;
         }
 
         public void Tick()
         {
             Movement();
+        }
+
+        public void ActionPressed()
+        {
+
+        }
+        public void ActionReleased()
+        {
+
         }
 
         private void Movement()
@@ -37,11 +48,11 @@ namespace FreeScape.Layers
             bool up = _actionProvider.IsActionActivated("MoveUp");
             bool down = _actionProvider.IsActionActivated("MoveDown");
 
-            float finalSpeed = PlayerSpeed;
+            float finalSpeed = Speed;
             
             if ((up || down) && (left || right))
             {
-                finalSpeed = PlayerSpeed / 1.5f;
+                finalSpeed = Speed / 1.5f;
             }
 
             Vector2f vel = new Vector2f(0, 0);
@@ -78,9 +89,11 @@ namespace FreeScape.Layers
 
         public void Render(RenderTarget target)
         {
-            var player = new CircleShape(5);
+            var player = new CircleShape(Size);
             player.FillColor = Color.Red;
-            player.Position = new Vector2f(X, Y);
+            player.OutlineColor = Color.White;
+            player.OutlineThickness = 1f;
+            player.Position = new Vector2f(X - (Size/2), Y - (Size/2));
             target.Draw(player);
         }
     }

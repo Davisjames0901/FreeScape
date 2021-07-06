@@ -2,7 +2,6 @@ using AsperandLabs.UnitStrap.Core.Abstracts;
 using FreeScape.Engine.Actions;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
-using FreeScape.Engine.Render;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FreeScape.Engine
@@ -24,6 +23,7 @@ namespace FreeScape.Engine
             services.AddSingleton<SfmlActionResolver>();
             services.AddSingleton<LayerProvider>();
             services.AddSingleton<ServiceScopeProvider>();
+            services.AddSingleton<Controller>();
             
             services.AddScoped<ActionProvider>();
             

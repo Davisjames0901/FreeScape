@@ -17,7 +17,7 @@ namespace FreeScape
                 ScreenHeight = 1080,
                 ScreenWidth = 1920,
                 Name = "FreeScape",
-                RefreshRate = 60,
+                RefreshRate = 144,
                 AssetDirectory =
                     $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}{Path.DirectorySeparatorChar}Assets"
             };

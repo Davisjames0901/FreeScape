@@ -11,7 +11,6 @@ namespace FreeScape.Engine.Managers
         private readonly DisplayManager _display;
         private readonly ServiceScopeProvider _provider;
         private IScene _currentScene;
-
         public SceneManager(IServiceProvider serviceProvider, DisplayManager display, ServiceScopeProvider provider)
         {
             _serviceProvider = serviceProvider;
@@ -19,9 +18,12 @@ namespace FreeScape.Engine.Managers
             _provider = provider;
         }
 
-        public void Tick()
+        public void Render()
         {
             _display.Render(_currentScene);
+        }
+        public void Tick()
+        {
             _currentScene.Tick();
         }
 

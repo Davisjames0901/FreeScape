@@ -7,6 +7,7 @@ namespace FreeScape.Engine.GameObjects
     {
         float X { get; }
         float Y { get; }
+        public float Size { get; }
         public Vector2f Location => new Vector2f(X, Y);
     }
 }

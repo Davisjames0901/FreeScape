@@ -10,13 +10,13 @@
       "X": 16,
       "Y": 0,
       "Size": 16,
-      "Texture": "dirt:grass"
+      "Texture": "dirt:bare"
     },
     {
       "X": 0,
       "Y": 16,
       "Size": 16,
-      "Texture": "dirt:sparse"
+      "Texture": "dirt:bare"
     },
     {
       "X": 0,
@@ -28,19 +28,19 @@
       "X": 32,
       "Y": 0,
       "Size": 16,
-      "Texture": "dirt:sparse"
+      "Texture": "dirt:bare"
     },
     {
       "X": 16,
       "Y": 48,
       "Size": 16,
-      "Texture": "dirt:grass"
+      "Texture": "dirt:bare"
     },
     {
       "X": 16,
       "Y": 16,
       "Size": 32,
-      "Texture": "dirt:overgrown"
+      "Texture": "dirt:bare"
     }
   ]
 }

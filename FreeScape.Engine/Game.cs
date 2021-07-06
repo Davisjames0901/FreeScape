@@ -10,13 +10,15 @@ namespace FreeScape.Engine
     {
         private readonly SceneManager _sceneManager;
         private readonly GameInfo _gameInfo;
+        private readonly Controller _controller;
 
         private bool _isRunning;
 
-        public Game(SceneManager sceneManager, GameInfo gameInfo)
+        public Game(SceneManager sceneManager, GameInfo gameInfo, Controller controller)
         {
             _sceneManager = sceneManager;
             _gameInfo = gameInfo;
+            _controller = controller;
         }
         public void Start<T>() where T : IScene
         {
@@ -24,12 +26,13 @@ namespace FreeScape.Engine
                 throw new Exception("Cant start ticker because its already running");
             _isRunning = true;
             _sceneManager.SetScene<T>();
-            while (_isRunning)
-            {
-                Thread.Sleep(100);
-                _sceneManager.Tick();
-            }
+
+
+            _controller.Start(_sceneManager.Tick, _sceneManager.Render);
+
         }
+
+        
 
         public void Stop()
         {
