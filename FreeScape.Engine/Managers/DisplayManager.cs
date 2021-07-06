@@ -40,7 +40,7 @@ namespace FreeScape.Engine.Managers
             _renderTarget?.Close();
             var videoMode = new VideoMode(_info.ScreenWidth, _info.ScreenHeight);
             _renderTarget = new RenderWindow(videoMode, _info.Name);
-            var view = new View(new Vector2f(0, 0), new Vector2f(_info.ScreenWidth, _info.ScreenHeight));
+            var view = new View(new Vector2f(0, 0), new Vector2f(_info.ScreenWidth/3, _info.ScreenHeight/3));
             _perspectives.Add(new Perspective("main", view));
 
             _renderTarget.SetFramerateLimit(_info.RefreshRate);

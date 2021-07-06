@@ -10,36 +10,70 @@ namespace FreeScape.Layers
     {
         private readonly ActionProvider _actionProvider;
         public int ZIndex { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public Vector2f Velocity;
+        public float PlayerSpeed { get; set; }
+        
 
         public Player(ActionProvider actionProvider)
         {
             _actionProvider = actionProvider;
             ZIndex = 999;
+            Velocity = new Vector2f(0, 0);
+            PlayerSpeed = 4.0f;
         }
 
         public void Tick()
         {
-            if (_actionProvider.IsActionActivated("MoveUp"))
+            Movement();
+        }
+
+        private void Movement()
+        {
+
+            bool left = _actionProvider.IsActionActivated("MoveLeft");
+            bool right = _actionProvider.IsActionActivated("MoveRight");
+            bool up = _actionProvider.IsActionActivated("MoveUp");
+            bool down = _actionProvider.IsActionActivated("MoveDown");
+
+            float finalSpeed = PlayerSpeed;
+            
+            if ((up || down) && (left || right))
             {
-                Y--;
+                finalSpeed = PlayerSpeed / 1.5f;
             }
 
-            if (_actionProvider.IsActionActivated("MoveDown"))
+            Vector2f vel = new Vector2f(0, 0);
+
+            if (left)
             {
-                Y++;
+                Velocity.X = -finalSpeed;
+            }
+            else if (right)
+            {
+                Velocity.X = finalSpeed;
+            }
+            else
+            {
+                Velocity.X = 0.0f;
+            }
+            
+            if (up)
+            {
+                Velocity.Y = -finalSpeed;
+            }
+            else if (down)
+            {
+                Velocity.Y = finalSpeed;
+            }
+            else
+            {
+                Velocity.Y = 0.0f;
             }
 
-            if (_actionProvider.IsActionActivated("MoveLeft"))
-            {
-                X--;
-            }
-
-            if (_actionProvider.IsActionActivated("MoveRight"))
-            {
-                X++;
-            }
+            X += Velocity.X;
+            Y += Velocity.Y;
         }
 
         public void Render(RenderTarget target)

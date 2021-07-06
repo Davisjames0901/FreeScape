@@ -1,4 +1,5 @@
 using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 
 namespace FreeScape.Engine.Render
@@ -22,7 +23,10 @@ namespace FreeScape.Engine.Render
         public void Tick()
         {
             if (_target != null)
-                View.Center = _target.Location;
+            {
+
+                View.Center = Maths.Lerp(View.Center, _target.Location, 0.25f);
+            }
         }
     }
 }
