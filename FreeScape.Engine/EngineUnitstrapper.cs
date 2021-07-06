@@ -24,6 +24,7 @@ namespace FreeScape.Engine
             services.AddSingleton<LayerProvider>();
             services.AddSingleton<ServiceScopeProvider>();
             services.AddSingleton<Controller>();
+            services.AddSingleton<SoundProvider>();
             
             services.AddScoped<ActionProvider>();
             

@@ -9,11 +9,13 @@ namespace FreeScape.Scenes
     {
         private readonly DisplayManager _displayManager;
         private readonly LayerProvider _layerProvider;
+        private readonly SoundProvider _sounds;
 
-        public TestScene(DisplayManager displayManager, ActionProvider actionProvider, LayerProvider layerProvider)
+        public TestScene(DisplayManager displayManager, ActionProvider actionProvider, LayerProvider layerProvider, SoundProvider sounds)
         {
             _displayManager = displayManager;
             _layerProvider = layerProvider;
+            _sounds = sounds;
             actionProvider.SwitchActionMap("Player");
         }
 
@@ -25,6 +27,8 @@ namespace FreeScape.Scenes
 
             var map = _layerProvider.Provide<TestTileMap>();
             Layers.Add(map);
+            
+            _sounds.PlaySound("desert");
         }
 
         public override void Dispose()

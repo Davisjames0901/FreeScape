@@ -1,8 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
 using FreeScape.Engine.Actions;
 using FreeScape.Engine.Managers;
 using SFML.Window;
@@ -13,9 +10,8 @@ namespace FreeScape.Engine.Providers
     {
         private readonly ActionMaps _actionMap;
         private readonly SfmlActionResolver _actionResolver;
-        private List<Action<string>> _actionPressedSubscribers;
-        private List<Action<string>> _actionReleasedSubscribers;
-        private string _currentMapLocation;
+        private readonly List<Action<string>> _actionPressedSubscribers;
+        private readonly List<Action<string>> _actionReleasedSubscribers;
         public ActionProvider(GameInfo info, SfmlActionResolver actionResolver, DisplayManager displayManager)
         {
             _actionResolver = actionResolver;
@@ -61,7 +57,7 @@ namespace FreeScape.Engine.Providers
                     return false;
                 default:
                     throw new Exception(
-                        $"Unknown device type in File: {_currentMapLocation}, Action: {action.Action}, Device: {action.Device}");
+                        $"Unknown device type in Action: {action.Action}, Device: {action.Device}");
             }
         }
 
@@ -104,7 +100,7 @@ namespace FreeScape.Engine.Providers
             var action = _actionMap.GetMappedPressedAction(actionName);
             if(action == null)
                 return;
-            Notify(_actionPressedSubscribers, action);
+            Notify(_actionReleasedSubscribers, action);
         }
     }
 }

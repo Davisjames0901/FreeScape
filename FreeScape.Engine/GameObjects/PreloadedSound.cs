@@ -4,12 +4,14 @@ namespace FreeScape.Engine.GameObjects
 {
     public class PreloadedSound
     {
-        public PreloadedSound(string filePath, GameInfo info)
+        public PreloadedSound(SoundInfo info)
         {
-            Buffer = new SoundBuffer(filePath);
+            Buffer = new SoundBuffer(info.FilePath);
             Sound = new Sound(Buffer);
+            SoundInfo = info;
         }
-        public SoundBuffer Buffer { get; set; }
-        public Sound Sound { get; set; }
+        public SoundBuffer Buffer { get; }
+        public Sound Sound { get; }
+        public SoundInfo SoundInfo { get; }
     }
 }

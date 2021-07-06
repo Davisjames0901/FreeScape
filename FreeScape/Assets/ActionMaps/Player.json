@@ -2,5 +2,6 @@
     { "Action": "MoveUp", "Button": "Comma", "Device": "keyboard", "OnPressed": true, "OnReleased": true },   
     { "Action": "MoveLeft", "Button": "A", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
     { "Action": "MoveDown", "Button": "O", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
+    { "Action": "Punch", "Button": "P", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
     { "Action": "MoveRight", "Button": "E", "Device": "keyboard" , "OnPressed": true, "OnReleased": true }
 ]

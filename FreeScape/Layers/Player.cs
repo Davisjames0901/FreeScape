@@ -18,13 +18,18 @@ namespace FreeScape.Layers
         public float Speed { get; set; }
         
 
-        public Player(ActionProvider actionProvider)
+        public Player(ActionProvider actionProvider, SoundProvider soundProvider)
         {
             _actionProvider = actionProvider;
             ZIndex = 999;
             Velocity = new Vector2f(0, 0);
             Speed = 1.0f;
             Size = 3.0f;
+            actionProvider.SubscribeOnPressed(a =>
+            {
+                if(a == "Punch")
+                    soundProvider.PlaySound("punch");
+            });
         }
 
         public void Tick()
