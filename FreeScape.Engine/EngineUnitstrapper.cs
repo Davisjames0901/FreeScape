@@ -26,6 +26,7 @@ namespace FreeScape.Engine
             services.AddSingleton<ServiceScopeProvider>();
             services.AddSingleton<GameManager>();
             services.AddSingleton<SoundProvider>();
+            services.AddSingleton<FrameTimeProvider>();
             
             services.AddScoped<ActionProvider>();
             

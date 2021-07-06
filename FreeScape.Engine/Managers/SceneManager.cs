@@ -10,12 +10,14 @@ namespace FreeScape.Engine.Managers
         private readonly IServiceProvider _serviceProvider;
         private readonly DisplayManager _display;
         private readonly ServiceScopeProvider _provider;
+        private readonly FrameTimeProvider _frameTime;
         private IScene _currentScene;
-        public SceneManager(IServiceProvider serviceProvider, DisplayManager display, ServiceScopeProvider provider)
+        public SceneManager(IServiceProvider serviceProvider, DisplayManager display, ServiceScopeProvider provider, FrameTimeProvider frameTime)
         {
             _serviceProvider = serviceProvider;
             _display = display;
             _provider = provider;
+            _frameTime = frameTime;
         }
 
         public void Render()
@@ -24,6 +26,7 @@ namespace FreeScape.Engine.Managers
         }
         public void Tick()
         {
+            _frameTime.Tick();
             _currentScene.Tick();
         }
         public void SetScene<T>() where T : IScene
