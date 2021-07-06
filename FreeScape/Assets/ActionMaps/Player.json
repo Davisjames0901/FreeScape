@@ -1,6 +1,6 @@
 [
-    { "Action": "MoveUp", "Button": "W", "Device": "keyboard" },   
-    { "Action": "MoveLeft", "Button": "A", "Device": "keyboard" },   
-    { "Action": "MoveDown", "Button": "S", "Device": "keyboard" },   
-    { "Action": "MoveRight", "Button": "D", "Device": "keyboard" }
+    { "Action": "MoveUp", "Button": "Comma", "Device": "keyboard", "OnPressed": true, "OnReleased": true },   
+    { "Action": "MoveLeft", "Button": "A", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
+    { "Action": "MoveDown", "Button": "O", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
+    { "Action": "MoveRight", "Button": "E", "Device": "keyboard" , "OnPressed": true, "OnReleased": true }
 ]

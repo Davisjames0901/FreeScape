@@ -12,5 +12,6 @@ namespace FreeScape.Engine
         public string TextureDirectory => $"{AssetDirectory}{Path.DirectorySeparatorChar}Textures";
         public string MapDirectory => $"{AssetDirectory}{Path.DirectorySeparatorChar}Maps";
         public string ActionMapDirectory => $"{AssetDirectory}{Path.DirectorySeparatorChar}ActionMaps";
+        public string SoundDirectory => $"{AssetDirectory}{Path.DirectorySeparatorChar}Sounds";
     }
 }
