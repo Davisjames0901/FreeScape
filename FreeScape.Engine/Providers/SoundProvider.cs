@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using FreeScape.Engine.Config.Sound;
 using FreeScape.Engine.GameObjects;
 using SFML.Audio;
 

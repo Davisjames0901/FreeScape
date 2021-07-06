@@ -1,5 +1,5 @@
 using AsperandLabs.UnitStrap.Core.Abstracts;
-using FreeScape.Engine.Actions;
+using FreeScape.Engine.Config.Action;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +23,7 @@ namespace FreeScape.Engine
             services.AddSingleton<SfmlActionResolver>();
             services.AddSingleton<LayerProvider>();
             services.AddSingleton<ServiceScopeProvider>();
-            services.AddSingleton<Controller>();
+            services.AddSingleton<GameManager>();
             services.AddSingleton<SoundProvider>();
             
             services.AddScoped<ActionProvider>();

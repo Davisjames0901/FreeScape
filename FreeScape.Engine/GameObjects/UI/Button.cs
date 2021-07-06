@@ -1,7 +1,7 @@
 using FreeScape.Engine.Render;
 using SFML.Graphics;
 
-namespace FreeScape.Engine.UI
+namespace FreeScape.Engine.GameObjects.UI
 {
     public abstract class Button : IRenderable
     {

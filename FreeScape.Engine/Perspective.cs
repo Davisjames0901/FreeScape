@@ -1,8 +1,9 @@
 using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Render;
 using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 
-namespace FreeScape.Engine.Render
+namespace FreeScape.Engine
 {
     public class Perspective : ITickable
     {

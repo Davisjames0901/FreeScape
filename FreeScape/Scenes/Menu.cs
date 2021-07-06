@@ -1,6 +1,3 @@
-using FreeScape.Engine;
-using FreeScape.Engine.Providers;
-using FreeScape.Engine.Render;
 using SFML.Graphics;
 
 namespace FreeScape.Scenes

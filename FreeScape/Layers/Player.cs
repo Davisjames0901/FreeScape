@@ -1,4 +1,3 @@
-using System;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Layers;

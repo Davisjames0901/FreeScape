@@ -1,4 +1,4 @@
-namespace FreeScape.Engine.Render
+namespace FreeScape.Engine.Config
 {
     public class TextureInfo
     {

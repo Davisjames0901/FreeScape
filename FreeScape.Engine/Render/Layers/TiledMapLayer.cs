@@ -1,10 +1,9 @@
-using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Config.Map;
 using FreeScape.Engine.Providers;
-using FreeScape.Engine.Render.Layers;
 using SFML.Graphics;
 using SFML.System;
 
-namespace FreeScape.Engine.Render
+namespace FreeScape.Engine.Render.Layers
 {
     public abstract class TiledMapLayer : ILayer
     {

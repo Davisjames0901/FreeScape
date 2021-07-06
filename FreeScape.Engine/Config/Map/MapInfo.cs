@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using FreeScape.Engine.GameObjects;
 
-namespace FreeScape.Engine.Render
+namespace FreeScape.Engine.Config.Map
 {
     public class MapInfo
     {

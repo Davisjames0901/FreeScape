@@ -1,5 +1,6 @@
+using FreeScape.Engine.Config.Map;
 using FreeScape.Engine.Providers;
-using FreeScape.Engine.Render;
+using FreeScape.Engine.Render.Layers;
 
 namespace FreeScape.Layers
 {

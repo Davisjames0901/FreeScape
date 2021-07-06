@@ -6,7 +6,7 @@ namespace FreeScape
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var collection = Bootstrapper.Bootstrap(new ServiceCollection());
             var provider = collection.BuildServiceProvider();

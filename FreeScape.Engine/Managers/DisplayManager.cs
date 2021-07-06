@@ -12,14 +12,14 @@ namespace FreeScape.Engine.Managers
     public class DisplayManager
     {
         private readonly GameInfo _info;
-        private readonly Controller _controller;
+        private readonly GameManager _gameManager;
         private RenderWindow _renderTarget;
         private readonly List<Perspective> _perspectives;
 
-        public DisplayManager(GameInfo info, Controller controller)
+        public DisplayManager(GameInfo info, GameManager gameManager)
         {
             _info = info;
-            _controller = controller;
+            _gameManager = gameManager;
             _perspectives = new List<Perspective>();
             Reset();
         }
@@ -47,9 +47,8 @@ namespace FreeScape.Engine.Managers
 
             _renderTarget.SetFramerateLimit(_info.RefreshRate);
             _renderTarget.SetActive(false);
-            _renderTarget.Closed += (sender, args) => _controller.Stop();
+            _renderTarget.Closed += (sender, args) => _gameManager.Stop();
         }
-
 
         public void Track(Func<Perspective, bool> selector, IGameObject target)
         {

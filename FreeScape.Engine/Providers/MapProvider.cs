@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using FreeScape.Engine.Render;
+using FreeScape.Engine.Config.Map;
 
 namespace FreeScape.Engine.Providers
 {

@@ -1,7 +1,7 @@
 using System;
 using SFML.Window;
 
-namespace FreeScape.Engine.Actions
+namespace FreeScape.Engine.Config.Action
 {
     public class SfmlActionResolver
     {

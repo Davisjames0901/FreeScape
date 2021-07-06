@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using FreeScape.Engine.Actions;
+using FreeScape.Engine.Config.Action;
 using FreeScape.Engine.Managers;
 using SFML.Window;
 
@@ -51,8 +51,6 @@ namespace FreeScape.Engine.Providers
                     return CheckMouseAction(action);
                 case "keyboard":
                     return CheckKeyboardAction(action);
-                case "wheel":
-                    return CheckWheelAction(action);
                 case null:
                     return false;
                 default:
@@ -65,12 +63,6 @@ namespace FreeScape.Engine.Providers
         {
             var button = _actionResolver.GetMouseButton(action.Button);
             return Mouse.IsButtonPressed(button);
-        }
-
-        private bool CheckWheelAction(MappedAction action)
-        {
-            //Todo: I dont think this actually makes sense.
-            return false;
         }
 
         private bool CheckKeyboardAction(MappedAction action)

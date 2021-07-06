@@ -1,3 +1,4 @@
+using FreeScape.Engine.Config.Sound;
 using SFML.Audio;
 
 namespace FreeScape.Engine.GameObjects

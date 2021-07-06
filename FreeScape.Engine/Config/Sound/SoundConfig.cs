@@ -1,4 +1,4 @@
-namespace FreeScape.Engine.Config
+namespace FreeScape.Engine.Config.Sound
 {
     public class SoundConfig
     {

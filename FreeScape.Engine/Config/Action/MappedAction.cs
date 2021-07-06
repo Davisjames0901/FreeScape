@@ -1,6 +1,4 @@
-using System.Threading.Tasks;
-
-namespace FreeScape.Engine.Actions
+namespace FreeScape.Engine.Config.Action
 {
     public class MappedAction
     {

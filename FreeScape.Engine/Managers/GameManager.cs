@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading;
 
-namespace FreeScape.Engine
+namespace FreeScape.Engine.Managers
 {
-    public class Controller
+    public class GameManager
     {
         private readonly Thread _tickThread;
 
@@ -11,7 +11,7 @@ namespace FreeScape.Engine
 
         private Action _tick;
         private Action _render;
-        public Controller()
+        public GameManager()
         {
             _tickThread = new Thread(TickThreadLoop);
         }

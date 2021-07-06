@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-namespace FreeScape.Engine.Actions
+namespace FreeScape.Engine.Config.Action
 {
     public class ActionMaps
     {
@@ -12,7 +12,6 @@ namespace FreeScape.Engine.Actions
         private Dictionary<string, MappedAction> _currentActionMap;
         private Dictionary<string, MappedAction> _currentButtonPressedMap;
         private Dictionary<string, MappedAction> _currentButtonReleasedMap;
-        private string _currentMapLocation;
         private readonly string _mapDir;
 
         public ActionMaps(string mapDir)
@@ -42,7 +41,6 @@ namespace FreeScape.Engine.Actions
             _currentActionMap = _actionMaps[actionMap].ToDictionary(x => x.Action, x => x);
             _currentButtonPressedMap = _actionMaps[actionMap].Where(x=>x.OnPressed).ToDictionary(x => x.Button, x => x);
             _currentButtonReleasedMap = _actionMaps[actionMap].Where(x=>x.OnReleased).ToDictionary(x => x.Button, x => x);
-            _currentMapLocation = $"{_mapDir}{Path.DirectorySeparatorChar}{actionMap}.json";
         }
 
         public MappedAction GetMappedPressedAction(string action)
@@ -61,9 +59,7 @@ namespace FreeScape.Engine.Actions
         {
             if (_currentActionMap == null)
                 throw new Exception("There is no action map selected");
-            if (!dict.ContainsKey(action))
-                return null;
-            return dict[action];
+            return !dict.ContainsKey(action) ? null : dict[action];
         }
     }
 }
