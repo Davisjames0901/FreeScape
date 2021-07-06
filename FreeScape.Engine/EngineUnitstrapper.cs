@@ -1,4 +1,5 @@
 using AsperandLabs.UnitStrap.Core.Abstracts;
+using FreeScape.Engine.Config;
 using FreeScape.Engine.Config.Action;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FreeScape.Engine.Config;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Render;
 using SFML.Graphics;

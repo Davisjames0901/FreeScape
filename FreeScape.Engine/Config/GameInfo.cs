@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace FreeScape.Engine
+namespace FreeScape.Engine.Config
 {
     public class GameInfo
     {

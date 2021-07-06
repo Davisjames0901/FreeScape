@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using FreeScape.Engine.Config;
 using FreeScape.Engine.Config.Action;
 using FreeScape.Engine.Managers;
 using SFML.Window;
