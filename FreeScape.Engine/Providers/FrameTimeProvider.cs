@@ -15,6 +15,6 @@ namespace FreeScape.Engine.Providers
             _stopwatch.Restart();
         }
 
-        public long TimeSinceLastTick => _stopwatch.ElapsedMilliseconds;
+        public long TimeSinceLastTick => _stopwatch.ElapsedTicks;
     }
 }
