@@ -1,22 +1,19 @@
-﻿using SFML.Window;
-using System;
+﻿using System;
 using System.Threading;
 
 namespace FreeScape.Engine
 {
     public class Controller
     {
-        public Thread TickThread { get; set; }
-        public Thread RenderThread { get; set; }
+        private readonly Thread _tickThread;
 
-        private bool _isRunning = false;
+        private bool _isRunning;
 
         private Action _tick;
         private Action _render;
         public Controller()
         {
-            TickThread = new Thread(TickThreadLoop);
-            RenderThread = new Thread(RenderThreadLoop);
+            _tickThread = new Thread(TickThreadLoop);
         }
 
         public void Start(Action tick, Action render)
@@ -26,15 +23,26 @@ namespace FreeScape.Engine
             
             _isRunning = true;
 
-            TickThread.Start();
-            RenderThread.Start();
+            if (OperatingSystem.IsLinux())
+            {
+                while (_isRunning)
+                {
+                    _tick();
+                    _render();
+                }
+            }
+            else
+            {
+                _tickThread.Start();
+                RenderThreadLoop();
+            }
         }
         public void Stop()
         {
             _isRunning = false;
         }
 
-        public void TickThreadLoop()
+        private void TickThreadLoop()
         {
             while (_isRunning)
             {
@@ -42,7 +50,7 @@ namespace FreeScape.Engine
                 _tick();
             }
         }
-        public void RenderThreadLoop()
+        private void RenderThreadLoop()
         {
             while (_isRunning)
             {

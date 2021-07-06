@@ -4,9 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using FreeScape.Engine.GameObjects;
-using FreeScape.Engine.Render;
 using SFML.Audio;
-using SFML.Graphics;
 
 namespace FreeScape.Engine.Providers
 {
@@ -27,7 +25,7 @@ namespace FreeScape.Engine.Providers
                 var name = file.Split(Path.DirectorySeparatorChar).Last().Split('.').First();
                 var descriptor = GetDescriptor(file);
                 if(descriptor.Preload)
-                    
+                    PreloadSound(descriptor, name);
                 _soundDescriptors.Add(name, descriptor);
             }
         }
