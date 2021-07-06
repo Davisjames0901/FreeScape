@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SFML.Window;
+using System;
 using System.Threading;
 
 namespace FreeScape.Engine
@@ -6,12 +7,12 @@ namespace FreeScape.Engine
     public class Controller
     {
         public Thread TickThread { get; set; }
-        private bool _isRunning = false;
         public Thread RenderThread { get; set; }
+
+        private bool _isRunning = false;
 
         private Action _tick;
         private Action _render;
-        private Object locker = new Object();
         public Controller()
         {
             TickThread = new Thread(TickThreadLoop);
@@ -37,20 +38,15 @@ namespace FreeScape.Engine
         {
             while (_isRunning)
             {
-                lock (locker)
-                {
-                    _tick();
-                }
+                Thread.Sleep(10);
+                _tick();
             }
         }
         public void RenderThreadLoop()
         {
             while (_isRunning)
             {
-                lock (locker)
-                {
-                    _render();
-                }
+                _render();
             }
         }
 

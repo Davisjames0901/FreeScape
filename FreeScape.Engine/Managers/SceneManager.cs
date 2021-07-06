@@ -26,7 +26,6 @@ namespace FreeScape.Engine.Managers
         {
             _currentScene.Tick();
         }
-
         public void SetScene<T>() where T : IScene
         {
             _provider.CurrentScope?.Dispose();

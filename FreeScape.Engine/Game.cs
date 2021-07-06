@@ -24,11 +24,12 @@ namespace FreeScape.Engine
         {
             if (_isRunning)
                 throw new Exception("Cant start ticker because its already running");
+
             _isRunning = true;
+
             _sceneManager.SetScene<T>();
-
-
             _controller.Start(_sceneManager.Tick, _sceneManager.Render);
+            
 
         }
 

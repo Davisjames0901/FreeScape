@@ -35,7 +35,6 @@ namespace FreeScape.Engine.Managers
             }
         }
 
-
         public void Reset()
         {
             _renderTarget?.Close();
@@ -45,6 +44,7 @@ namespace FreeScape.Engine.Managers
             _perspectives.Add(new Perspective("main", view));
 
             _renderTarget.SetFramerateLimit(_info.RefreshRate);
+            _renderTarget.SetActive(false);
 
         }
 
