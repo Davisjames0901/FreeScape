@@ -1,28 +1,37 @@
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Layers;
+using FreeScape.Engine.Physics;
 using SFML.Graphics;
 using SFML.System;
 
 namespace FreeScape.Layers
 {
-    public class Player : ILayer, IGameObject
+    public class Player : IMovable
     {
         private readonly ActionProvider _actionProvider;
         public int ZIndex { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
+        public float Weight { get; set; }
         public float Size { get; set; }
-        public Vector2f Velocity;
+        public bool Collidable { get; set; } = false;
         public float Speed { get; set; }
-        
 
+        private Vector2f _velocity = new Vector2f(0, 0);
+        private Vector2f _position = new Vector2f(0, 0);
+
+        public Vector2f Velocity { get { return _velocity; } set { _velocity = value; } }
+        public Vector2f Position { get { return _position; } set { _position = value; } }
+
+        
         public Player(ActionProvider actionProvider, SoundProvider soundProvider)
         {
+            
             _actionProvider = actionProvider;
             ZIndex = 999;
             Velocity = new Vector2f(0, 0);
-            Speed = 1.0f;
+            Speed = 5.0f;
             Size = 3.0f;
             actionProvider.SubscribeOnPressed(a =>
             {
@@ -33,7 +42,7 @@ namespace FreeScape.Layers
 
         public void Tick()
         {
-            Movement();
+            SetVelocity();
         }
 
         public void ActionPressed()
@@ -45,7 +54,7 @@ namespace FreeScape.Layers
 
         }
 
-        private void Movement()
+        private void SetVelocity()
         {
 
             bool left = _actionProvider.IsActionActivated("MoveLeft");
@@ -64,41 +73,36 @@ namespace FreeScape.Layers
 
             if (left)
             {
-                Velocity.X = -finalSpeed;
+                _velocity.X = -finalSpeed;
             }
             else if (right)
             {
-                Velocity.X = finalSpeed;
+                _velocity.X = finalSpeed;
             }
             else
             {
-                Velocity.X = 0.0f;
+                _velocity.X = 0.0f;
             }
             
             if (up)
             {
-                Velocity.Y = -finalSpeed;
+                _velocity.Y = -finalSpeed;
             }
             else if (down)
             {
-                Velocity.Y = finalSpeed;
+                _velocity.Y = finalSpeed;
             }
             else
             {
-                Velocity.Y = 0.0f;
+                _velocity.Y = 0.0f;
             }
-
-            X += Velocity.X;
-            Y += Velocity.Y;
         }
 
         public void Render(RenderTarget target)
         {
             var player = new CircleShape(Size);
             player.FillColor = Color.Red;
-            player.OutlineColor = Color.White;
-            player.OutlineThickness = 1f;
-            player.Position = new Vector2f(X - (Size/2), Y - (Size/2));
+            player.Position = new Vector2f(_position.X - (Size), _position.Y - (Size));
             target.Draw(player);
         }
     }

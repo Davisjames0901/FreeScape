@@ -1,46 +1,54 @@
 using FreeScape.Engine.Config.Map;
+using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Physics;
 using FreeScape.Engine.Providers;
 using SFML.Graphics;
 using SFML.System;
+using System.Collections.Generic;
 
 namespace FreeScape.Engine.Render.Layers
 {
     public abstract class TiledMapLayer : ILayer
     {
         private readonly TextureProvider _textureProvider;
+        private Movement _movement;
         public abstract MapInfo Map { get; }
         public abstract int ZIndex { get; }
+        public List<Tile> Tiles;
+        
 
-        public TiledMapLayer(TextureProvider textureProvider)
+        public TiledMapLayer(TextureProvider textureProvider, Movement movement)
         {
+            _movement = movement;
             _textureProvider = textureProvider;
+            Tiles = new List<Tile>();
         }
 
         public virtual void Render(RenderTarget target)
         {
-            foreach(var tile in Map.Tiles)
+            foreach(var tile in Tiles)
             {
                 RenderTile(target, tile);
             }
         }
-
-        private void RenderTile(RenderTarget target, TileInfo info)
+        public void Init()
         {
-            var tile = new RectangleShape(new Vector2f(info.Size, info.Size));
-            tile.Position = new Vector2f(info.X, info.Y);
-            var texture = _textureProvider.GetTexture(info.Texture);
-            if (texture != null)
-                tile.Texture = texture;
-            
-            else
+            foreach (var tileInfo in Map.Tiles)
             {
-                tile.FillColor = Color.Yellow;
-                tile.OutlineColor = Color.Black;
-                tile.OutlineThickness = 1;
+                var texture = _textureProvider.GetTexture(tileInfo.Texture);
+                Tile tile = new Tile(new Vector2f(tileInfo.X, tileInfo.Y), tileInfo.Collidable,tileInfo.Size, texture);
+                Tiles.Add(tile);
+                if(tile.Collidable)
+                _movement.RegisterCollider(tile);
             }
-            target.Draw(tile);
+        }
+        private void RenderTile(RenderTarget target, Tile tile)
+        {
+            tile.Render(target);
         }
 
         public abstract void Tick();
+
+
     }
 }

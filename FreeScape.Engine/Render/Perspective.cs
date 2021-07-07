@@ -1,4 +1,5 @@
 using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Providers;
 using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 using SFML.System;
@@ -29,7 +30,7 @@ namespace FreeScape.Engine.Render
         {
             if (_target != null)
             {
-                View.Center = Maths.Lerp(View.Center, _target.Location, 0.01f);
+                View.Center = Maths.Lerp(View.Center, _target.Position, 0.01f);
             }
         }
     }

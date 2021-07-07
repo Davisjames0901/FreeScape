@@ -32,6 +32,7 @@ namespace FreeScape
             services.AddTransient<TestScene>();
             services.AddTransient<Player>();
             services.AddTransient<TestTileMap>();
+            services.AddTransient<EntityLayer>();
 
             return services;
         }

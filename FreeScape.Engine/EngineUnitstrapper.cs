@@ -3,6 +3,7 @@ using FreeScape.Engine.Config;
 using FreeScape.Engine.Config.Action;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
+using FreeScape.Engine.Physics;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FreeScape.Engine
@@ -27,7 +28,9 @@ namespace FreeScape.Engine
             services.AddSingleton<GameManager>();
             services.AddSingleton<SoundProvider>();
             services.AddSingleton<FrameTimeProvider>();
-            
+            services.AddSingleton<Movement>();
+            services.AddSingleton<GameObjectProvider>();
+
             services.AddScoped<ActionProvider>();
             
             return services;

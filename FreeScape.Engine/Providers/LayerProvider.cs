@@ -13,7 +13,9 @@ namespace FreeScape.Engine.Providers
         }
         public T Provide<T>() where T : ILayer
         {
-            return _provider.CurrentScope.ServiceProvider.GetService<T>();
+            var layer = _provider.CurrentScope.ServiceProvider.GetService<T>();
+            layer.Init();
+            return layer;
         }
     }
 }
