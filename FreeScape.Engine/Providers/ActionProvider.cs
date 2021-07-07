@@ -49,7 +49,7 @@ namespace FreeScape.Engine.Providers
             _actionReleasedSubscribers.Add(callback);
         }
 
-        public Vector2f GetMouseCoords()
+        public Vector2i GetMouseCoords()
         {
             return _displayManager.GetMouseWindowPosition();
         }

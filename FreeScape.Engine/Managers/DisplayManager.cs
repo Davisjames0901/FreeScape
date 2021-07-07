@@ -79,15 +79,15 @@ namespace FreeScape.Engine.Managers
             _renderTarget.MouseButtonReleased += handle;
         }
 
-        internal Vector2f GetMouseWindowPosition()
+        internal Vector2i GetMouseWindowPosition()
         {
-            return Maths.Vector2ITo2F(Mouse.GetPosition(_renderTarget));
+            return Mouse.GetPosition(_renderTarget);
         }
         
         internal Vector2f GetMouseWorldPosition()
         {
-            Console.WriteLine(CurrentPerspective.Corner);
-            return GetMouseWindowPosition() + CurrentPerspective.Corner;
+            var mousePos = GetMouseWindowPosition();
+            return _renderTarget.MapPixelToCoords(mousePos);
         }
     }
 }

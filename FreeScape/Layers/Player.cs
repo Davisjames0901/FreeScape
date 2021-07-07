@@ -103,6 +103,7 @@ namespace FreeScape.Layers
             var player = new CircleShape(Size);
             player.FillColor = Color.Red;
             player.Position = new Vector2f(_position.X - (Size), _position.Y - (Size));
+                
             target.Draw(player);
         }
     }

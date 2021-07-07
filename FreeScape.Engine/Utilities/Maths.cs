@@ -24,8 +24,7 @@ namespace FreeScape.Engine.Utilities
         }
         public static bool NearEquals(float a, float b, float maxEpsilon)
         {
-            var dif = a - b;
-            if (Math.Abs(dif.X) < maxEpsilon && Math.Abs(dif.Y) < maxEpsilon)
+            if (Math.Abs(a) < maxEpsilon && Math.Abs(b) < maxEpsilon)
             {
                 return true;
             }
@@ -34,7 +33,8 @@ namespace FreeScape.Engine.Utilities
         }
         public static bool NearEquals(Vector2f a, Vector2f b, float maxEpsilon)
         {
-            if (NearEquals(a.X, b.X, maxEpsilon) && NearEquals(a.Y, b.Y, maxEpsilon))
+            var dif = a - b;
+            if (Math.Abs(dif.X) < maxEpsilon && Math.Abs(dif.Y) < maxEpsilon)
             {
                 return true;
             }
