@@ -30,7 +30,8 @@ namespace FreeScape.Engine.Render
         {
             if (_target != null)
             {
-                View.Center = Maths.Lerp(View.Center, _target.Position, 0.01f, 0.1f);
+                float speed = Scaling / 150;
+                View.Center = Maths.Lerp(View.Center, _target.Position, speed, 0.1f);
             }
         }
     }
