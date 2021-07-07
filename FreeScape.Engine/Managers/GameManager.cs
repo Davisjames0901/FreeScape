@@ -23,10 +23,11 @@ namespace FreeScape.Engine.Managers
             
             _isRunning = true;
 
-            if (OperatingSystem.IsLinux())
+            if (true || OperatingSystem.IsLinux())
             {
                 while (_isRunning)
                 {
+                    Thread.Sleep(10);
                     _tick();
                     _render();
                 }
