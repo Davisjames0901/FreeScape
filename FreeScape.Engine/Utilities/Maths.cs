@@ -37,6 +37,11 @@ namespace FreeScape.Engine.Utilities
             var z = Lerp(a.Z, b.Z, by);
             return new Vector3f(x, y, z);
         }
+
+        public static Vector2f Vector2ITo2F(Vector2i vec)
+        {
+            return new Vector2f(vec.X, vec.Y);
+        }
     }
 
 

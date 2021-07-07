@@ -1,4 +1,5 @@
 using System.IO;
+using SFML.System;
 
 namespace FreeScape.Engine.Config
 {
@@ -7,6 +8,7 @@ namespace FreeScape.Engine.Config
         public string Name { get; init; }
         public uint ScreenWidth { get; init; }
         public uint ScreenHeight { get; init; }
+        public Vector2f ScreenSize => new (ScreenWidth, ScreenHeight);
         public uint RefreshRate { get; init; }
         public string AssetDirectory { get; init; }
         public float SfxVolume { get; set; }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.Config.Action;
 using FreeScape.Engine.Managers;
+using SFML.System;
 using SFML.Window;
 
 namespace FreeScape.Engine.Providers
@@ -11,16 +12,20 @@ namespace FreeScape.Engine.Providers
     {
         private readonly ActionMaps _actionMap;
         private readonly SfmlActionResolver _actionResolver;
+        private readonly DisplayManager _displayManager;
         private readonly List<Action<string>> _actionPressedSubscribers;
         private readonly List<Action<string>> _actionReleasedSubscribers;
         public ActionProvider(GameInfo info, SfmlActionResolver actionResolver, DisplayManager displayManager)
         {
             _actionResolver = actionResolver;
+            _displayManager = displayManager;
             _actionPressedSubscribers = new List<Action<string>>();
             _actionReleasedSubscribers = new List<Action<string>>();
             _actionMap = new ActionMaps(info.ActionMapDirectory);
             displayManager.RegisterOnPressed(OnKeyPressed);
             displayManager.RegisterOnReleased(OnKeyReleased);
+            displayManager.RegisterOnPressed(OnMousePressed);
+            displayManager.RegisterOnReleased(OnMouseReleased);
         }
 
         public void SwitchActionMap(string map)
@@ -42,6 +47,16 @@ namespace FreeScape.Engine.Providers
         public void SubscribeOnReleased(Action<string> callback)
         {
             _actionReleasedSubscribers.Add(callback);
+        }
+
+        public Vector2f GetMouseCoords()
+        {
+            return _displayManager.GetMouseWindowPosition();
+        }
+
+        public Vector2f GetMouseWorldCoods()
+        {
+            return _displayManager.GetMouseWorldPosition();
         }
 
         private bool ConvertActionAndCheckIfActioned(MappedAction action)
@@ -90,9 +105,28 @@ namespace FreeScape.Engine.Providers
         private void OnKeyReleased(object sender, KeyEventArgs args)
         {
             var actionName = _actionResolver.GetAction(args.Code);
+            var action = _actionMap.GetMappedReleasedAction(actionName);
+            if(action == null)
+                return;
+            Notify(_actionReleasedSubscribers, action);
+        }
+
+        private void OnMousePressed(object sender, MouseButtonEventArgs args)
+        {
+            var actionName = _actionResolver.GetAction(args.Button);
             var action = _actionMap.GetMappedPressedAction(actionName);
             if(action == null)
                 return;
+            Notify(_actionPressedSubscribers, action);
+        }
+        
+        private void OnMouseReleased(object sender, MouseButtonEventArgs args)
+        {
+            var actionName = _actionResolver.GetAction(args.Button);
+            var action = _actionMap.GetMappedReleasedAction(actionName);
+            if(action == null)
+                return;
+            
             Notify(_actionReleasedSubscribers, action);
         }
     }

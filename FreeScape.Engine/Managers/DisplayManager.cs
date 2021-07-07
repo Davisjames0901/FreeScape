@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Render;
+using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -16,6 +18,7 @@ namespace FreeScape.Engine.Managers
         private readonly GameManager _gameManager;
         private RenderWindow _renderTarget;
         private readonly List<Perspective> _perspectives;
+        public Perspective CurrentPerspective { get; private set; }
 
         public DisplayManager(GameInfo info, GameManager gameManager)
         {
@@ -31,6 +34,7 @@ namespace FreeScape.Engine.Managers
             _renderTarget.DispatchEvents();
             foreach (var view in _perspectives)
             {
+                CurrentPerspective = view;
                 view.Tick();
                 _renderTarget.SetView(view.View);
                 renderable.Render(_renderTarget);
@@ -43,8 +47,8 @@ namespace FreeScape.Engine.Managers
             _renderTarget?.Close();
             var videoMode = new VideoMode(_info.ScreenWidth, _info.ScreenHeight);
             _renderTarget = new RenderWindow(videoMode, _info.Name);
-            var view = new View(new Vector2f(0, 0), new Vector2f(_info.ScreenWidth/3, _info.ScreenHeight/3));
-            _perspectives.Add(new Perspective("main", view));
+            var view = new Perspective("main", new Vector2f(0.0f, 0.0f), _info.ScreenSize, 3.0f);
+            _perspectives.Add(view);
 
             _renderTarget.SetFramerateLimit(_info.RefreshRate);
             _renderTarget.SetActive(false);
@@ -62,7 +66,31 @@ namespace FreeScape.Engine.Managers
         }
         internal void RegisterOnReleased(EventHandler<KeyEventArgs> handle)
         {
-            _renderTarget.KeyPressed += handle;
+            _renderTarget.KeyReleased += handle;
         }
+
+        internal void RegisterOnPressed(EventHandler<MouseButtonEventArgs> handle)
+        {
+            _renderTarget.MouseButtonPressed += handle;
+        }
+
+        internal void RegisterOnReleased(EventHandler<MouseButtonEventArgs> handle)
+        {
+            _renderTarget.MouseButtonReleased += handle;
+        }
+
+        internal Vector2f GetMouseWindowPosition()
+        {
+            return Maths.Vector2ITo2F(Mouse.GetPosition(_renderTarget));
+        }
+        
+        internal Vector2f GetMouseWorldPosition()
+        {
+            Console.WriteLine(CurrentPerspective.Corner);
+            CurrentPerspective.View.Zoom(1.005f);
+            return GetMouseWindowPosition() + CurrentPerspective.Corner;
+        }
+        
+         
     }
 }

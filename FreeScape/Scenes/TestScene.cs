@@ -1,3 +1,4 @@
+using System;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Scenes;
@@ -17,6 +18,13 @@ namespace FreeScape.Scenes
             _layerProvider = layerProvider;
             _sounds = sounds;
             actionProvider.SwitchActionMap("Player");
+            actionProvider.SubscribeOnPressed(x =>
+            {
+                if (x == "LeftClick")
+                {
+                    Console.WriteLine($"Fuck Yeah {actionProvider.GetMouseWorldCoods()}");
+                }
+            });
         }
 
         public override void Init()
