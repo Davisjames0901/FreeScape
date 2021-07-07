@@ -87,10 +87,7 @@ namespace FreeScape.Engine.Managers
         internal Vector2f GetMouseWorldPosition()
         {
             Console.WriteLine(CurrentPerspective.Corner);
-            CurrentPerspective.View.Zoom(1.005f);
             return GetMouseWindowPosition() + CurrentPerspective.Corner;
         }
-        
-         
     }
 }
