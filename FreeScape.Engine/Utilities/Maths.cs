@@ -1,4 +1,5 @@
 ﻿using SFML.System;
+using System;
 
 namespace FreeScape.Engine.Utilities
 {
@@ -9,19 +10,10 @@ namespace FreeScape.Engine.Utilities
             return a + (b - a) * by;
         }
 
-        public static Vector2f Lerp(Vector2f a, Vector2f b, float by)
+        public static Vector2f Lerp(Vector2f a, Vector2f b, float by, float maxEpsilon)
         {
 
-            float firstX = a.X, firstY = a.Y;
-            float secondX = b.X, secondY = b.Y;
-
-            var nearZeroX = firstX < secondX ? 0.01f : -0.01f;
-            var nearZeroY = firstY < secondY ? 0.01f : -0.01f;
-            
-            var nearZero2f = new Vector2f(nearZeroX, nearZeroY);
-            var diff = b - a;
-            
-            if ((secondX > firstX && diff.X <= nearZero2f.X || secondX < firstX && diff.X >= nearZero2f.X) && (secondY > firstY && diff.Y <= nearZero2f.Y || secondY < firstY && diff.Y >= nearZero2f.Y))
+            if (NearEquals(b, a, maxEpsilon))
             {
                 return b;
             }
@@ -30,8 +22,30 @@ namespace FreeScape.Engine.Utilities
             var y = Lerp(a.Y, b.Y, by);
             return new Vector2f(x, y);
         }
-        public static Vector3f Lerp(Vector3f a, Vector3f b, float by)
+        public static bool NearEquals(Vector2f a, Vector2f b, float maxEpsilon)
         {
+            if (Math.Abs(b.X - a.X) < maxEpsilon && Math.Abs(b.Y - a.Y) < maxEpsilon)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        public static bool NearEquals(Vector3f a, Vector3f b, float maxEpsilon)
+        {
+            if (Math.Abs(b.X - a.X) < maxEpsilon && Math.Abs(b.Y - a.Y) < maxEpsilon && Math.Abs(b.Z - a.Z) < maxEpsilon)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        public static Vector3f Lerp(Vector3f a, Vector3f b, float by, float maxEpsilon)
+        {
+            if (NearEquals(b, a, maxEpsilon))
+            {
+                return b;
+            }
             var x = Lerp(a.X, b.X, by);
             var y = Lerp(a.Y, b.Y, by);
             var z = Lerp(a.Z, b.Z, by);
