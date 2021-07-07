@@ -1,3 +1,6 @@
+using FreeScape.Engine.GameObjects;
+using SFML.System;
+
 namespace FreeScape.Engine.Render.Layers
 {
     public interface ILayer :IRenderable
@@ -5,5 +8,8 @@ namespace FreeScape.Engine.Render.Layers
         int ZIndex { get; }
 
         void Tick();
+
+        void Init();
+
     }
 }

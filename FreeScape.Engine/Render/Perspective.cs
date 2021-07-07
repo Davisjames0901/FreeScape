@@ -1,4 +1,5 @@
 using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Providers;
 using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 

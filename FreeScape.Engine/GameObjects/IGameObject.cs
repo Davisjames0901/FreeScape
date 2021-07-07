@@ -3,11 +3,11 @@ using SFML.System;
 
 namespace FreeScape.Engine.GameObjects
 {
-    public interface IGameObject : IRenderable
+    public interface IGameObject : IRenderable, ITickable
     {
-        float X { get; }
-        float Y { get; }
         float Size { get; }
         Vector2f Position { get; }
+        bool Collidable { get; set; }
+
     }
 }

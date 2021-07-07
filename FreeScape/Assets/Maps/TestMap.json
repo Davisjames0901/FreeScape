@@ -4,43 +4,50 @@
       "X": 0,
       "Y": 0,
       "Size": 16,
-      "Texture": "dirt:bare"
+      "Texture": "dirt:bare",
+      "Collidable": false
     },
     {
       "X": 16,
       "Y": 0,
       "Size": 16,
-      "Texture": "dirt:bare"
+      "Texture": "dirt:bare",
+      "Collidable": false
     },
     {
       "X": 0,
       "Y": 16,
       "Size": 16,
-      "Texture": "dirt:bare"
+      "Texture": "dirt:grass",
+      "Collidable": true
     },
     {
       "X": 0,
       "Y": 32,
       "Size": 16,
-      "Texture": "dirt:bare"
+      "Texture": "dirt:bare",
+      "Collidable": false
     },
     {
       "X": 32,
       "Y": 0,
       "Size": 16,
-      "Texture": "dirt:bare"
+      "Texture": "dirt:bare",
+      "Collidable": false
     },
     {
       "X": 16,
       "Y": 48,
       "Size": 16,
-      "Texture": "dirt:bare"
+      "Texture": "dirt:bare",
+      "Collidable": false
     },
     {
       "X": 16,
       "Y": 16,
       "Size": 32,
-      "Texture": "dirt:bare"
+      "Texture": "dirt:bare",
+      "Collidable": false
     }
   ]
 }

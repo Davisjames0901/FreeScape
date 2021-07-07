@@ -7,5 +7,6 @@ namespace FreeScape.Engine.Physics
     {
         float Weight { get; }
         Vector2f Velocity { get; }
+        new Vector2f Position { get; set; }
     }
 }

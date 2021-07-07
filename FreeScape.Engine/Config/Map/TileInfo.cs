@@ -6,5 +6,6 @@ namespace FreeScape.Engine.Config.Map
         public int Y { get; set; }
         public int Size { get; set; }
         public string Texture { get; set; }
+        public bool Collidable { get; set; }
     }
 }

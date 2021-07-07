@@ -7,7 +7,7 @@ using SFML.System;
 
 namespace FreeScape.Layers
 {
-    public class Player : ILayer, IMovable
+    public class Player : IMovable
     {
         private readonly ActionProvider _actionProvider;
         public int ZIndex { get; set; }
@@ -15,7 +15,7 @@ namespace FreeScape.Layers
         public float Y { get; set; }
         public float Weight { get; set; }
         public float Size { get; set; }
-
+        public bool Collidable { get; set; } = false;
         public float Speed { get; set; }
 
         private Vector2f _velocity = new Vector2f(0, 0);
@@ -24,12 +24,10 @@ namespace FreeScape.Layers
         public Vector2f Velocity { get { return _velocity; } set { _velocity = value; } }
         public Vector2f Position { get { return _position; } set { _position = value; } }
 
-        private Movement _movement;
         
-        public Player(ActionProvider actionProvider, SoundProvider soundProvider, Movement movement)
+        public Player(ActionProvider actionProvider, SoundProvider soundProvider)
         {
             
-            _movement = movement;
             _actionProvider = actionProvider;
             ZIndex = 999;
             Velocity = new Vector2f(0, 0);
@@ -44,7 +42,7 @@ namespace FreeScape.Layers
 
         public void Tick()
         {
-            Move();
+            SetVelocity();
         }
 
         public void ActionPressed()
@@ -56,7 +54,7 @@ namespace FreeScape.Layers
 
         }
 
-        private void Move()
+        private void SetVelocity()
         {
 
             bool left = _actionProvider.IsActionActivated("MoveLeft");
@@ -98,18 +96,13 @@ namespace FreeScape.Layers
             {
                 _velocity.Y = 0.0f;
             }
-
-            _position = _movement.BasicMove(_position, _velocity);
-
         }
 
         public void Render(RenderTarget target)
         {
             var player = new CircleShape(Size);
             player.FillColor = Color.Red;
-            player.OutlineColor = Color.White;
-            player.OutlineThickness = 1f;
-            player.Position = new Vector2f(_position.X - (Size/2), _position.Y - (Size/2));
+            player.Position = new Vector2f(_position.X - (Size), _position.Y - (Size));
             target.Draw(player);
         }
     }
