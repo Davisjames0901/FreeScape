@@ -17,8 +17,8 @@ namespace FreeScape.Engine.Providers
             _stopwatch.Restart();
         }
 
-        public double DeltaTimeSeconds => _stopwatch.ElapsedTicks/TICKS_PER_SECOND;
-        public double DeltaTimeMilliSeconds => _stopwatch.ElapsedTicks/TICKS_PER_MS;
-        public long DeltaTimeTicks => _stopwatch.ElapsedTicks;
+        public double DeltaTimeSeconds => DeltaTimeTicks/TICKS_PER_SECOND;
+        public double DeltaTimeMilliSeconds => DeltaTimeTicks/TICKS_PER_MS;
+        public float DeltaTimeTicks => (_stopwatch.ElapsedTicks/(float)Stopwatch.Frequency)*10000000;
     }
 }

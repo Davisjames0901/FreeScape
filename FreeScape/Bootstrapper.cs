@@ -18,7 +18,7 @@ namespace FreeScape
                 ScreenHeight = 1080,
                 ScreenWidth = 1920,
                 Name = "FreeScape",
-                RefreshRate = 144,
+                RefreshRate = 60,
                 SfxVolume = 100.0f,
                 MusicVolume = 50.0f,
                 AssetDirectory =
