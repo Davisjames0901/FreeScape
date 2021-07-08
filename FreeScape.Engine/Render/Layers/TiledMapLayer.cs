@@ -5,6 +5,7 @@ using FreeScape.Engine.Providers;
 using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace FreeScape.Engine.Render.Layers
 {
@@ -36,7 +37,7 @@ namespace FreeScape.Engine.Render.Layers
             foreach (var tileInfo in Map.Tiles)
             {
                 var texture = _textureProvider.GetTexture(tileInfo.Texture);
-                Tile tile = new Tile(new Vector2f(tileInfo.X, tileInfo.Y), tileInfo.Collidable,tileInfo.Size, texture);
+                Tile tile = new Tile(new Vector2(tileInfo.X, tileInfo.Y), tileInfo.Collidable,tileInfo.Size, texture);
                 Tiles.Add(tile);
                 if(tile.Collidable)
                 _movement.RegisterCollider(tile);

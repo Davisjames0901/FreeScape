@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.GameObjects;
@@ -47,7 +48,7 @@ namespace FreeScape.Engine.Managers
             _renderTarget?.Close();
             var videoMode = new VideoMode(_info.ScreenWidth, _info.ScreenHeight);
             _renderTarget = new RenderWindow(videoMode, _info.Name);
-            var view = new Perspective("main", new Vector2f(0.0f, 0.0f), _info.ScreenSize, 3.0f);
+            var view = new Perspective("main", new Vector2(0.0f, 0.0f), _info.ScreenSize, 3.0f);
             _perspectives.Add(view);
 
             _renderTarget.SetFramerateLimit(_info.RefreshRate);
@@ -79,12 +80,12 @@ namespace FreeScape.Engine.Managers
             _renderTarget.MouseButtonReleased += handle;
         }
 
-        internal Vector2i GetMouseWindowPosition()
+        internal Vector2 GetMouseWindowPosition()
         {
             return Mouse.GetPosition(_renderTarget);
         }
         
-        internal Vector2f GetMouseWorldPosition()
+        internal Vector2 GetMouseWorldPosition()
         {
             var mousePos = GetMouseWindowPosition();
             return _renderTarget.MapPixelToCoords(mousePos);

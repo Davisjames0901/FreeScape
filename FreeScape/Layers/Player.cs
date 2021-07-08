@@ -1,3 +1,4 @@
+using System.Numerics;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Layers;
@@ -18,11 +19,11 @@ namespace FreeScape.Layers
         public bool Collidable { get; set; } = false;
         public float Speed { get; set; }
 
-        private Vector2f _velocity = new Vector2f(0, 0);
-        private Vector2f _position = new Vector2f(0, 0);
+        private Vector2 _velocity = new (0, 0);
+        private Vector2 _position = new (0, 0);
 
-        public Vector2f Velocity { get { return _velocity; } set { _velocity = value; } }
-        public Vector2f Position { get { return _position; } set { _position = value; } }
+        public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
+        public Vector2 Position { get { return _position; } set { _position = value; } }
 
         
         public Player(ActionProvider actionProvider, SoundProvider soundProvider)
@@ -30,7 +31,7 @@ namespace FreeScape.Layers
             
             _actionProvider = actionProvider;
             ZIndex = 999;
-            Velocity = new Vector2f(0, 0);
+            Velocity = new Vector2(0, 0);
             Speed = 5.0f;
             Size = 3.0f;
             actionProvider.SubscribeOnPressed(a =>
@@ -69,7 +70,7 @@ namespace FreeScape.Layers
                 finalSpeed = Speed / 1.5f;
             }
 
-            Vector2f vel = new Vector2f(0, 0);
+            Vector2 vel = new Vector2(0, 0);
 
             if (left)
             {
@@ -102,7 +103,7 @@ namespace FreeScape.Layers
         {
             var player = new CircleShape(Size);
             player.FillColor = Color.Red;
-            player.Position = new Vector2f(_position.X - (Size), _position.Y - (Size));
+            player.Position = new Vector2(_position.X - (Size), _position.Y - (Size));
                 
             target.Draw(player);
         }

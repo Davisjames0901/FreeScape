@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.Config.Action;
 using FreeScape.Engine.Managers;
@@ -49,12 +50,12 @@ namespace FreeScape.Engine.Providers
             _actionReleasedSubscribers.Add(callback);
         }
 
-        public Vector2i GetMouseCoords()
+        public Vector2 GetMouseCoords()
         {
             return _displayManager.GetMouseWindowPosition();
         }
 
-        public Vector2f GetMouseWorldCoods()
+        public Vector2 GetMouseWorldCoods()
         {
             return _displayManager.GetMouseWorldPosition();
         }

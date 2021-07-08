@@ -1,4 +1,5 @@
-﻿using FreeScape.Engine.GameObjects;
+﻿using System.Numerics;
+using FreeScape.Engine.GameObjects;
 using SFML.System;
 
 namespace FreeScape.Engine.Physics
@@ -6,7 +7,7 @@ namespace FreeScape.Engine.Physics
     public interface IMovable : IGameObject
     {
         float Weight { get; }
-        Vector2f Velocity { get; }
-        new Vector2f Position { get; set; }
+        Vector2 Velocity { get; }
+        new Vector2 Position { get; set; }
     }
 }
