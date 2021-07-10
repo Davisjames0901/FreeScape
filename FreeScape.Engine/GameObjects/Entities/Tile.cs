@@ -1,4 +1,5 @@
-﻿using FreeScape.Engine.GameObjects;
+﻿using System.Numerics;
+using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Providers;
 using SFML.Graphics;
@@ -11,21 +12,21 @@ namespace FreeScape.Engine.Config.Map
 
         public float Size { get; set; }
         public bool Collidable { get; set; }
-        public Vector2f Position { get; set; }
+        public Vector2 Position { get; set; }
 
-        public Vector2f ColliderSize { get; set; }
+        public Vector2 ColliderSize { get; set; }
 
         public RectangleShape TileRectangleShape;
-        public Tile(Vector2f position, bool collidable, float size, Texture texture)
+        public Tile(Vector2 position, bool collidable, float size, Texture texture)
         {
             Size = size;
             Collidable = collidable;
             Position = position;
-            ColliderSize = new Vector2f(Size, Size);
-            RectangleShape rectangleShape = new RectangleShape(new Vector2f(Size, Size));
+            ColliderSize = new Vector2(Size, Size);
+            RectangleShape rectangleShape = new RectangleShape(new Vector2(Size, Size));
 
             rectangleShape.Texture = texture;
-            rectangleShape.Position = new Vector2f(Position.X, Position.Y);
+            rectangleShape.Position = new Vector2(Position.X, Position.Y);
             if(rectangleShape.Texture == null)
             {
                 rectangleShape.FillColor = Color.Yellow;

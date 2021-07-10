@@ -1,0 +1,3 @@
+[submodule "Sfml"]
+	path = Sfml
+	url = https://github.com/Davisjames0901/SFML.Net

@@ -22,7 +22,7 @@ namespace FreeScape.Scenes
             {
                 if (x == "LeftClick")
                 {
-                    Console.WriteLine($"Fuck Yeah {actionProvider.GetMouseWorldCoods()}");
+                    actionProvider.GetMouseWorldCoods();
                 }
             });
         }

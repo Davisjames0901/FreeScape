@@ -3,6 +3,7 @@ using FreeScape.Engine.Providers;
 using SFML.System;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace FreeScape.Engine.Physics
 {
@@ -20,7 +21,7 @@ namespace FreeScape.Engine.Physics
         {
             var deltaTime = (float)_frameTime.DeltaTimeMilliSeconds;
 
-            var newPosition = new Vector2f(movable.Position.X + (movable.Velocity.X * deltaTime), movable.Position.Y + (movable.Velocity.Y * deltaTime));
+            var newPosition = new Vector2(movable.Position.X + (movable.Velocity.X * deltaTime), movable.Position.Y + (movable.Velocity.Y * deltaTime));
             var isCollision = false;
             foreach(ICollider collider in Colliders)
             {
@@ -35,7 +36,7 @@ namespace FreeScape.Engine.Physics
             }
         }
 
-        public ICollider CheckCollision(Vector2f positionToCheck, float Size)
+        public ICollider CheckCollision(Vector2 positionToCheck, float Size)
         {
             foreach (var collider in Colliders)
             {
