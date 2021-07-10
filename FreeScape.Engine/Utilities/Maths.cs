@@ -11,35 +11,19 @@ namespace FreeScape.Engine.Utilities
             return a + (b - a) * by;
         }
 
-        public static Vector2 Lerp(Vector2 a, Vector2 b, float by, float maxEpsilon)
+        public static Vector2 Lerp(this Vector2 a, Vector2 b, float by, float maxEpsilon = 0.1f)
         {
-
-            if (NearEquals(b, a, maxEpsilon))
-            {
+            if (a.NearEquals(b, maxEpsilon))
                 return b;
-            }
-
-            var x = Lerp(a.X, b.X, by);
-            var y = Lerp(a.Y, b.Y, by);
-            return new Vector2(x, y);
+            
+            return Vector2.Lerp(a, b, by);
         }
-        public static bool NearEquals(float a, float b, float maxEpsilon)
+        public static bool NearEquals(this Vector2 a, Vector2 b, float maxEpsilon = 0.1f)
         {
-            if (Math.Abs(a) < maxEpsilon && Math.Abs(b) < maxEpsilon)
-            {
+            var diff = Vector2.Abs(a - b);
+            if (diff.X < maxEpsilon && diff.Y < maxEpsilon)
                 return true;
-            }
-
-            return false;
-        }
-        public static bool NearEquals(Vector2 a, Vector2 b, float maxEpsilon)
-        {
-            var dif = a - b;
-            if (Math.Abs(dif.X) < maxEpsilon && Math.Abs(dif.Y) < maxEpsilon)
-            {
-                return true;
-            }
-
+            
             return false;
         }
     }

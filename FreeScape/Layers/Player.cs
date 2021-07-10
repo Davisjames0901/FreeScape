@@ -1,4 +1,5 @@
 using System.Numerics;
+using FreeScape.Engine;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Layers;
@@ -57,47 +58,39 @@ namespace FreeScape.Layers
 
         private void SetVelocity()
         {
+            var xMovement = GetXMovement();
+            var yMovement = GetYMovement();
 
-            bool left = _actionProvider.IsActionActivated("MoveLeft");
-            bool right = _actionProvider.IsActionActivated("MoveRight");
-            bool up = _actionProvider.IsActionActivated("MoveUp");
-            bool down = _actionProvider.IsActionActivated("MoveDown");
-
-            float finalSpeed = Speed;
-            
-            if ((up || down) && (left || right))
+            _velocity = (xMovement, yMovement) switch
             {
-                finalSpeed = Speed / 1.5f;
-            }
-
-            Vector2 vel = new Vector2(0, 0);
-
-            if (left)
-            {
-                _velocity.X = -finalSpeed;
-            }
-            else if (right)
-            {
-                _velocity.X = finalSpeed;
-            }
-            else
-            {
-                _velocity.X = 0.0f;
-            }
-            
-            if (up)
-            {
-                _velocity.Y = -finalSpeed;
-            }
-            else if (down)
-            {
-                _velocity.Y = finalSpeed;
-            }
-            else
-            {
-                _velocity.Y = 0.0f;
-            }
+                (0, 0) => Vector2.Zero,
+                (-1 or 1, -1 or 1) => new Vector2(Speed * xMovement, Speed * yMovement) /1.5f,
+                (_, _) => new Vector2(Speed * xMovement, Speed * yMovement)
+            };
         }
+
+        private int GetXMovement()
+        {
+            var left = _actionProvider.IsActionActivated("MoveLeft");
+            var right = _actionProvider.IsActionActivated("MoveRight");
+            if (left == right)
+                return 0;
+            if (left)
+                return -1;
+            return 1;
+        }
+
+        private int GetYMovement()
+        {
+            var up = _actionProvider.IsActionActivated("MoveUp");
+            var down = _actionProvider.IsActionActivated("MoveDown");
+            if (up == down)
+                return 0;
+            if (up)
+                return -1;
+            return 1;
+        }
+
 
         public void Render(RenderTarget target)
         {
