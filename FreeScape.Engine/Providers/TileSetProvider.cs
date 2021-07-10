@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Text.Json;
 using System.Xml.Schema;
 using FreeScape.Engine.Config;
+using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 
 namespace FreeScape.Engine.Providers
@@ -36,15 +37,16 @@ namespace FreeScape.Engine.Providers
             tileSet.Tiles = new Dictionary<uint, CachedTileSetTile>();
             tileSet.Name = info.Name;
             var tileSize = new Vector2(info.TileWidth, info.TileWidth);
+            var imageSize = new Vector2(info.ImageWidth, info.ImageHeight);
             foreach (var item in info.Tiles)
             {
-                var tileLocationX = (((item.Id-1) * info.TileWidth) % info.ImageWidth);
-                var tileLocationY = ((item.Id-1) * info.TileHeight / info.ImageHeight);
+                var tiles = imageSize / tileSize;
+                var tileLocation = new Vector2(item.Id % (info.ImageWidth/info.TileWidth), item.Id/(info.ImageHeight/info.TileHeight)) * tileSize;
                 tileSet.Tiles.Add(item.Id, new CachedTileSetTile
                 {
                     Id = item.Id,
                     Properties = item.Properties,
-                    TextureLocation = new IntRect(new Vector2(tileLocationX, tileLocationY), tileSize)
+                    TextureLocation = new IntRect(tileLocation, tileSize)
                 });
             }
             _tileSets.Add(tileSet);

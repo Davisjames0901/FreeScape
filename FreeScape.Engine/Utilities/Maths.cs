@@ -26,6 +26,9 @@ namespace FreeScape.Engine.Utilities
             
             return false;
         }
+
+        public static Vector2 Floor(Vector2 v) => new Vector2((float)Math.Floor(v.X), (float)Math.Floor(v.Y));
+        public static Vector2 Reverse(this Vector2 v) => new Vector2(v.Y, v.X);
     }
 
 
