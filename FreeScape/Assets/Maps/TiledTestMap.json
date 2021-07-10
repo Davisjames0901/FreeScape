@@ -779,7 +779,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"RPG Nature Tileset.tsx"
+         "source":"RPG Nature Tileset"
         }],
  "tilewidth":32,
  "type":"map",

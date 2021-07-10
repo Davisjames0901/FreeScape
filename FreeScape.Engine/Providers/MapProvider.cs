@@ -10,10 +10,12 @@ namespace FreeScape.Engine.Providers
 {
     public class MapProvider
     {
+        private readonly JsonSerializerOptions _options;
         private readonly Dictionary<string, MapInfo> _maps;
 
-        public MapProvider(GameInfo gameInfo)
+        public MapProvider(GameInfo gameInfo, JsonSerializerOptions options)
         {
+            _options = options;
             _maps = new Dictionary<string, MapInfo>();
             foreach (var file in Directory.EnumerateFiles(gameInfo.MapDirectory)
                 .Where(x => x.EndsWith(".json", StringComparison.CurrentCultureIgnoreCase)))
@@ -33,8 +35,7 @@ namespace FreeScape.Engine.Providers
         private MapInfo ReadMapFile(string path)
         {
             var text = File.ReadAllText(path);
-            return JsonSerializer.Deserialize<MapInfo>(text);
+            return JsonSerializer.Deserialize<MapInfo>(text, _options);
         }
-        
     }
 }

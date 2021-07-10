@@ -31,6 +31,7 @@ namespace FreeScape.Engine
             services.AddSingleton<SoundProvider>();
             services.AddSingleton<FrameTimeProvider>();
             services.AddSingleton<Movement>();
+            services.AddSingleton<TileSetProvider>();
             
             services.AddSingleton(new JsonSerializerOptions
             {

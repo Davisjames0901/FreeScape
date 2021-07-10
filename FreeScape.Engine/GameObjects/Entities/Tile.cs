@@ -16,28 +16,22 @@ namespace FreeScape.Engine.Config.Map
 
         public Vector2 ColliderSize { get; set; }
 
-        public RectangleShape TileRectangleShape;
-        public Tile(Vector2 position, bool collidable, float size, Texture texture)
+        public Sprite Sprite;
+        public Tile(Vector2 position, Vector2 size, CachedTileSetTile tileInfo, Texture texture)
         {
-            Size = size;
-            Collidable = collidable;
+            Size = size.X;
             Position = position;
-            ColliderSize = new Vector2(Size, Size);
-            RectangleShape rectangleShape = new RectangleShape(new Vector2(Size, Size));
+            ColliderSize = size;
+            var tile = new Sprite(texture);
+            tile.TextureRect = tileInfo.TextureLocation;
 
-            rectangleShape.Texture = texture;
-            rectangleShape.Position = new Vector2(Position.X, Position.Y);
-            if(rectangleShape.Texture == null)
-            {
-                rectangleShape.FillColor = Color.Yellow;
-                rectangleShape.OutlineColor = Color.Black;
-                rectangleShape.OutlineThickness = 1;
-            }
-            TileRectangleShape = rectangleShape;
+            tile.Texture = texture;
+            tile.Position = new Vector2(Position.X, Position.Y);
+            Sprite = tile;
         }
         public void Render(RenderTarget target)
         {
-            target.Draw(TileRectangleShape);
+            target.Draw(Sprite);
         }
 
         public void Tick()

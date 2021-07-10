@@ -12,7 +12,7 @@ namespace FreeScape.Engine.Config.Map
         public List<MapLayer> Layers { get; set; }
         public int NextLayerId { get; set; }
         public int NextObjectId { get; set; }
-        public MapOrientation Orientation { get; set; }
+        //public MapOrientation Orientation { get; set; }
         public List<MapProperties> Properties { get; set; }
         public string RenderOrder { get; set; }
         public MapStaggerAxis StaggerAxis { get; set; }

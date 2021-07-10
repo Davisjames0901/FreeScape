@@ -5,51 +5,58 @@ using FreeScape.Engine.Providers;
 using SFML.Graphics;
 using SFML.System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace FreeScape.Engine.Render.Layers
 {
     public abstract class TiledMapLayer : ILayer
     {
-        private readonly TextureProvider _textureProvider;
+        private readonly TileSetProvider _tileSetProvider;
         private Movement _movement;
         public abstract MapInfo Map { get; }
         public abstract int ZIndex { get; }
         public List<Tile> Tiles;
-        
 
-        public TiledMapLayer(TextureProvider textureProvider, Movement movement)
+
+        public TiledMapLayer(TileSetProvider tileSetProvider, Movement movement)
         {
             _movement = movement;
-            _textureProvider = textureProvider;
+            _tileSetProvider = tileSetProvider;
             Tiles = new List<Tile>();
         }
 
         public virtual void Render(RenderTarget target)
         {
-            foreach(var tile in Tiles)
+            foreach (var tile in Tiles)
             {
                 RenderTile(target, tile);
             }
         }
+
         public void Init()
         {
-            foreach (var tileInfo in Map.Tiles)
+            var tileSize = new Vector2(Map.TileWidth, Map.TileHeight);
+            var tileSet = _tileSetProvider.GetTileSet(Map.TileSets.First().Source);
+            foreach (var chunk in Map.Layers.Where(x => x.Type == "tilelayer").SelectMany(x => x.Chunks))
             {
-                var texture = _textureProvider.GetTexture(tileInfo.Texture);
-                Tile tile = new Tile(new Vector2(tileInfo.X, tileInfo.Y), tileInfo.Collidable,tileInfo.Size, texture);
-                Tiles.Add(tile);
-                if(tile.Collidable)
-                _movement.RegisterCollider(tile);
+                var i = 0;
+                foreach (var num in chunk.Data)
+                {
+
+                    var texture = tileSet.Tiles[num];
+                    var tile = new Tile(new Vector2((chunk.X + i%chunk.Width)*Map.TileWidth, (chunk.Y + i/chunk.Height)*Map.TileHeight), tileSize, texture, tileSet.Sheet);
+                    Tiles.Add(tile);
+                    i++;
+                }
             }
         }
+
         private void RenderTile(RenderTarget target, Tile tile)
         {
             tile.Render(target);
         }
 
         public abstract void Tick();
-
-
     }
 }

@@ -9,6 +9,6 @@ namespace FreeScape.Engine.Config.Map
         public int Id { get; set; }
         public string Name { get; set; }
         public bool Point { get; set; }
-        public TYPE Type { get; set; }
+        public string Type { get; set; }
     }
 }
