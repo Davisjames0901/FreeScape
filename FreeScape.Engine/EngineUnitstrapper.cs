@@ -30,6 +30,7 @@ namespace FreeScape.Engine
             services.AddSingleton<FrameTimeProvider>();
             services.AddSingleton<Movement>();
             services.AddSingleton<GameObjectProvider>();
+            services.AddSingleton<UIObjectProvider>();
 
             services.AddScoped<ActionProvider>();
             

@@ -12,7 +12,8 @@ namespace FreeScape
             var provider = collection.BuildServiceProvider();
             var game = provider.GetRequiredService<Game>();
 
-            game.Start<TestScene>();
+            game.Start<MainMenuScene>();
+            
         }
     }
 }

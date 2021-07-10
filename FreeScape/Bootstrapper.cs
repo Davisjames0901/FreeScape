@@ -28,11 +28,13 @@ namespace FreeScape
             services.AddUnitStrapper();
             services.AddUnit<EngineUnitstrapper, GameInfo>(config);
 
-            services.AddTransient<Menu>();
+            services.AddTransient<MainMenuScene>();
             services.AddTransient<TestScene>();
             services.AddTransient<Player>();
             services.AddTransient<TestTileMap>();
             services.AddTransient<EntityLayer>();
+            services.AddTransient<MainMenuOptions>();
+            services.AddTransient<MainMenuHome>();
 
             return services;
         }

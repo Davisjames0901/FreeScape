@@ -6,6 +6,7 @@ using FreeScape.Engine.Render.Layers;
 using FreeScape.Engine.Physics;
 using SFML.Graphics;
 using SFML.System;
+using FreeScape.Engine.GameObjects.UI;
 
 namespace FreeScape.Layers
 {
@@ -26,10 +27,10 @@ namespace FreeScape.Layers
         public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
         public Vector2 Position { get { return _position; } set { _position = value; } }
 
+
         
-        public Player(ActionProvider actionProvider, SoundProvider soundProvider)
+        public Player(ActionProvider actionProvider, SoundProvider soundProvider, TextureProvider textureProvider)
         {
-            
             _actionProvider = actionProvider;
             ZIndex = 999;
             Velocity = new Vector2(0, 0);
@@ -40,6 +41,7 @@ namespace FreeScape.Layers
                 if(a == "Punch")
                     soundProvider.PlaySound("punch");
             });
+            
         }
 
         public void Tick()
@@ -99,6 +101,8 @@ namespace FreeScape.Layers
             player.Position = new Vector2(_position.X - (Size), _position.Y - (Size));
                 
             target.Draw(player);
+
+
         }
     }
 }

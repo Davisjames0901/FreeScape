@@ -8,15 +8,13 @@ namespace FreeScape.Engine.Render.Scenes
 {
     public abstract class LayeredScene : IScene
     {
-        public LayeredScene(Movement movement)
+        public LayeredScene()
         {
             Layers = new List<ILayer>();
-            _movement = movement;
         }
         
         public List<ILayer> Layers { get; }
 
-        private Movement _movement;
 
 
         public virtual void Render(RenderTarget target)
