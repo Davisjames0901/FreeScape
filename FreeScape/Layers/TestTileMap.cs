@@ -10,12 +10,12 @@ namespace FreeScape.Layers
         private readonly MapProvider _mapProvider;
         
 
-        public TestTileMap(TextureProvider textureProvider, MapProvider mapProvider, Movement movement) : base(textureProvider, movement)
+        public TestTileMap(TileSetProvider textureProvider, MapProvider mapProvider, Movement movement) : base(textureProvider, movement)
         {
             _mapProvider = mapProvider;
         }
 
-        public override MapInfo Map => _mapProvider.GetMap("TestMap");
+        public override MapInfo Map => _mapProvider.GetMap("TiledTestMap");
         public override int ZIndex => 0;
         public override void Tick()
         {

@@ -1,6 +1,4 @@
-﻿
-
-using FreeScape.Engine.Physics;
+﻿using FreeScape.Engine.Physics;
 using FreeScape.Engine.Render.Layers;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Managers;

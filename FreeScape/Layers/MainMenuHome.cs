@@ -70,6 +70,7 @@ namespace FreeScape.Layers
         public void MouseClick()
         {
             var mouseCoords = _actionProvider.GetMouseWorldCoods();
+            Console.WriteLine(mouseCoords);
             foreach (var UIObject in UIObjects)
             {
                 if (UIObject.Hovered && UIObject is IButton button)

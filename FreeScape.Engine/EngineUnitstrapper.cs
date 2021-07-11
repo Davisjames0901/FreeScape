@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AsperandLabs.UnitStrap.Core.Abstracts;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.Config.Action;
@@ -29,10 +31,17 @@ namespace FreeScape.Engine
             services.AddSingleton<SoundProvider>();
             services.AddSingleton<FrameTimeProvider>();
             services.AddSingleton<Movement>();
+            services.AddSingleton<TileSetProvider>();
+            
+            services.AddSingleton(new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
             services.AddSingleton<GameObjectProvider>();
             services.AddSingleton<UIObjectProvider>();
 
             services.AddScoped<ActionProvider>();
+            services.AddScoped<GameObjectProvider>();
             
             return services;
         }

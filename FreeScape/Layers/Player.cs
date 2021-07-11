@@ -6,7 +6,6 @@ using FreeScape.Engine.Render.Layers;
 using FreeScape.Engine.Physics;
 using SFML.Graphics;
 using SFML.System;
-using FreeScape.Engine.GameObjects.UI;
 
 namespace FreeScape.Layers
 {
@@ -41,6 +40,7 @@ namespace FreeScape.Layers
                 if(a == "Punch")
                     soundProvider.PlaySound("punch");
             });
+            //_position = new Vector2(600, 600);
             
         }
 
@@ -101,8 +101,6 @@ namespace FreeScape.Layers
             player.Position = new Vector2(_position.X - (Size.X), _position.Y - (Size.Y));
                 
             target.Draw(player);
-
-
         }
     }
 }

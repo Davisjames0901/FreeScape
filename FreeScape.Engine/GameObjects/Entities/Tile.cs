@@ -9,6 +9,7 @@ namespace FreeScape.Engine.Config.Map
 {
     public class Tile : IGameObject, ICollider
     {
+        private readonly CachedTileSetTile _tileInfo;
 
         public Vector2 Size { get; set; }
         public bool Collidable { get; set; }
@@ -16,28 +17,29 @@ namespace FreeScape.Engine.Config.Map
 
         public Vector2 ColliderSize { get; set; }
 
-        public RectangleShape TileRectangleShape;
-        public Tile(Vector2 position, bool collidable, Vector2 size, Texture texture)
+        public Sprite Sprite;
+        public Tile(Vector2 position, Vector2 size, CachedTileSetTile tileInfo, Texture texture)
         {
-            Size = size;
-            Collidable = collidable;
+            _tileInfo = tileInfo;
+            Size = size.X;
             Position = position;
-            ColliderSize = Size;
-            RectangleShape rectangleShape = new RectangleShape(Size);
+            ColliderSize = size;
+            var tile = new Sprite(texture);
+            tile.TextureRect = tileInfo.TextureLocation;
 
-            rectangleShape.Texture = texture;
-            rectangleShape.Position = new Vector2(Position.X, Position.Y);
-            if(rectangleShape.Texture == null)
-            {
-                rectangleShape.FillColor = Color.Yellow;
-                rectangleShape.OutlineColor = Color.Black;
-                rectangleShape.OutlineThickness = 1;
-            }
-            TileRectangleShape = rectangleShape;
+            tile.Texture = texture;
+            tile.Position = new Vector2(Position.X, Position.Y);
+            Sprite = tile;
         }
         public void Render(RenderTarget target)
         {
-            target.Draw(TileRectangleShape);
+            target.Draw(Sprite);
+            // var rect = new RectangleShape(new Vector2(Size, Size));
+            // rect.Position = Sprite.Position;
+            // rect.FillColor = Color.Transparent;
+            // rect.OutlineThickness = 2;
+            // rect.OutlineColor = Color.Yellow;
+            // target.Draw(rect);
         }
 
         public void Tick()
