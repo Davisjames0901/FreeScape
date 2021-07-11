@@ -15,21 +15,22 @@ namespace FreeScape.Layers
         private readonly ActionProvider _actionProvider;
         private readonly SceneManager _sceneManager;
         private readonly UIObjectProvider _uIObjectProvider;
+        private readonly GameManager _gameManager;
         Button PlayButton;
         Button QuitButton;
         Button SettingsButton;
         Button BackButton;
         EmptyGameObject MainMenuCenter;
         EmptyGameObject MainMenuSettingsCenter;
-        public MainMenuHome(ActionProvider actionProvider, SceneManager sceneManager, UIObjectProvider uIObjectProvider)
+        public MainMenuHome(ActionProvider actionProvider, GameManager gameManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider)
         {
             _actionProvider = actionProvider;
             _sceneManager = sceneManager;
             _uIObjectProvider = uIObjectProvider;
+            _gameManager = gameManager;
         }
         public override void Init()
         {
-
             MainMenuCenter = new EmptyGameObject();
             MainMenuSettingsCenter = new EmptyGameObject();
             MainMenuCenter.Position = new Vector2(50, 125);
@@ -74,7 +75,7 @@ namespace FreeScape.Layers
             quitButtonInfo.Position = new Vector2(0, 150);
             quitButtonInfo.Size = new Vector2(100, 50);
             quitButtonInfo.Name = "quitbutton";
-            quitButtonInfo.OnClickAction = () => { Environment.Exit(-1); };
+            quitButtonInfo.OnClickAction = () => { _gameManager.Stop(); };
             quitButtonInfo.ButtonTextureDefault = "Buttons/Blue/Text/Quit";
             quitButtonInfo.ButtonTextureHover = "Buttons/Orange/Text/Quit";
 
