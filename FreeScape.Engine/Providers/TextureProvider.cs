@@ -45,9 +45,8 @@ namespace FreeScape.Engine.Providers
             return texture;
         }
 
-        public Texture? GetTextureByFile(string filePath, string gtl)
+        public Texture GetTextureByFile(string filePath, string gtl)
         {
-
             var path = $"{_info.TextureDirectory}/{filePath}.png";
 
             if (!File.Exists(path))
@@ -61,13 +60,13 @@ namespace FreeScape.Engine.Providers
 
             return texture;
         }
-        public Texture? GetTexture(string gtl)
+        public Texture GetTexture(string gtl)
         {
             var tokens = gtl.Split(':');
             return GetTexture(tokens[0], tokens[1]);
         }
         
-        public Texture? GetTexture(string sheetName, string textureName)
+        public Texture GetTexture(string sheetName, string textureName)
         {
             var gtl = $"{sheetName}:{textureName}";
             if (_textures.ContainsKey(gtl))

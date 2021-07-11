@@ -6,16 +6,12 @@ namespace FreeScape.Engine.Managers
 {
     public class GameManager
     {
-        private readonly Thread _tickThread;
-
         private bool _isRunning;
-
         private Action _tick;
         private Action _render;
 
         public GameManager()
         {
-            //_tickThread = new Thread(TickThreadLoop);
         }
 
         public void Start(Action tick, Action render)
@@ -25,42 +21,18 @@ namespace FreeScape.Engine.Managers
 
             _isRunning = true;
 
-            //if (true || OperatingSystem.IsLinux())
-            //{
-                if (OperatingSystem.IsLinux())
-                    Platform.XInitThreads();
-                while (_isRunning)
-                {
-                    Thread.Sleep(10);
-                    _tick();
-                    _render();
-                }
-            //}
-
-            //_tickThread.Start();
-            //RenderThreadLoop();
+            if (OperatingSystem.IsLinux())
+                Platform.XInitThreads();
+            while (_isRunning)
+            {
+                _tick();
+                _render();
+            }
         }
 
         public void Stop()
         {
             _isRunning = false;
-        }
-
-        private void TickThreadLoop()
-        {
-            while (_isRunning)
-            {
-                Thread.Sleep(1);
-                _tick();
-            }
-        }
-
-        private void RenderThreadLoop()
-        {
-            while (_isRunning)
-            {
-                _render();
-            }
         }
     }
 }
