@@ -52,7 +52,6 @@ namespace FreeScape.Engine.Providers
                     TextureLocation = new IntRect(tileLocation, tileSize)
                 };
                 tileSet.Tiles.Add(item.Id, tile);
-                Console.WriteLine(tile);
             }
             _tileSets.Add(tileSet);
         }

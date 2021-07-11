@@ -29,7 +29,6 @@ namespace FreeScape.Engine.Managers
         public void Tick()
         {
             _currentScene.Tick();
-            _frameTime.Tick();
         }
         public void SetPerspectiveTarget(string perspectiveName, IGameObject target)
         {
