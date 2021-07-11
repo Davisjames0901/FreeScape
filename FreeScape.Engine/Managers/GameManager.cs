@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FreeScape.Engine.Managers
 {

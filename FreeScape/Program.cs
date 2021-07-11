@@ -9,7 +9,7 @@ namespace FreeScape
         static void Main()
         {
             var collection = Bootstrapper.Bootstrap(new ServiceCollection());
-            var provider = collection.BuildServiceProvider();
+            using var provider = collection.BuildServiceProvider();
             var game = provider.GetRequiredService<Game>();
 
             game.Start<MainMenuScene>();

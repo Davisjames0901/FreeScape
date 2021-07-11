@@ -10,7 +10,7 @@ using SFML.Audio;
 
 namespace FreeScape.Engine.Providers
 {
-    public class SoundProvider
+    public class SoundProvider : IDisposable
     {
         private readonly GameInfo _info;
         private readonly Dictionary<string, SoundInfo> _soundDescriptors;
@@ -68,7 +68,12 @@ namespace FreeScape.Engine.Providers
             var sound = new PreloadedSound(info);
             _preloadSounds.Add(name, sound);
         }
-        
-        
+
+
+        public void Dispose()
+        {
+            _currentTrack?.Stop();
+            _currentTrack?.Dispose();
+        }
     }
 }
