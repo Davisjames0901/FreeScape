@@ -4,7 +4,6 @@ using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Utilities;
 using SFML.Graphics;
-using SFML.System;
 
 namespace FreeScape.Engine.Render
 {
@@ -40,11 +39,9 @@ namespace FreeScape.Engine.Render
         {
             if (_target != null)
             {
-                float speed = Scaling / 150;
+                float speed = Scaling / 4.5f;
                 var dt = (float)_frameTime.DeltaTimeMilliSeconds;
                 speed = (float)(1 - Math.Pow((double)speed, dt));
-                //speed -= dt;
-                Console.WriteLine($"Speed : {speed}, deltaTime : {dt}");
                 View.Center = Maths.Lerp(View.Center, _target.Position, speed, 0.1f);
             }
         }

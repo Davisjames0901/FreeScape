@@ -22,7 +22,7 @@ namespace FreeScape
                 VSyncEnabled = true,
                 RefreshRate = 144,
                 SfxVolume = 100.0f,
-                MusicVolume = 10.0f,
+                MusicVolume = 100.0f,
                 AssetDirectory =
                     $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}{Path.DirectorySeparatorChar}Assets"
             };
