@@ -3,6 +3,7 @@ using FreeScape.Engine.Render;
 using SFML.Graphics;
 using System;
 using System.Numerics;
+using FreeScape.Engine.Config.UI;
 
 namespace FreeScape.Engine.GameObjects.UI
 {

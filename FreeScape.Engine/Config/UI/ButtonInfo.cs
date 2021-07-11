@@ -1,12 +1,6 @@
-﻿using SFML.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Numerics;
 
-namespace FreeScape.Engine.GameObjects.UI
+namespace FreeScape.Engine.Config.UI
 {
     public class ButtonInfo
     {
@@ -15,7 +9,7 @@ namespace FreeScape.Engine.GameObjects.UI
         public Vector2 Size;
         public string ButtonTextureDefault;
         public string ButtonTextureHover;
-        public Action OnClickAction;
+        public System.Action OnClickAction;
 
 
     }

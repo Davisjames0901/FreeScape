@@ -1,11 +1,8 @@
 ﻿using System.Numerics;
-using FreeScape.Engine.GameObjects;
-using FreeScape.Engine.GameObjects.Entities;
-using FreeScape.Engine.Providers;
+using FreeScape.Engine.Config.TileSet;
 using SFML.Graphics;
-using SFML.System;
 
-namespace FreeScape.Engine.Config.Map
+namespace FreeScape.Engine.GameObjects.Entities
 {
     public class Tile : IGameObject, ICollider
     {

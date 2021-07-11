@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using SFML.Graphics;
 
-namespace FreeScape.Engine.Config
+namespace FreeScape.Engine.Config.TileSet
 {
     public class CachedTileSet
     {

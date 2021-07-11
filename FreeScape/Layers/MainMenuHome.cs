@@ -7,6 +7,7 @@ using FreeScape.Scenes;
 using SFML.Graphics;
 using System;
 using System.Numerics;
+using FreeScape.Engine.Config.UI;
 
 namespace FreeScape.Layers
 {

@@ -6,6 +6,7 @@ using System.Numerics;
 using System.Text.Json;
 using System.Xml.Schema;
 using FreeScape.Engine.Config;
+using FreeScape.Engine.Config.TileSet;
 using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 

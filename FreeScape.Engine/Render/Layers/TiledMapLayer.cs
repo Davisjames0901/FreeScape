@@ -7,6 +7,7 @@ using SFML.System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using FreeScape.Engine.GameObjects.Entities;
 
 namespace FreeScape.Engine.Render.Layers
 {

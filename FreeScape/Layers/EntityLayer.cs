@@ -6,6 +6,7 @@ using FreeScape.Engine.GameObjects.UI;
 using System.Numerics;
 using FreeScape.Scenes;
 using FreeScape.Engine.GameObjects;
+using FreeScape.GameObjects;
 
 namespace FreeScape.Layers
 {

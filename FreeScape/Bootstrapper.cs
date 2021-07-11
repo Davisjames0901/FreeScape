@@ -3,6 +3,7 @@ using System.Reflection;
 using AsperandLabs.UnitStrap.Core.Extenstions;
 using FreeScape.Engine;
 using FreeScape.Engine.Config;
+using FreeScape.GameObjects;
 using FreeScape.Layers;
 using FreeScape.Scenes;
 using Microsoft.Extensions.DependencyInjection;

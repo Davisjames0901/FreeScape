@@ -1,16 +1,10 @@
 using System.Numerics;
-using FreeScape.Engine;
-using FreeScape.Engine.GameObjects;
-using FreeScape.Engine.Providers;
-using FreeScape.Engine.Render.Layers;
-using FreeScape.Engine.Physics;
-using SFML.Graphics;
-using SFML.System;
-using FreeScape.Engine.GameObjects.UI;
 using FreeScape.Engine.Managers;
-using FreeScape.Scenes;
+using FreeScape.Engine.Physics;
+using FreeScape.Engine.Providers;
+using SFML.Graphics;
 
-namespace FreeScape.Layers
+namespace FreeScape.GameObjects
 {
     public class Player: IMovable
     {
