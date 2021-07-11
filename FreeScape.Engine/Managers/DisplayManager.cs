@@ -88,6 +88,7 @@ namespace FreeScape.Engine.Managers
         internal Vector2 GetMouseWorldPosition()
         {
             var mousePos = GetMouseWindowPosition();
+            Console.WriteLine(mousePos);
             return _renderTarget.MapPixelToCoords(mousePos);
         }
     }
