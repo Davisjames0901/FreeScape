@@ -2,14 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography.X509Certificates;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
-using FreeScape.Engine.Utilities;
 using SFML.Graphics;
-using SFML.System;
 using SFML.Window;
 
 namespace FreeScape.Engine.Managers

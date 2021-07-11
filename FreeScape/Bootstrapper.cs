@@ -19,7 +19,7 @@ namespace FreeScape
                 ScreenHeight = 1080,
                 ScreenWidth = 1920,
                 Name = "FreeScape",
-                VSyncEnabled = false,
+                VSyncEnabled = true,
                 RefreshRate = 144,
                 SfxVolume = 100.0f,
                 MusicVolume = 10.0f,
