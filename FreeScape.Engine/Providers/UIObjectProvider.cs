@@ -23,21 +23,9 @@ namespace FreeScape.Engine.Providers
         {
             return _provider.CurrentScope.ServiceProvider.GetService<T>();
         }
-        public Button CreateButton(string name, Vector2 size, Vector2 position, string defaultFilePath, string hoverFilePath, Action onClick)
+        public Button CreateButton(ButtonInfo info)
         {
-            Button button;
-
-            Vector2 buttonSize = size;
-
-            Vector2 playButtonPos = new Vector2(0, 0);
-
-
-            Texture playButtonDefaultTexture = _textureProvider.GetTextureByFile(defaultFilePath, $"{name}:default");
-            Texture playButtonHoverTexture = _textureProvider.GetTextureByFile(hoverFilePath, $"{name}:hover");
-
-            button = new Button(position, size, playButtonDefaultTexture, playButtonHoverTexture, onClick, _actionProvider);
-
-            return button;
+            return new Button(info, _textureProvider.GetTextureByFile(info.ButtonTextureDefault, $"{info.Name}:default"), _textureProvider.GetTextureByFile(info.ButtonTextureHover, $"{info.Name}:hover"), _actionProvider);
         }
     }
 }

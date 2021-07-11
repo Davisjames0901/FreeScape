@@ -6,6 +6,9 @@ using FreeScape.Engine.Render.Layers;
 using FreeScape.Engine.Physics;
 using SFML.Graphics;
 using SFML.System;
+using FreeScape.Engine.GameObjects.UI;
+using FreeScape.Engine.Managers;
+using FreeScape.Scenes;
 
 namespace FreeScape.Layers
 {
@@ -21,20 +24,22 @@ namespace FreeScape.Layers
         public float Speed { get; set; }
 
         private Vector2 _velocity = new (0, 0);
-        private Vector2 _position = new (0, 0);
+        private Vector2 _position = new (500, 500);
 
         public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
         public Vector2 Position { get { return _position; } set { _position = value; } }
 
-
         
-        public Player(ActionProvider actionProvider, SoundProvider soundProvider, TextureProvider textureProvider)
+        public Player(ActionProvider actionProvider, SoundProvider soundProvider, TextureProvider textureProvider, SceneManager sceneManager)
         {
             _actionProvider = actionProvider;
             ZIndex = 999;
             Velocity = new Vector2(0, 0);
             Speed = 5.0f;
             Size = new Vector2(3.0f, 3.0f);
+
+
+
             actionProvider.SubscribeOnPressed(a =>
             {
                 if(a == "Punch")

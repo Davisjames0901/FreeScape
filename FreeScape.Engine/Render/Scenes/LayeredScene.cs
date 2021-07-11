@@ -31,7 +31,7 @@ namespace FreeScape.Engine.Render.Scenes
             {
                 if(layer is GameObjectLayer gameObjectLayer)
                 {
-                    
+                    gameObjectLayer.Tick();   
                 }
                 layer.Tick();
             }

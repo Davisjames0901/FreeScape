@@ -23,6 +23,11 @@ namespace FreeScape.Engine.Render
         public float Scaling => _screenSize.X / View.Size.X;
         public Vector2 Corner => (View.Center - View.Size / 2)*Scaling;
 
+        public void SetCenter(Vector2 position)
+        {
+            View.Center = position;
+        }
+
         public void Track(IGameObject go)
         {
             _target = go;

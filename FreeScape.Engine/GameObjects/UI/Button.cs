@@ -17,22 +17,25 @@ namespace FreeScape.Engine.GameObjects.UI
 
         public bool Hovered { get; set; } = false;
 
-        private RectangleShape button;
+        private RectangleShape rectangleShape;
 
         private readonly ActionProvider _actionProvider;
 
+        public ButtonInfo Info;
 
-        public Button(Vector2 position, Vector2 size, Texture textureDefault, Texture textureHover, Action onClickAction, ActionProvider actionProvider)
+
+        public Button(ButtonInfo info, Texture defaultTexture, Texture hoverTexture, ActionProvider actionProvider)
         {
+            Info = info;
             _actionProvider = actionProvider;
-            OnClickAction = onClickAction;
-            Size = size;
-            Position = position;
-            ButtonTextureDefault = textureDefault;
-            ButtonTextureHover = textureHover;
-            button = new RectangleShape(Size);
-            button.Texture = textureDefault;
-            button.Position = Position;
+            OnClickAction = Info.OnClickAction;
+            Size = Info.Size;
+            Position = Info.Position;
+            ButtonTextureDefault = defaultTexture;
+            ButtonTextureHover = hoverTexture;
+            rectangleShape = new RectangleShape(Size);
+            rectangleShape.Texture = defaultTexture;
+            rectangleShape.Position = Position;
         }
 
 
@@ -40,13 +43,13 @@ namespace FreeScape.Engine.GameObjects.UI
         {
             if (Hovered)
             {
-                button.Texture = ButtonTextureHover;
+                rectangleShape.Texture = ButtonTextureHover;
             }
             else
             {
-                button.Texture = ButtonTextureDefault;
+                rectangleShape.Texture = ButtonTextureDefault;
             }
-            target.Draw(button);
+            target.Draw(rectangleShape);
         }
 
         public void OnHover()
@@ -69,11 +72,13 @@ namespace FreeScape.Engine.GameObjects.UI
             {
                 OnHoverEnd();
             }
+            rectangleShape.Position = Position;
         }
 
         public void OnClick()
         {
             OnClickAction();
+            Hovered = false;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Scenes;
@@ -33,6 +34,10 @@ namespace FreeScape.Engine.Managers
         public void SetPerspectiveTarget(string perspectiveName, IGameObject target)
         {
             _display.Track(x => x.Name == perspectiveName, target);
+        }
+        public void SetPerspectiveCenter(Vector2 position)
+        {
+            _display.CurrentPerspective?.SetCenter(position);
         }
         public void SetScene<T>() where T : IScene
         {

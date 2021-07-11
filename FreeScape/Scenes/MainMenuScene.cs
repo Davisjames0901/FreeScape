@@ -4,6 +4,7 @@ using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Scenes;
 using FreeScape.Layers;
 using SFML.Graphics;
+using System.Numerics;
 
 namespace FreeScape.Scenes
 {
@@ -32,8 +33,6 @@ namespace FreeScape.Scenes
 
         public override void Dispose()
         {
-            Layers.Clear();
-            Active = false;
         }
 
     }

@@ -29,7 +29,7 @@ namespace FreeScape.Engine.Render.Layers
             }
         }
 
-        public void Tick()
+        public virtual void Tick()
         {
             foreach(IGameObject gameObject in _gameObjects)
             {
