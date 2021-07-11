@@ -38,8 +38,6 @@ namespace FreeScape.Engine.Render.Layers
         {
             var tileSize = new Vector2(Map.TileWidth, Map.TileHeight);
             var tileSet = _tileSetProvider.GetTileSet(Map.TileSets.First().Source);
-            var pos = new Vector2(0, 0);
-            var increment = new Vector2(0, 32);
             // foreach (var i in tileSet.Tiles)
             // { 
             //     var tile = new Tile(pos, tileSize, i.Value, tileSet.Sheet);
@@ -51,9 +49,10 @@ namespace FreeScape.Engine.Render.Layers
                 var i = 0;
                 foreach (var num in chunk.Data)
                 {
-            
                     var texture = tileSet.Tiles[num-1];
                     var tile = new Tile(new Vector2((chunk.X + i%chunk.Width)*Map.TileWidth, (chunk.Y + i/chunk.Height)*Map.TileHeight), tileSize, texture, tileSet.Sheet);
+                    //if(texture.Properties.Any(x=>x.Name == "Collidable" && x.Value == "True"))
+                    //    _movement.Colliders.Add(tile);
                     Tiles.Add(tile);
                     i++;
                 }

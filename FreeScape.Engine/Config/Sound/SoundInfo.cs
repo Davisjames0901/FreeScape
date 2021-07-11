@@ -6,5 +6,6 @@ namespace FreeScape.Engine.Config.Sound
         public string Extension { get; set; }
         public string SoundType { get; set; }
         public string FilePath { get; set; }
+        public bool IsLooped { get; set; }
     }
 }

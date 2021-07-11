@@ -50,8 +50,10 @@ namespace FreeScape.Engine.Managers
             _renderTarget = new RenderWindow(videoMode, _info.Name);
             var view = new Perspective("main", new Vector2(0.0f, 0.0f), _info.ScreenSize, 3.0f);
             _perspectives.Add(view);
-
-            _renderTarget.SetFramerateLimit(_info.RefreshRate);
+            if(_info.VSyncEnabled)
+                _renderTarget.SetVerticalSyncEnabled(true);
+            else
+                _renderTarget.SetFramerateLimit(_info.RefreshRate);
             _renderTarget.SetActive(false);
             _renderTarget.Closed += (sender, args) => _gameManager.Stop();
         }

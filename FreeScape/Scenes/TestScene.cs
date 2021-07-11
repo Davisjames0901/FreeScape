@@ -36,7 +36,7 @@ namespace FreeScape.Scenes
             Layers.Add(map);
             Layers.Add(entityLayer);
 
-            _sounds.PlaySound("desert");
+            _sounds.PlayMusic("cave");
         }
 
         public override void Dispose()
