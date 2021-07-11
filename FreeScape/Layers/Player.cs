@@ -40,6 +40,7 @@ namespace FreeScape.Layers
                 if(a == "Punch")
                     soundProvider.PlaySound("punch");
             });
+            //_position = new Vector2(600, 600);
         }
 
         public void Tick()

@@ -20,7 +20,7 @@ namespace FreeScape
                 Name = "FreeScape",
                 RefreshRate = 60,
                 SfxVolume = 100.0f,
-                MusicVolume = 100.0f,
+                MusicVolume = 0.0f,
                 AssetDirectory =
                     $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}{Path.DirectorySeparatorChar}Assets"
             };

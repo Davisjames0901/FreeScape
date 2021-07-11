@@ -9,6 +9,7 @@ namespace FreeScape.Engine.Config.Map
 {
     public class Tile : IGameObject, ICollider
     {
+        private readonly CachedTileSetTile _tileInfo;
 
         public float Size { get; set; }
         public bool Collidable { get; set; }
@@ -19,6 +20,7 @@ namespace FreeScape.Engine.Config.Map
         public Sprite Sprite;
         public Tile(Vector2 position, Vector2 size, CachedTileSetTile tileInfo, Texture texture)
         {
+            _tileInfo = tileInfo;
             Size = size.X;
             Position = position;
             ColliderSize = size;
@@ -32,6 +34,12 @@ namespace FreeScape.Engine.Config.Map
         public void Render(RenderTarget target)
         {
             target.Draw(Sprite);
+            // var rect = new RectangleShape(new Vector2(Size, Size));
+            // rect.Position = Sprite.Position;
+            // rect.FillColor = Color.Transparent;
+            // rect.OutlineThickness = 2;
+            // rect.OutlineColor = Color.Yellow;
+            // target.Draw(rect);
         }
 
         public void Tick()

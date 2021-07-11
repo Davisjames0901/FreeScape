@@ -38,16 +38,20 @@ namespace FreeScape.Engine.Providers
             tileSet.Name = info.Name;
             var tileSize = new Vector2(info.TileWidth, info.TileWidth);
             var imageSize = new Vector2(info.ImageWidth, info.ImageHeight);
+            imageSize = Maths.Floor(imageSize / tileSize) * tileSize;
             foreach (var item in info.Tiles)
             {
                 var tiles = imageSize / tileSize;
-                var tileLocation = new Vector2(item.Id % (info.ImageWidth/info.TileWidth), item.Id/(info.ImageHeight/info.TileHeight)) * tileSize;
-                tileSet.Tiles.Add(item.Id, new CachedTileSetTile
+                var tileLocation = new Vector2(item.Id % tiles.X, (int)Math.Floor(item.Id/tiles.X)) * tileSize;
+                
+                var tile = new CachedTileSetTile
                 {
                     Id = item.Id,
                     Properties = item.Properties,
                     TextureLocation = new IntRect(tileLocation, tileSize)
-                });
+                };
+                tileSet.Tiles.Add(item.Id, tile);
+                Console.WriteLine(tile);
             }
             _tileSets.Add(tileSet);
         }
