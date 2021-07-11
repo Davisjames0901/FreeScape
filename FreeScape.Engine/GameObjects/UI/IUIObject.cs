@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace FreeScape.Engine.GameObjects.UI
 {
-    public interface IUIObject
+    public interface IUIObject : IGameObject
     {
-        Vector2 Position { get; set; }
-        Vector2 Size { get; set; }
         bool Hovered { get; set; }
         void Render(RenderTarget target);
         void Tick();

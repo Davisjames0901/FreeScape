@@ -45,6 +45,22 @@ namespace FreeScape.Engine.Providers
             return texture;
         }
 
+        public Texture? GetTextureByFile(string filePath, string gtl)
+        {
+
+            var path = $"{_info.TextureDirectory}/{filePath}.png";
+
+            if (!File.Exists(path))
+                return null;
+
+            if (_textures.ContainsKey(gtl))
+                return _textures[gtl];
+
+            var texture = new Texture(path);
+            _textures.Add(gtl, texture);
+
+            return texture;
+        }
         public Texture? GetTexture(string gtl)
         {
             var tokens = gtl.Split(':');

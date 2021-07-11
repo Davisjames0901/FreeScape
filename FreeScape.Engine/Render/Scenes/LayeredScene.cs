@@ -15,7 +15,7 @@ namespace FreeScape.Engine.Render.Scenes
         
         public List<ILayer> Layers { get; }
 
-
+        public bool Active { get; set; }
 
         public virtual void Render(RenderTarget target)
         {

@@ -6,9 +6,8 @@ namespace FreeScape.Engine.GameObjects
 {
     public interface IGameObject : IRenderable, ITickable
     {
-        float Size { get; }
+        Vector2 Size { get; }
         Vector2 Position { get; }
-        bool Collidable { get; set; }
 
     }
 }

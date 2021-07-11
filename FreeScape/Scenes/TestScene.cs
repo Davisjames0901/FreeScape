@@ -33,7 +33,6 @@ namespace FreeScape.Scenes
 
             var map = _layerProvider.Provide<TestTileMap>();
             var entityLayer = _layerProvider.Provide<EntityLayer>();
-            
             Layers.Add(map);
             Layers.Add(entityLayer);
 

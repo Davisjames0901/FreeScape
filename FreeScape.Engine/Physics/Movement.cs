@@ -36,14 +36,14 @@ namespace FreeScape.Engine.Physics
             }
         }
 
-        public ICollider CheckCollision(Vector2 positionToCheck, float Size)
+        public ICollider CheckCollision(Vector2 positionToCheck, Vector2 Size)
         {
             foreach (var collider in Colliders)
             {
-                if (   positionToCheck.X + Size > collider.Position.X
-                    && positionToCheck.Y + Size > collider.Position.Y 
-                    && positionToCheck.X - Size < collider.Position.X + collider.ColliderSize.X 
-                    && positionToCheck.Y - Size < collider.Position.Y + collider.ColliderSize.Y)
+                if (   positionToCheck.X + Size.X > collider.Position.X
+                    && positionToCheck.Y + Size.X > collider.Position.Y 
+                    && positionToCheck.X - Size.Y < collider.Position.X + collider.ColliderSize.X 
+                    && positionToCheck.Y - Size.Y < collider.Position.Y + collider.ColliderSize.Y)
                 {
                     return collider;
                 }

@@ -37,7 +37,7 @@ namespace FreeScape.Engine.Render.Layers
             foreach (var tileInfo in Map.Tiles)
             {
                 var texture = _textureProvider.GetTexture(tileInfo.Texture);
-                Tile tile = new Tile(new Vector2(tileInfo.X, tileInfo.Y), tileInfo.Collidable,tileInfo.Size, texture);
+                Tile tile = new Tile(new Vector2(tileInfo.X, tileInfo.Y), tileInfo.Collidable,new Vector2(tileInfo.Size, tileInfo.Size), texture);
                 Tiles.Add(tile);
                 if(tile.Collidable)
                 _movement.RegisterCollider(tile);

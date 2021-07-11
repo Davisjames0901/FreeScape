@@ -1,4 +1,6 @@
-﻿using FreeScape.Engine.GameObjects.UI;
+﻿using FreeScape.Engine.Config;
+using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.GameObjects.UI;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Layers;
@@ -17,20 +19,38 @@ namespace FreeScape.Layers
     {
         private readonly TextureProvider _textureProvider;
         private readonly ActionProvider _actionProvider;
-        Button testButton;
-
-        public MainMenuHome(TextureProvider textureProvider, ActionProvider actionProvider, SceneManager sceneManager)
+        private readonly SceneManager _sceneManager;
+        private readonly DisplayManager _displayManager;
+        Button PlayButton;
+        Button quitButton;
+        Button settingsButton;
+        EmptyGameObject MainMenuCenter;
+        public MainMenuHome(TextureProvider textureProvider, ActionProvider actionProvider, SceneManager sceneManager, DisplayManager displayManager, UIObjectProvider uIObjectProvider)
         {
-
             _textureProvider = textureProvider;
             _actionProvider = actionProvider;
-            Vector2 buttonPos = new Vector2(0, -100);
+            _displayManager = displayManager;
+
+            MainMenuCenter = new EmptyGameObject();
+            MainMenuCenter.Position = new Vector2(50, 125);
+
+            //sceneManager.SetPerspectiveTarget("main", MainMenuCenter);
+
+            Action playButtonOnClick = () => { sceneManager.SetScene<TestScene>(); };
+
+            //PlayButton = uIObjectProvider.CreateButton();
+
             Vector2 buttonSize = new Vector2(100, 50);
 
-            Action testButtonOnClick = () => { sceneManager.SetScene<TestScene>(); };
+            Vector2 playButtonPos = new Vector2(0, 0);
 
-            testButton = new Button(buttonPos, buttonSize, _textureProvider.GetTexture("playbutton:default"), _textureProvider.GetTexture("playbutton:hover"), testButtonOnClick, actionProvider);
-            UIObjects.Add(testButton);
+
+            Texture playButtonDefaultTexture = _textureProvider.GetTextureByFile("Buttons/Blue/Text/Play", "play:default");
+            Texture playButtonHoverTexture = _textureProvider.GetTextureByFile("Buttons/Orange/Text/Play", "play:hover");
+
+            PlayButton = new Button(playButtonPos, buttonSize, playButtonDefaultTexture, playButtonHoverTexture, playButtonOnClick, actionProvider);
+
+            UIObjects.Add(PlayButton);
 
             actionProvider.SubscribeOnPressed(a =>
             {
@@ -45,6 +65,7 @@ namespace FreeScape.Layers
         {
 
         }
+
 
         public void MouseClick()
         {
@@ -61,7 +82,7 @@ namespace FreeScape.Layers
 
         public void Render(RenderTarget target)
         {
-            testButton.Render(target);
+            PlayButton.Render(target);
         }
     }
 }

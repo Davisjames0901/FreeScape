@@ -17,7 +17,7 @@ namespace FreeScape.Layers
         public float X { get; set; }
         public float Y { get; set; }
         public float Weight { get; set; }
-        public float Size { get; set; }
+        public Vector2 Size { get; set; }
         public bool Collidable { get; set; } = false;
         public float Speed { get; set; }
 
@@ -35,7 +35,7 @@ namespace FreeScape.Layers
             ZIndex = 999;
             Velocity = new Vector2(0, 0);
             Speed = 5.0f;
-            Size = 3.0f;
+            Size = new Vector2(3.0f, 3.0f);
             actionProvider.SubscribeOnPressed(a =>
             {
                 if(a == "Punch")
@@ -96,9 +96,9 @@ namespace FreeScape.Layers
 
         public void Render(RenderTarget target)
         {
-            var player = new CircleShape(Size);
+            var player = new CircleShape(Size.X);
             player.FillColor = Color.Red;
-            player.Position = new Vector2(_position.X - (Size), _position.Y - (Size));
+            player.Position = new Vector2(_position.X - (Size.X), _position.Y - (Size.Y));
                 
             target.Draw(player);
 

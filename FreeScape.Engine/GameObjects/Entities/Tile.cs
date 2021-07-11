@@ -10,20 +10,20 @@ namespace FreeScape.Engine.Config.Map
     public class Tile : IGameObject, ICollider
     {
 
-        public float Size { get; set; }
+        public Vector2 Size { get; set; }
         public bool Collidable { get; set; }
         public Vector2 Position { get; set; }
 
         public Vector2 ColliderSize { get; set; }
 
         public RectangleShape TileRectangleShape;
-        public Tile(Vector2 position, bool collidable, float size, Texture texture)
+        public Tile(Vector2 position, bool collidable, Vector2 size, Texture texture)
         {
             Size = size;
             Collidable = collidable;
             Position = position;
-            ColliderSize = new Vector2(Size, Size);
-            RectangleShape rectangleShape = new RectangleShape(new Vector2(Size, Size));
+            ColliderSize = Size;
+            RectangleShape rectangleShape = new RectangleShape(Size);
 
             rectangleShape.Texture = texture;
             rectangleShape.Position = new Vector2(Position.X, Position.Y);

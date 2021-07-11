@@ -1,4 +1,5 @@
 using System;
+using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Scenes;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,10 +30,18 @@ namespace FreeScape.Engine.Managers
             _currentScene.Tick();
             _frameTime.Tick();
         }
+        public void SetPerspectiveTarget(string perspectiveName, IGameObject target)
+        {
+            _display.Track(x => x.Name == perspectiveName, target);
+        }
         public void SetScene<T>() where T : IScene
         {
-            _provider.CurrentScope?.Dispose();
-            _currentScene?.Dispose();
+
+            if (_currentScene != null)
+            {
+                _provider.CurrentScope.Dispose();
+                _currentScene.Dispose();
+            }
             _provider.CurrentScope = _serviceProvider.CreateScope();
             _currentScene = _provider.CurrentScope.ServiceProvider.GetService<T>();
             _currentScene.Init();
