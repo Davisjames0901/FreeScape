@@ -36,6 +36,8 @@ namespace FreeScape.Engine.Providers
         
         public bool IsActionActivated(string action)
         {
+            if (!_displayManager.IsFocused())
+                return false;
             var mappedAction = _actionMap.GetMappedAction(action);
             return ConvertActionAndCheckIfActioned(mappedAction);
         }
@@ -90,6 +92,8 @@ namespace FreeScape.Engine.Providers
 
         private void Notify(List<Action<string>> subscribers, MappedAction action)
         {
+            if (!_displayManager.IsFocused())
+                return;
             foreach (var subscriber in subscribers)
                 subscriber(action.Action);
         }

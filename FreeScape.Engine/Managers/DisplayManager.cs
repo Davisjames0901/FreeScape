@@ -19,6 +19,7 @@ namespace FreeScape.Engine.Managers
         private readonly GameManager _gameManager;
         private RenderWindow _renderTarget;
         private readonly List<Perspective> _perspectives;
+        private bool _hasFocus = true;
         public Perspective CurrentPerspective { get; private set; }
 
         public DisplayManager(GameInfo info, GameManager gameManager)
@@ -56,6 +57,8 @@ namespace FreeScape.Engine.Managers
                 _renderTarget.SetFramerateLimit(_info.RefreshRate);
             _renderTarget.SetActive(false);
             _renderTarget.Closed += (sender, args) => _gameManager.Stop();
+            _renderTarget.LostFocus += (sender, args) => _hasFocus = false; 
+            _renderTarget.GainedFocus += (sender, args) => _hasFocus = true; 
         }
 
         public void Track(Func<Perspective, bool> selector, IGameObject target)
@@ -86,11 +89,15 @@ namespace FreeScape.Engine.Managers
         {
             return Mouse.GetPosition(_renderTarget);
         }
+
+        internal bool IsFocused()
+        {
+            return _hasFocus;
+        }
         
         internal Vector2 GetMouseWorldPosition()
         {
             var mousePos = GetMouseWindowPosition();
-            Console.WriteLine(mousePos);
             return _renderTarget.MapPixelToCoords(mousePos);
         }
     }
