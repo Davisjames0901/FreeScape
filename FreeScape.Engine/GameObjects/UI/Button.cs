@@ -38,7 +38,10 @@ namespace FreeScape.Engine.GameObjects.UI
             rectangleShape.Position = Position;
         }
 
+        public void Init()
+        {
 
+        }
         public void Render(RenderTarget target)
         {
             if (Hovered)

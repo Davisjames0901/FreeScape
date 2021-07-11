@@ -1,5 +1,4 @@
-﻿using FreeScape.Engine.Config;
-using FreeScape.Engine.GameObjects;
+﻿using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.GameObjects.UI;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
@@ -7,11 +6,7 @@ using FreeScape.Engine.Render.Layers;
 using FreeScape.Scenes;
 using SFML.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FreeScape.Layers
 {

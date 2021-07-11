@@ -45,5 +45,9 @@ namespace FreeScape.Engine.Config.Map
         public void Tick()
         {
         }
+        public void Init()
+        {
+
+        }
     }
 }

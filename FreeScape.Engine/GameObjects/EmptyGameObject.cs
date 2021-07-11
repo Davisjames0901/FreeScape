@@ -21,5 +21,9 @@ namespace FreeScape.Engine.GameObjects
         public void Tick()
         {
         }
+        public void Init()
+        {
+
+        }
     }
 }

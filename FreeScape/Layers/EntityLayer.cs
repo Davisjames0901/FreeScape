@@ -41,34 +41,23 @@ namespace FreeScape.Layers
         public override void Init()
         {
             var player = _gameObjectProvider.Provide<Player>();
-            _gameObjects.Add(player);
+            GameObjects.Add(player);
+
+            
+            foreach(var gameObject in GameObjects)
+            {
+                gameObject.Init();
+            }
+
             _displayManager.Track(x => x.Name == "main", player);
 
-            _displayManager.CurrentPerspective.SetCenter(player.Position);
-
-            CreateUIButtons();
-
         }
 
-        private void CreateUIButtons()
-        {
-            ButtonInfo homeButtonInfo = new ButtonInfo();
-            homeButtonInfo.Position = new Vector2(0, 0);
-            homeButtonInfo.Size = new Vector2(50, 25);
-            homeButtonInfo.Name = "homebutton";
-            homeButtonInfo.OnClickAction = () => { _sceneManager.SetScene<MainMenuScene>(); };
-            homeButtonInfo.ButtonTextureDefault = "Buttons/Blue/Text/Home";
-            homeButtonInfo.ButtonTextureHover = "Buttons/Orange/Text/Home";
-
-            HomeButton = _uIObjectProvider.CreateButton(homeButtonInfo);
-
-            _gameObjects.Add(HomeButton);
-        }
 
         public void MouseClick()
         {
             var mouseCoords = _actionProvider.GetMouseWorldCoods();
-            foreach (var gameObject in _gameObjects)
+            foreach (var gameObject in GameObjects)
             {
                 if(gameObject is IUIObject uIObject)
                 if (uIObject.Hovered && uIObject is IButton button)
@@ -81,9 +70,6 @@ namespace FreeScape.Layers
 
         public override void Tick()
         {
-            var view = _displayManager.CurrentPerspective.View;
-            Vector2 homeButtonPos = Vector2.Lerp(HomeButton.Position, view.Center - (view.Size/2) + (new Vector2(25, 25)), 0.025f);
-            HomeButton.Position = homeButtonPos;
             base.Tick();
         }
         

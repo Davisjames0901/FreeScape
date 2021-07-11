@@ -9,21 +9,21 @@ namespace FreeScape.Engine.Render.Layers
     public abstract class GameObjectLayer : ILayer
     {
         public abstract int ZIndex { get; }
-        protected List<IGameObject> _gameObjects;
+        protected List<IGameObject> GameObjects;
 
         private Movement _movement;
 
         public GameObjectLayer(Movement movement)
         {
             _movement = movement;
-            _gameObjects = new List<IGameObject>();
+            GameObjects = new List<IGameObject>();
         }
 
         public abstract void Init();
 
         public void Render(RenderTarget target)
         {
-            foreach (var gameObject in _gameObjects)
+            foreach (var gameObject in GameObjects)
             {
                 gameObject.Render(target);
             }
@@ -31,7 +31,7 @@ namespace FreeScape.Engine.Render.Layers
 
         public virtual void Tick()
         {
-            foreach(IGameObject gameObject in _gameObjects)
+            foreach(IGameObject gameObject in GameObjects)
             {
                 if(gameObject is IMovable movable)
                 {
