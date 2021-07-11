@@ -28,7 +28,7 @@ namespace FreeScape.Scenes
             Active = true;
             Layers.Add(_layerProvider.Provide<MainMenuHome>());
             Layers.Add(_layerProvider.Provide<MainMenuOptions>());
-            _sounds.PlaySound("desert");
+            _sounds.PlayMusic("intro");
         }
 
         public override void Dispose()

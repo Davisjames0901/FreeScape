@@ -28,7 +28,6 @@ namespace FreeScape.Engine
             services.AddSingleton<LayerProvider>();
             services.AddSingleton<ServiceScopeProvider>();
             services.AddSingleton<GameManager>();
-            services.AddSingleton<SoundProvider>();
             services.AddSingleton<FrameTimeProvider>();
             services.AddSingleton<Movement>();
             services.AddSingleton<TileSetProvider>();
@@ -42,6 +41,7 @@ namespace FreeScape.Engine
 
             services.AddScoped<ActionProvider>();
             services.AddScoped<GameObjectProvider>();
+            services.AddSingleton<SoundProvider>();
             
             return services;
         }

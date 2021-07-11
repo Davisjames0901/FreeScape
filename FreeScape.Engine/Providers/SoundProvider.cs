@@ -15,6 +15,7 @@ namespace FreeScape.Engine.Providers
         private readonly GameInfo _info;
         private readonly Dictionary<string, SoundInfo> _soundDescriptors;
         private readonly Dictionary<string, PreloadedSound> _preloadSounds;
+        private Music _currentTrack;
         
         public SoundProvider(GameInfo info)
         {
@@ -39,12 +40,18 @@ namespace FreeScape.Engine.Providers
                 sound.Sound.Volume = _info.SfxVolume;
                 sound.Sound.Play();
             }
-            else if (_soundDescriptors.TryGetValue(name, out var soundInfo))
+        }
+
+        public void PlayMusic(string name)
+        {
+            if (_soundDescriptors.TryGetValue(name, out var soundInfo))
             {
-                var music = new Music(soundInfo.FilePath);
-                music.Volume = _info.MusicVolume;
-                music.Loop = true;
-                music.Play();
+                _currentTrack?.Stop();
+                _currentTrack?.Dispose();
+                _currentTrack = new Music(soundInfo.FilePath);
+                _currentTrack.Volume = _info.MusicVolume;
+                _currentTrack.Loop = soundInfo.IsLooped;
+                _currentTrack.Play();
             }
         }
 
@@ -61,5 +68,7 @@ namespace FreeScape.Engine.Providers
             var sound = new PreloadedSound(info);
             _preloadSounds.Add(name, sound);
         }
+        
+        
     }
 }
