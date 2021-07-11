@@ -8,10 +8,6 @@ namespace FreeScape.Layers
         {
 
         }
-        public void Tick()
-        {
-
-        }
 
         public void Render()
         {

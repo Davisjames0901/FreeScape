@@ -47,10 +47,6 @@ namespace FreeScape.Layers
                     MouseClick();
             });
         }
-        public void Tick()
-        {
-
-        }
 
         private void GenerateButtons()
         {
@@ -110,11 +106,6 @@ namespace FreeScape.Layers
                     break;
                 }
             }
-        }
-
-        public void Render(RenderTarget target)
-        {
-            //PlayButton.Render(target);
         }
     }
 }

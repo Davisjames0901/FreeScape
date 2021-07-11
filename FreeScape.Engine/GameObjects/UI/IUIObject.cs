@@ -11,8 +11,6 @@ namespace FreeScape.Engine.GameObjects.UI
     public interface IUIObject : IGameObject
     {
         bool Hovered { get; set; }
-        void Render(RenderTarget target);
-        void Tick();
         void OnHover();
         void OnHoverEnd();
     }

@@ -20,7 +20,7 @@ namespace FreeScape.Engine.Render.Layers
 
         public abstract void Init();
 
-        public void Render(RenderTarget target)
+        public virtual void Render(RenderTarget target)
         {
             foreach(var UIObject in UIObjects)
             {
