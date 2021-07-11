@@ -1,7 +1,5 @@
 ﻿using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Providers;
-using SFML.System;
-using System;
 using System.Collections.Generic;
 using System.Numerics;
 

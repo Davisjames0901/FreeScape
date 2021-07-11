@@ -1,10 +1,6 @@
-using System;
-using FreeScape.Engine.Managers;
-using FreeScape.Engine.Physics;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Scenes;
 using FreeScape.Layers;
-using System.Collections.Generic;
 
 namespace FreeScape.Scenes
 {

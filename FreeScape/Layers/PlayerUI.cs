@@ -56,8 +56,7 @@ namespace FreeScape.Layers
         {
             var view = _displayManager.CurrentPerspective.View;
             //Vector2 homeButtonPos = Vector2.Lerp(HomeButton.Position, view.Center - (view.Size / 2) + (new Vector2(25, 25)), 0.025f);
-            Vector2 homeButtonPos = view.Center - (view.Size / 2) * 0.75f;
-            HomeButton.Position = homeButtonPos;
+            HomeButton.Position = view.Center - (view.Size / 2) * 0.75f;
             base.Tick();
         }
         private void CreateUIButtons()
