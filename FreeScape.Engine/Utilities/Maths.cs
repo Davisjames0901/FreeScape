@@ -12,9 +12,9 @@ namespace FreeScape.Engine.Utilities
 
         public static Vector2 Lerp(this Vector2 a, Vector2 b, float by, float maxEpsilon = 0.1f)
         {
+            
             if (a.NearEquals(b, maxEpsilon))
                 return b;
-            
             return Vector2.Lerp(a, b, by);
         }
         public static bool NearEquals(this Vector2 a, Vector2 b, float maxEpsilon = 0.1f)

@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
 using FreeScape.Engine.Utilities;
 using SFML.Graphics;
@@ -17,13 +18,15 @@ namespace FreeScape.Engine.Managers
     {
         private readonly GameInfo _info;
         private readonly GameManager _gameManager;
+        private readonly FrameTimeProvider _frameTime;
         private RenderWindow _renderTarget;
         private readonly List<Perspective> _perspectives;
         private bool _hasFocus = true;
         public Perspective CurrentPerspective { get; private set; }
 
-        public DisplayManager(GameInfo info, GameManager gameManager)
+        public DisplayManager(GameInfo info, GameManager gameManager, FrameTimeProvider frameTime)
         {
+            _frameTime = frameTime;
             _info = info;
             _gameManager = gameManager;
             _perspectives = new List<Perspective>();
@@ -49,7 +52,7 @@ namespace FreeScape.Engine.Managers
             _renderTarget?.Close();
             var videoMode = new VideoMode(_info.ScreenWidth, _info.ScreenHeight);
             _renderTarget = new RenderWindow(videoMode, _info.Name);
-            var view = new Perspective("main", new Vector2(0.0f, 0.0f), _info.ScreenSize, 3.0f);
+            var view = new Perspective("main", new Vector2(0.0f, 0.0f), _info.ScreenSize, 3.0f, _frameTime);
             _perspectives.Add(view);
             if(_info.VSyncEnabled)
                 _renderTarget.SetVerticalSyncEnabled(true);

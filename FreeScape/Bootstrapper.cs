@@ -19,10 +19,10 @@ namespace FreeScape
                 ScreenHeight = 1080,
                 ScreenWidth = 1920,
                 Name = "FreeScape",
-                VSyncEnabled = true,
-                RefreshRate = 288,
+                VSyncEnabled = false,
+                RefreshRate = 144,
                 SfxVolume = 100.0f,
-                MusicVolume = 100.0f,
+                MusicVolume = 10.0f,
                 AssetDirectory =
                     $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}{Path.DirectorySeparatorChar}Assets"
             };

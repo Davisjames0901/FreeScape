@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
@@ -9,10 +10,13 @@ namespace FreeScape.Engine.Render
 {
     public class Perspective : ITickable
     {
+        private readonly FrameTimeProvider _frameTime;
+
         private readonly Vector2 _screenSize;
         private IGameObject _target;
-        public Perspective(string name, Vector2 center, Vector2 size, float scale)
+        public Perspective(string name, Vector2 center, Vector2 size, float scale, FrameTimeProvider frameTime)
         {
+            _frameTime = frameTime;
             _screenSize = size;
             Name = name;
             View = new View(center, size/scale);
@@ -37,6 +41,10 @@ namespace FreeScape.Engine.Render
             if (_target != null)
             {
                 float speed = Scaling / 150;
+                var dt = (float)_frameTime.DeltaTimeMilliSeconds;
+                speed = (float)(1 - Math.Pow((double)speed, dt));
+                //speed -= dt;
+                Console.WriteLine($"Speed : {speed}, deltaTime : {dt}");
                 View.Center = Maths.Lerp(View.Center, _target.Position, speed, 0.1f);
             }
         }

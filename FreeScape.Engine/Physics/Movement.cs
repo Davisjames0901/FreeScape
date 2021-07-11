@@ -1,4 +1,4 @@
-﻿using FreeScape.Engine.Providers;
+using FreeScape.Engine.Providers;
 using System.Collections.Generic;
 using System.Numerics;
 using FreeScape.Engine.Physics.Colliders;
