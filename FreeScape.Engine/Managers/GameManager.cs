@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Threading;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FreeScape.Engine.Managers
 {
@@ -10,19 +8,15 @@ namespace FreeScape.Engine.Managers
         private Action _tick;
         private Action _render;
 
-        public GameManager()
-        {
-        }
-
         public void Start(Action tick, Action render)
         {
             _tick = tick;
             _render = render;
-
             _isRunning = true;
 
             if (OperatingSystem.IsLinux())
                 Platform.XInitThreads();
+            
             while (_isRunning)
             {
                 _tick();

@@ -2,9 +2,9 @@ using System.Runtime.InteropServices;
 
 namespace FreeScape.Engine
 {
-    public class Platform
+    internal static class Platform
     {
         [DllImport("X11")]
-        extern public static int XInitThreads();
+        internal static extern int XInitThreads();
     }
 }

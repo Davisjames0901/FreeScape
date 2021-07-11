@@ -7,7 +7,8 @@ namespace FreeScape.Engine.Physics
     public interface IMovable : IGameObject
     {
         float Weight { get; }
-        Vector2 Velocity { get; }
+        float Speed { get; }
+        Vector2 HeadingVector { get; }
         new Vector2 Position { get; set; }
     }
 }

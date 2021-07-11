@@ -1,10 +1,11 @@
 ﻿using System.Numerics;
 using FreeScape.Engine.Config.TileSet;
+using FreeScape.Engine.Physics;
 using SFML.Graphics;
 
 namespace FreeScape.Engine.GameObjects.Entities
 {
-    public class Tile : IGameObject, ICollider
+    public class Tile : IGameObject
     {
         private readonly CachedTileSetTile _tileInfo;
 

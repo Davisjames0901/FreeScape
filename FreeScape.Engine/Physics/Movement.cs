@@ -1,9 +1,7 @@
-﻿using FreeScape.Engine.GameObjects.Entities;
-using FreeScape.Engine.Providers;
-using SFML.System;
-using System;
+﻿using FreeScape.Engine.Providers;
 using System.Collections.Generic;
 using System.Numerics;
+using FreeScape.Engine.Physics.Colliders;
 
 namespace FreeScape.Engine.Physics
 {
@@ -20,36 +18,22 @@ namespace FreeScape.Engine.Physics
         public void BasicMove(IMovable movable)
         {
             var deltaTime = (float)_frameTime.DeltaTimeMilliSeconds;
-
-            var newPosition = new Vector2(movable.Position.X + (movable.Velocity.X * deltaTime), movable.Position.Y + (movable.Velocity.Y * deltaTime));
-            var isCollision = false;
-            foreach(ICollider collider in Colliders)
-            {
-                if (CheckCollision(newPosition, movable.Size) != null)
-                {
-                    isCollision = true;
-                }
-            }
-            if (!isCollision)
-            {
-                movable.Position = newPosition;
-            }
+            var velocity = movable.HeadingVector * movable.Speed;
+            var newPosition = movable.Position + velocity * deltaTime;
+            
+            if(movable is ICollidable collidable)
+                movable.Position = CheckCollision(collidable, movable, newPosition);
+            movable.Position = newPosition;
         }
 
-        public ICollider CheckCollision(Vector2 positionToCheck, Vector2 Size)
+        public Vector2 CheckCollision(ICollidable source, IMovable souceMovable, Vector2 desiredPosition)
         {
-            foreach (var collider in Colliders)
+            foreach (var target in Colliders)
             {
-                if (   positionToCheck.X + Size.X > collider.Position.X
-                    && positionToCheck.Y + Size.X > collider.Position.Y 
-                    && positionToCheck.X - Size.Y < collider.Position.X + collider.ColliderSize.X 
-                    && positionToCheck.Y - Size.Y < collider.Position.Y + collider.ColliderSize.Y)
-                {
-                    return collider;
-                }
+                //if()
             }
 
-            return null;
+            return desiredPosition;
         }
 
         public void RegisterCollider(ICollider collider)
