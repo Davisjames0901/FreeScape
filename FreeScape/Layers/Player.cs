@@ -12,9 +12,10 @@ using FreeScape.Scenes;
 
 namespace FreeScape.Layers
 {
-    public class Player : IMovable
+    public class Player: IMovable
     {
         private readonly ActionProvider _actionProvider;
+        private readonly DisplayManager _displayManager;
         public int ZIndex { get; set; }
         public float X { get; set; }
         public float Y { get; set; }
@@ -24,20 +25,16 @@ namespace FreeScape.Layers
         public float Speed { get; set; }
 
         private Vector2 _velocity = new (0, 0);
-        private Vector2 _position = new (500, 500);
+        private Vector2 _position = new (0, 0);
 
         public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
         public Vector2 Position { get { return _position; } set { _position = value; } }
 
         
-        public Player(ActionProvider actionProvider, SoundProvider soundProvider, TextureProvider textureProvider, SceneManager sceneManager)
+        public Player(ActionProvider actionProvider, SoundProvider soundProvider, TextureProvider textureProvider, SceneManager sceneManager, DisplayManager displayManager)
         {
             _actionProvider = actionProvider;
-            ZIndex = 999;
-            Velocity = new Vector2(0, 0);
-            Speed = 5.0f;
-            Size = new Vector2(3.0f, 3.0f);
-
+            _displayManager = displayManager;
 
 
             actionProvider.SubscribeOnPressed(a =>
@@ -47,6 +44,18 @@ namespace FreeScape.Layers
             });
             //_position = new Vector2(600, 600);
             
+        }
+
+        public void Init()
+        {
+
+            ZIndex = 999;
+            Velocity = new Vector2(0, 0);
+            Speed = 5.0f;
+            Size = new Vector2(3.0f, 3.0f);
+            _position = new Vector2(500, 500);
+
+            _displayManager.CurrentPerspective.View.Center = Position;
         }
 
         public void Tick()

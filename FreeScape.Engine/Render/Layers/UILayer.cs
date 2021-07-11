@@ -10,7 +10,7 @@ namespace FreeScape.Engine.Render.Layers
 {
     public abstract class UILayer : ILayer
     {
-        public List<IUIObject> UIObjects;
+        protected List<IUIObject> UIObjects;
         public int ZIndex { get; }
 
         public UILayer()
@@ -28,7 +28,7 @@ namespace FreeScape.Engine.Render.Layers
             }
         }
 
-        public void Tick()
+        public virtual void Tick()
         {
             foreach (var UIObject in UIObjects)
             {

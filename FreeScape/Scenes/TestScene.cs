@@ -33,8 +33,10 @@ namespace FreeScape.Scenes
 
             var map = _layerProvider.Provide<TestTileMap>();
             var entityLayer = _layerProvider.Provide<EntityLayer>();
+            var playerUI = _layerProvider.Provide<PlayerUI>();
             Layers.Add(map);
             Layers.Add(entityLayer);
+            Layers.Add(playerUI);
 
             _sounds.PlayMusic("cave");
         }

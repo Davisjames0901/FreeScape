@@ -19,7 +19,7 @@ namespace FreeScape
                 ScreenWidth = 1920,
                 Name = "FreeScape",
                 VSyncEnabled = true,
-                RefreshRate = 144,
+                RefreshRate = 288,
                 SfxVolume = 100.0f,
                 MusicVolume = 100.0f,
                 AssetDirectory =
@@ -32,6 +32,7 @@ namespace FreeScape
             services.AddTransient<MainMenuScene>();
             services.AddTransient<TestScene>();
             services.AddTransient<Player>();
+            services.AddTransient<PlayerUI>();
             services.AddTransient<TestTileMap>();
             services.AddTransient<EntityLayer>();
             services.AddTransient<MainMenuOptions>();
