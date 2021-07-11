@@ -57,8 +57,8 @@ namespace FreeScape.Engine.Config.Action
         }
         private MappedAction GetMappedAction(Dictionary<string, MappedAction> dict, string action)
         {
-            if (_currentActionMap == null)
-                throw new Exception("There is no action map selected");
+            if (dict == null)
+                return null;
             return !dict.ContainsKey(action) ? null : dict[action];
         }
     }

@@ -21,7 +21,7 @@ namespace FreeScape.Engine.Config.Map
         public Tile(Vector2 position, Vector2 size, CachedTileSetTile tileInfo, Texture texture)
         {
             _tileInfo = tileInfo;
-            Size = size.X;
+            Size = size;
             Position = position;
             ColliderSize = size;
             var tile = new Sprite(texture);

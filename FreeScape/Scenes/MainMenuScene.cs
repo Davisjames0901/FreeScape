@@ -15,7 +15,6 @@ namespace FreeScape.Scenes
         private readonly DisplayManager _displayManager;
         public MainMenuScene(ActionProvider actionProvider, LayerProvider layerProvider,  SoundProvider sounds, DisplayManager displayManager)
         {
-
             actionProvider.SwitchActionMap("MainMenu");
             _displayManager = displayManager;
             _layerProvider = layerProvider;
