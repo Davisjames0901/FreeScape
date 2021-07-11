@@ -26,10 +26,10 @@ namespace FreeScape.Layers
         public Vector2 Velocity { get { return _velocity; } set { _velocity = value; } }
         public Vector2 Position { get { return _position; } set { _position = value; } }
 
+
         
-        public Player(ActionProvider actionProvider, SoundProvider soundProvider)
+        public Player(ActionProvider actionProvider, SoundProvider soundProvider, TextureProvider textureProvider)
         {
-            
             _actionProvider = actionProvider;
             ZIndex = 999;
             Velocity = new Vector2(0, 0);
@@ -41,6 +41,7 @@ namespace FreeScape.Layers
                     soundProvider.PlaySound("punch");
             });
             //_position = new Vector2(600, 600);
+            
         }
 
         public void Tick()

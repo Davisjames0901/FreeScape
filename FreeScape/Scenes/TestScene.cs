@@ -13,7 +13,7 @@ namespace FreeScape.Scenes
         private readonly LayerProvider _layerProvider;
         private readonly SoundProvider _sounds;
 
-        public TestScene(ActionProvider actionProvider, LayerProvider layerProvider, SoundProvider sounds, Movement movement):base(movement)
+        public TestScene(ActionProvider actionProvider, LayerProvider layerProvider, SoundProvider sounds)
         {
             _layerProvider = layerProvider;
             _sounds = sounds;

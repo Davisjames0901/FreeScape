@@ -37,6 +37,8 @@ namespace FreeScape.Engine
             {
                 PropertyNameCaseInsensitive = true
             });
+            services.AddSingleton<GameObjectProvider>();
+            services.AddSingleton<UIObjectProvider>();
 
             services.AddScoped<ActionProvider>();
             services.AddScoped<GameObjectProvider>();
