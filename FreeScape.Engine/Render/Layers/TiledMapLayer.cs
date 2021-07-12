@@ -51,9 +51,17 @@ namespace FreeScape.Engine.Render.Layers
                 foreach (var num in chunk.Data)
                 {
                     var texture = tileSet.Tiles[num-1];
-                    var tile = new Tile(new Vector2((chunk.X + i%chunk.Width)*Map.TileWidth, (chunk.Y + i/chunk.Height)*Map.TileHeight), tileSize, texture, tileSet.Sheet);
-                    //if(texture.Properties.Any(x=>x.Name == "Collidable" && x.Value == "True"))
-                    //    _movement.Colliders.Add(tile);
+                    Tile tile;
+                    if (texture.Properties.Any(x => x.Name == "Collidable" && x.Type != "none"))
+                    {
+                        var ctile = new CollidableTile(new Vector2((chunk.X + i%chunk.Width)*Map.TileWidth, (chunk.Y + i/chunk.Height)*Map.TileHeight), tileSize, texture, tileSet.Sheet);
+                        _movement.Colliders.Add(ctile.Collider);
+                        tile = ctile;
+                    }
+                    else
+                    {
+                        tile = new Tile(new Vector2((chunk.X + i%chunk.Width)*Map.TileWidth, (chunk.Y + i/chunk.Height)*Map.TileHeight), tileSize, texture, tileSet.Sheet);
+                    }
                     Tiles.Add(tile);
                     i++;
                 }

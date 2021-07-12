@@ -59,8 +59,16 @@ namespace FreeScape.Engine.Utilities
             return 1;
         }
 
+        public static Vector2 GetVelocity(Vector2 headingVector, float speed, float deltaTime)
+        {
+            return headingVector * speed * deltaTime;
+        }
+
         public static Vector2 Floor(Vector2 v) => new Vector2((float)Math.Floor(v.X), (float)Math.Floor(v.Y));
         public static Vector2 Reverse(this Vector2 v) => new Vector2(v.Y, v.X);
+
+        public static bool IsGreaterThan(this Vector2 a, Vector2 b) => a.X > b.X && a.Y > b.Y;
+        public static bool IsLessThan(this Vector2 a, Vector2 b) => IsGreaterThan(b, a);
     }
 
 

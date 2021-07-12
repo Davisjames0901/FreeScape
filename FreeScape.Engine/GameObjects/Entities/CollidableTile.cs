@@ -11,9 +11,9 @@ namespace FreeScape.Engine.GameObjects.Entities
         public CollidableTile(Vector2 position, Vector2 size, CachedTileSetTile tileInfo, Texture texture) : base(
             position, size, tileInfo, texture)
         {
-            
+            Collider = new RectangleCollider(size, position);
         }
-
+        
         public ICollider Collider { get; }
     }
 }

@@ -2,6 +2,7 @@ using FreeScape.Engine.Providers;
 using System.Collections.Generic;
 using System.Numerics;
 using FreeScape.Engine.Physics.Colliders;
+using FreeScape.Engine.Utilities;
 
 namespace FreeScape.Engine.Physics
 {
@@ -18,21 +19,30 @@ namespace FreeScape.Engine.Physics
         public void BasicMove(IMovable movable)
         {
             var deltaTime = (float)_frameTime.DeltaTimeMilliSeconds;
-            var velocity = movable.HeadingVector * movable.Speed;
-            var newPosition = movable.Position + velocity * deltaTime;
-            
-            if(movable is ICollidable collidable)
-                movable.Position = CheckCollision(collidable, movable, newPosition);
-            movable.Position = newPosition;
+            var velocity = Maths.GetVelocity(movable.HeadingVector, movable.Speed, deltaTime);
+            var newPosition = movable.Position + velocity;
+            movable.Position = CheckCollision(movable, newPosition);
         }
 
-        public Vector2 CheckCollision(ICollidable source, IMovable souceMovable, Vector2 desiredPosition)
+        public Vector2 CheckCollision(IMovable sourceMovable, Vector2 desiredPosition)
         {
             foreach (var target in Colliders)
             {
-                //if()
+                if (target.Collides(desiredPosition))
+                {
+                    var onlyX = new Vector2(desiredPosition.X, sourceMovable.Position.Y);
+                    if (!target.Collides(onlyX))
+                    {
+                        return onlyX;
+                    }
+                    var onlyY = new Vector2(sourceMovable.Position.X, desiredPosition.Y);
+                    if (!target.Collides(onlyY))
+                    {
+                        return onlyY;
+                    }
+                    return sourceMovable.Position;
+                }
             }
-
             return desiredPosition;
         }
 

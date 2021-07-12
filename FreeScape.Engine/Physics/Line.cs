@@ -75,7 +75,7 @@ namespace FreeScape.Engine.Physics
 
             num = a2 * c1 - a1 * c2;
             var y = (num < 0 ? num - offset : num + offset) / denom;
-            return new Vector2(x, y);
+            return new Vector2(x - 0.5f, y - 0.5f);
         }
     }
 }

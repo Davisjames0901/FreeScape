@@ -32,12 +32,15 @@ namespace FreeScape.Engine.GameObjects.Entities
         public void Render(RenderTarget target)
         {
             target.Draw(Sprite);
-            // var rect = new RectangleShape(new Vector2(Size, Size));
-            // rect.Position = Sprite.Position;
-            // rect.FillColor = Color.Transparent;
-            // rect.OutlineThickness = 2;
-            // rect.OutlineColor = Color.Yellow;
-            // target.Draw(rect);
+            if (this is CollidableTile)
+            {
+                var rect = new RectangleShape(Vector2.Subtract(Size, new Vector2(2, 2)));
+                rect.Position = Sprite.Position;
+                rect.FillColor = Color.Transparent;
+                rect.OutlineThickness = 2;
+                rect.OutlineColor = Color.Yellow;
+                target.Draw(rect);
+            }
         }
 
         public void Tick()

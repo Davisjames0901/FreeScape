@@ -1,4 +1,5 @@
 using System.Numerics;
+using FreeScape.Engine.Utilities;
 
 namespace FreeScape.Engine.Physics.Colliders
 {
@@ -16,6 +17,11 @@ namespace FreeScape.Engine.Physics.Colliders
         public Vector2? GetIntersectionPoint(Line line)
         {
             return null;
+        }
+
+        public bool Collides(Vector2 point)
+        {
+            return point.IsGreaterThan(Position) && point.IsLessThan(Position + Size);
         }
     }
 }
