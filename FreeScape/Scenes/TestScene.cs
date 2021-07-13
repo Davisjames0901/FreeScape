@@ -8,6 +8,7 @@ namespace FreeScape.Scenes
     {
         private readonly LayerProvider _layerProvider;
         private readonly SoundProvider _sounds;
+        private MainMenuHome _pauseScreen;
 
         public TestScene(ActionProvider actionProvider, LayerProvider layerProvider, SoundProvider sounds)
         {
@@ -16,17 +17,19 @@ namespace FreeScape.Scenes
             actionProvider.SwitchActionMap("Player");
             actionProvider.SubscribeOnPressed(x =>
             {
-                if (x == "LeftClick")
+                if (x == "Pause")
                 {
-                    actionProvider.GetMouseWorldCoods();
+                    if (Layers.Contains(_pauseScreen))
+                        Layers.Remove(_pauseScreen);
+                    else
+                        Layers.Add(_pauseScreen);
                 }
             });
         }
 
-
         public override void Init()
         {
-
+            _pauseScreen = _layerProvider.Provide<MainMenuHome>();
             var map = _layerProvider.Provide<TestTileMap>();
             var entityLayer = _layerProvider.Provide<EntityLayer>();
             var playerUI = _layerProvider.Provide<PlayerUI>();

@@ -4,7 +4,6 @@ using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Layers;
 using FreeScape.Scenes;
-using SFML.Graphics;
 using System;
 using System.Numerics;
 using FreeScape.Engine.Config.UI;
@@ -98,7 +97,6 @@ namespace FreeScape.Layers
         public void MouseClick()
         {
             var mouseCoords = _actionProvider.GetMouseWorldCoods();
-            Console.WriteLine(mouseCoords);
             foreach (var UIObject in UIObjects)
             {
                 if (UIObject.Hovered && UIObject is IButton button)

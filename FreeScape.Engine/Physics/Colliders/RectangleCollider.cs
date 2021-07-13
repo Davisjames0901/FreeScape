@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using FreeScape.Engine.Utilities;
 
@@ -15,10 +16,10 @@ namespace FreeScape.Engine.Physics.Colliders
             Size = size;
             Position = position;
             _vertices = new List<Vector2>();
-            _vertices.Add(Position);
-            _vertices.Add(Position + new Vector2(Size.X, 0));
-            _vertices.Add(Position + Size);
-            _vertices.Add(Position + new Vector2(0, Size.Y));
+            _vertices.Add(Vector2.Zero);
+            _vertices.Add(new Vector2(Size.X, 0));
+            _vertices.Add(Size);
+            _vertices.Add(new Vector2(0, Size.Y));
         }
 
         public Vector2? GetIntersectionPoint(Line line)
@@ -29,6 +30,11 @@ namespace FreeScape.Engine.Physics.Colliders
         public bool Collides(Vector2 point)
         {
             return (Maths.Floor(point).IsGreaterThanOrEquals(Maths.Floor(Position))) && (Maths.Ceiling(point).IsLessThanOrEquals(Maths.Ceiling(Position + Size)));
+        }
+
+        public Vector2[] GetVerticesRelativeToPosition()
+        {
+            return _vertices.Select(x => x + Position).ToArray();
         }
     }
 }
