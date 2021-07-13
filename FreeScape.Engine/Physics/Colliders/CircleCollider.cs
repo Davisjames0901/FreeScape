@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using FreeScape.Engine.Utilities;
 
@@ -10,13 +11,22 @@ namespace FreeScape.Engine.Physics.Colliders
         public Vector2 Position { get; }
         public Vector2 Center { get; }
         public float Radius { get; }
-        public Vector2[] Vertices { get; }
+        private List<Vector2> _vertices;
+        public Vector2[] Vertices => _vertices.ToArray();
 
         public CircleCollider(Vector2 position, Vector2 center, float radius)
         {
             Position = position;
             Center = center;
             Radius = radius;
+
+            _vertices = new List<Vector2>();
+            var totalPoints = (int)radius * 3;
+            var degreeIncrements = 360 / totalPoints;
+            for (int i = 0; i < 360; i += degreeIncrements)
+            {
+                _vertices.Add(new Vector2((float)(radius * Math.Sin(i)), (float)(radius * Math.Cos(i))) + center);
+            }
         }
 
         public Vector2? GetIntersectionPoint(Line line)
@@ -27,7 +37,6 @@ namespace FreeScape.Engine.Physics.Colliders
         public bool Collides(Vector2 point)
         {
             var distance = Math.Sqrt(Math.Pow(point.X - Center.X, 2) + Math.Pow(point.Y - Center.Y, 2));
-            Console.WriteLine(distance);
             return distance < Radius;
         }
     }

@@ -20,8 +20,6 @@ namespace FreeScape
 
             game.Start<MainMenuScene>();
 
-                //(new Vector2((float)(radius * Math.Sin(k)), (float)(radius * Math.Cos(k))) + center);
-
         }
     }
 }
