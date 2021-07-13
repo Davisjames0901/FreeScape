@@ -7,6 +7,7 @@ namespace FreeScape.Engine.Physics.Colliders
     {
         public Vector2 Size { get; }
         public Vector2 Position { get; }
+        public Vector2[] Vertices { get; }
 
         public RectangleCollider(Vector2 size, Vector2 position)
         {
@@ -18,7 +19,7 @@ namespace FreeScape.Engine.Physics.Colliders
         {
             return null;
         }
-
+        
         public bool Collides(Vector2 point)
         {
             return (Maths.Floor(point).IsGreaterThanOrEquals(Maths.Floor(Position))) && (Maths.Ceiling(point).IsLessThanOrEquals(Maths.Ceiling(Position + Size)));

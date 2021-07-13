@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 using FreeScape.Engine;
 using FreeScape.Engine.Physics;
@@ -16,12 +18,10 @@ namespace FreeScape
             using var provider = collection.BuildServiceProvider();
             var game = provider.GetRequiredService<Game>();
 
-            var c = new RectangleCollider(new Vector2(10, 10), Vector2.Zero);
-            var test = c.Collides(Vector2.One);
-            //Console.WriteLine(line1.Intersection(line2));
-
             game.Start<MainMenuScene>();
-            
+
+                //(new Vector2((float)(radius * Math.Sin(k)), (float)(radius * Math.Cos(k))) + center);
+
         }
     }
 }

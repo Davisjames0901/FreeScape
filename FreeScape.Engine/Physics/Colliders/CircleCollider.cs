@@ -10,6 +10,7 @@ namespace FreeScape.Engine.Physics.Colliders
         public Vector2 Position { get; }
         public Vector2 Center { get; }
         public float Radius { get; }
+        public Vector2[] Vertices { get; }
 
         public CircleCollider(Vector2 position, Vector2 center, float radius)
         {
