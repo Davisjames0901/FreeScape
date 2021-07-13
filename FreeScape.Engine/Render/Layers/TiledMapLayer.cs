@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using FreeScape.Engine.GameObjects.Entities;
+using FreeScape.Engine.Config.TileSet;
 
 namespace FreeScape.Engine.Render.Layers
 {
@@ -37,32 +38,37 @@ namespace FreeScape.Engine.Render.Layers
 
         public void Init()
         {
-            var tileSize = new Vector2(Map.TileWidth, Map.TileHeight);
-            var tileSet = _tileSetProvider.GetTileSet(Map.TileSets.First().Source);
             // foreach (var i in tileSet.Tiles)
             // { 
             //     var tile = new Tile(pos, tileSize, i.Value, tileSet.Sheet);
             //     Tiles.Add(tile);
             //     pos += increment;
             // }
+            LoadTileLayer();
+        }
+        private void LoadTileLayer()
+        {
+            var tileSize = new Vector2(Map.TileWidth, Map.TileHeight);
+            var tileSet = _tileSetProvider.GetTileSet(Map.TileSets.First().Source);
             foreach (var chunk in Map.Layers.Where(x => x.Type == "tilelayer").SelectMany(x => x.Chunks))
             {
                 var i = 0;
                 foreach (var num in chunk.Data)
                 {
-                    var texture = tileSet.Tiles[num-1];
+                    var texture = tileSet.Tiles[num - 1];
                     Tile tile;
                     if (texture.Properties.Any(x => x.Name == "Collidable" && x.Type != "none"))
                     {
-                        var ctile = new CollidableTile(new Vector2((chunk.X + i%chunk.Width)*Map.TileWidth, (chunk.Y + i/chunk.Height)*Map.TileHeight), tileSize, texture, tileSet.Sheet);
+                        var ctile = new CollidableTile(new Vector2((chunk.X + i % chunk.Width) * Map.TileWidth, (chunk.Y + i / chunk.Height) * Map.TileHeight), tileSize, texture, tileSet.Sheet);
                         _movement.Colliders.Add(ctile.Collider);
                         tile = ctile;
                     }
                     else
                     {
-                        tile = new Tile(new Vector2((chunk.X + i%chunk.Width)*Map.TileWidth, (chunk.Y + i/chunk.Height)*Map.TileHeight), tileSize, texture, tileSet.Sheet);
+                        tile = new Tile(new Vector2((chunk.X + i % chunk.Width) * Map.TileWidth, (chunk.Y + i / chunk.Height) * Map.TileHeight), tileSize, texture, tileSet.Sheet);
                     }
                     Tiles.Add(tile);
+                    
                     i++;
                 }
             }

@@ -10,5 +10,7 @@ namespace FreeScape.Engine.Config.Map
         public string Name { get; set; }
         public bool Point { get; set; }
         public string Type { get; set; }
+        public double x { get; set; }
+        public double y { get; set; }
     }
 }

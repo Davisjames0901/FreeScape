@@ -65,10 +65,13 @@ namespace FreeScape.Engine.Utilities
         }
 
         public static Vector2 Floor(Vector2 v) => new Vector2((float)Math.Floor(v.X), (float)Math.Floor(v.Y));
+        public static Vector2 Ceiling(Vector2 v) => new Vector2((float)Math.Ceiling(v.X), (float)Math.Ceiling(v.Y));
         public static Vector2 Reverse(this Vector2 v) => new Vector2(v.Y, v.X);
 
         public static bool IsGreaterThan(this Vector2 a, Vector2 b) => a.X > b.X && a.Y > b.Y;
+        public static bool IsGreaterThanOrEquals(this Vector2 a, Vector2 b) => a.X >= b.X && a.Y >= b.Y;
         public static bool IsLessThan(this Vector2 a, Vector2 b) => IsGreaterThan(b, a);
+        public static bool IsLessThanOrEquals(this Vector2 a, Vector2 b) => IsGreaterThanOrEquals(b, a);
     }
 
 

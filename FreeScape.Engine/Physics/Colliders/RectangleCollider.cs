@@ -21,7 +21,7 @@ namespace FreeScape.Engine.Physics.Colliders
 
         public bool Collides(Vector2 point)
         {
-            return point.IsGreaterThan(Position) && point.IsLessThan(Position + Size);
+            return (Maths.Floor(point).IsGreaterThanOrEquals(Maths.Floor(Position))) && (Maths.Ceiling(point).IsLessThanOrEquals(Maths.Ceiling(Position + Size)));
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Numerics;
 using FreeScape.Scenes;
 using FreeScape.Engine.GameObjects;
 using FreeScape.GameObjects;
+using FreeScape.Engine.Config.Map;
 
 namespace FreeScape.Layers
 {
@@ -18,19 +19,19 @@ namespace FreeScape.Layers
         private readonly SceneManager _sceneManager;
         private readonly UIObjectProvider _uIObjectProvider;
         private readonly ActionProvider _actionProvider;
-
-        Button HomeButton;
-        EmptyGameObject pauseMenuLocation;
+        private readonly MapProvider _mapProvider;
 
         public override int ZIndex => 999;
+        public override MapInfo Map => _mapProvider.GetMap("TiledTestMap");
 
-        public EntityLayer(ActionProvider actionProvider, GameObjectProvider gameObjectProvider, DisplayManager displayManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider, Movement movement):base(movement)
+        public EntityLayer(ActionProvider actionProvider, GameObjectProvider gameObjectProvider, DisplayManager displayManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider, Movement movement, TileSetProvider tileSetProvider, MapProvider mapProvider):base(movement, tileSetProvider)
         {
             _actionProvider = actionProvider;
             _sceneManager = sceneManager;
             _gameObjectProvider = gameObjectProvider;
             _displayManager = displayManager;
             _uIObjectProvider = uIObjectProvider;
+            _mapProvider = mapProvider;
 
 
             actionProvider.SubscribeOnPressed(a =>
@@ -51,7 +52,7 @@ namespace FreeScape.Layers
             }
 
             _displayManager.Track(x => x.Name == "main", player);
-
+            base.Init();
         }
 
 

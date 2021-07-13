@@ -190,7 +190,7 @@
          "properties":[
                 {
                   "name":"Collidable",
-                  "type":"rect"
+                  "type":"circle"
                 }]
         }, 
         {
@@ -198,7 +198,7 @@
          "properties":[
                 {
                   "name":"Collidable",
-                  "type":"rect"
+                  "type":"circle"
                 }]
         }, 
         {
@@ -375,7 +375,7 @@
          "properties":[
                 {
                  "name":"Collidable",
-                 "type":"none"
+                 "type":"rect"
                 }]
         }, 
         {
