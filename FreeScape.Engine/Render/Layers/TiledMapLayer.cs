@@ -10,6 +10,7 @@ using System.Numerics;
 using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Config.TileSet;
 
+
 namespace FreeScape.Engine.Render.Layers
 {
     public abstract class TiledMapLayer : ILayer
@@ -48,29 +49,51 @@ namespace FreeScape.Engine.Render.Layers
         }
         private void LoadTileLayer()
         {
-            var tileSize = new Vector2(Map.TileWidth, Map.TileHeight);
-            var tileSet = _tileSetProvider.GetTileSet(Map.TileSets.First().Source);
-            foreach (var chunk in Map.Layers.Where(x => x.Type == "tilelayer").SelectMany(x => x.Chunks))
+            var tileSet = Map.TileSets.First();//
+            _tileSetProvider.GetTileSet(Map.TileSets.First().Image);
+
+            //CachedTileSet cachedTileSet = new CachedTileSet();
+            var mapObjectLayer = Map.Layers.Where(x => x.Type == "objectgroup").First();
+            var i = 0;
+            foreach (var mapObject in mapObjectLayer.Objects)
             {
-                var i = 0;
-                foreach (var num in chunk.Data)
+                TileSetTile mapObjectTile = tileSet.Tiles.ElementAt(mapObject.GId - 1);
+                if (mapObjectTile == null)
                 {
-                    var texture = tileSet.Tiles[num - 1];
-                    Tile tile;
-                    if (texture.Properties.Any(x => x.Name == "Collidable" && x.Type != "none"))
-                    {
-                        var ctile = new CollidableTile(new Vector2((chunk.X + i % chunk.Width) * Map.TileWidth, (chunk.Y + i / chunk.Height) * Map.TileHeight), tileSize, texture, tileSet.Sheet);
-                        _movement.Colliders.Add(ctile.Collider);
-                        tile = ctile;
-                    }
-                    else
-                    {
-                        tile = new Tile(new Vector2((chunk.X + i % chunk.Width) * Map.TileWidth, (chunk.Y + i / chunk.Height) * Map.TileHeight), tileSize, texture, tileSet.Sheet);
-                    }
-                    Tiles.Add(tile);
-                    
-                    i++;
+                    continue;
                 }
+                MapGameObject gameObject = null;
+                if (mapObjectTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
+                {
+
+                    var tileObjectGroup = mapObjectTile.ObjectGroup;
+                    var tileObjects = tileObjectGroup.Objects;
+                    foreach(var tileObject in tileObjects)
+                    {
+                        switch (tileObject.Type)
+                        {
+                            case "rectangle":
+                                //var ctile = new CollidableMapGameObject(
+                                //            new Vector2((float)mapObject.x, (float)(mapObject.y - mapObject.Height)),
+                                //            new Vector2((float)mapObject.Width, (float)mapObject.Height), 
+                                //            mapObjectTile, 
+                                //            tileSet.Sheet);
+                                //_movement.Colliders.Add(ctile.Collider);
+                                break;
+                            case "circle":
+
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    //
+                    //_movement.Colliders.Add(ctile.Collider);
+                    //gameObject = ctile;
+                }
+                Tiles.Add(gameObject);
+                i++;
             }
         }
 

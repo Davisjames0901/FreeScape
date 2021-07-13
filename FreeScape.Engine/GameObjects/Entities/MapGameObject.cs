@@ -17,7 +17,7 @@ namespace FreeScape.Engine.GameObjects.Entities
         public Vector2 ColliderSize { get; set; }
 
         public Sprite Sprite;
-        public MapGameObject(Vector2 position, Vector2 size, CachedTileSetTile tileInfo, Texture texture)
+        public MapGameObject(Vector2 position, Vector2 size, TileSetTile tileInfo, Texture texture)
         {
             _tileInfo = tileInfo;
             Size = size;

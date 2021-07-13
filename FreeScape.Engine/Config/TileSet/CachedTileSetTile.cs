@@ -6,10 +6,11 @@ namespace FreeScape.Engine.Config.TileSet
 {
     public class CachedTileSetTile
     {
-        public uint Id { get; set; }
         public IntRect TextureLocation { get; set; }
-        public Texture Texture { get; set; }
+        public uint Id { get; set; }
         public List<MapProperties> Properties { get; set; }
+        public TileObjectGroup ObjectGroup { get; set; }
+        public string Type { get; set; }
 
         public override string ToString()
         {

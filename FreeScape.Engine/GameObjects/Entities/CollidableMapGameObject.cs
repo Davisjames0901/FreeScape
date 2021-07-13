@@ -10,7 +10,7 @@ namespace FreeScape.Engine.GameObjects.Entities
     {
 
         public ICollider Collider { get; }
-        public CollidableMapGameObject(Vector2 position, Vector2 size, CachedTileSetTile tileInfo, Texture texture) : base(
+        public CollidableMapGameObject(Vector2 position, Vector2 size, TileSetTile tileInfo, Texture texture) : base(
             position, size, tileInfo, texture)
         {
 

@@ -7,5 +7,7 @@ namespace FreeScape.Engine.Config.TileSet
     {
         public uint Id { get; set; }
         public List<MapProperties> Properties { get; set; }
+        public TileObjectGroup ObjectGroup { get; set; }
+        public string Type { get; set; }
     }
 }

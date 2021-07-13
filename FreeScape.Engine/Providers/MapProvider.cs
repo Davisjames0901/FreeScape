@@ -35,6 +35,7 @@ namespace FreeScape.Engine.Providers
         private MapInfo ReadMapFile(string path)
         {
             var text = File.ReadAllText(path);
+            
             return JsonSerializer.Deserialize<MapInfo>(text, _options);
         }
     }

@@ -3,6 +3,7 @@ using FreeScape.Engine.Config.TileSet;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Physics;
+using FreeScape.Engine.Physics.Colliders;
 using FreeScape.Engine.Providers;
 using SFML.Graphics;
 using SFML.System;
@@ -32,39 +33,54 @@ namespace FreeScape.Engine.Render.Layers
 
         public virtual void Init()
         {
-            LoadObjectLayer();
+            //LoadObjectLayer();
         }
 
         public void LoadObjectLayer()
         {
 
-            var tileSet = _tileSetProvider.GetTileSet(Map.TileSets.First().Source);
+            var tileSet = Map.TileSets.First();//
+            _tileSetProvider.GetTileSet(Map.TileSets.First().Image);
+
+            //CachedTileSet cachedTileSet = new CachedTileSet();
             var mapObjectLayer = Map.Layers.Where(x => x.Type == "objectgroup").First();
             var i = 0;
             foreach (var mapObject in mapObjectLayer.Objects)
             {
-                CachedTileSetTile mapObjectTile;
-                if (tileSet.Tiles.ContainsKey((uint)mapObject.GId))
+                TileSetTile mapObjectTile = tileSet.Tiles.ElementAt(mapObject.GId - 1);
+                if (mapObjectTile == null)
                 {
-                    mapObjectTile = tileSet.Tiles[(uint)mapObject.GId - 1];
+                    continue;
                 }
-                else continue;
-                MapGameObject gameObject;
-                if (mapObjectTile.Properties.Any(x => x.Name == "Collidable" && x.Type == "circle"))
+                MapGameObject gameObject = null;
+                if (mapObjectTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
                 {
-                    var ctile = new CollidableMapGameObject(new Vector2((float)mapObject.x, (float)(mapObject.y - mapObject.Height)), new Vector2((float)mapObject.Width, (float)mapObject.Height), mapObjectTile, tileSet.Sheet);
-                    _movement.Colliders.Add(ctile.Collider);
-                    gameObject = ctile;
-                }
-                else if (mapObjectTile.Properties.Any(x => x.Name == "Collidable" && x.Type == "rect"))
-                {
-                    var ctile = new CollidableMapGameObject(new Vector2((float)mapObject.x, (float)(mapObject.y - mapObject.Height)), new Vector2((float)mapObject.Width, (float)mapObject.Height), mapObjectTile, tileSet.Sheet);
-                    _movement.Colliders.Add(ctile.Collider);
-                    gameObject = ctile;
-                }
-                else
-                {
-                    gameObject = new MapGameObject(new Vector2((float)mapObject.x, (float)(mapObject.y - mapObject.Height)), new Vector2((float)mapObject.Width, (float)mapObject.Height), mapObjectTile, tileSet.Sheet);
+
+                    var tileObjectGroup = mapObjectTile.ObjectGroup;
+                    var tileObjects = tileObjectGroup.Objects;
+                    foreach(var tileObject in tileObjects)
+                    {
+                        switch (tileObject.Type)
+                        {
+                            case "rectangle":
+                                //var ctile = new CollidableMapGameObject(
+                                //            new Vector2((float)mapObject.x, (float)(mapObject.y - mapObject.Height)),
+                                //            new Vector2((float)mapObject.Width, (float)mapObject.Height), 
+                                //            mapObjectTile, 
+                                //            tileSet.Sheet);
+                                //_movement.Colliders.Add(ctile.Collider);
+                                break;
+                            case "circle":
+
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    //
+                    //_movement.Colliders.Add(ctile.Collider);
+                    //gameObject = ctile;
                 }
                 GameObjects.Add(gameObject);
                 i++;

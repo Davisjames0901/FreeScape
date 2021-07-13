@@ -4,5 +4,6 @@ namespace FreeScape.Engine.Config.Map
     {
         public string Name { get; set; }
         public string Type { get; set; }
+        public bool Value { get; set; }
     }
 }
