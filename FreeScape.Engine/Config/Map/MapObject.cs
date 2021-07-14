@@ -12,5 +12,6 @@ namespace FreeScape.Engine.Config.Map
         public string Type { get; set; }
         public double x { get; set; }
         public double y { get; set; }
+        public double Rotation { get; set; }
     }
 }

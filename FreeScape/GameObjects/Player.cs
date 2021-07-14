@@ -43,11 +43,11 @@ namespace FreeScape.GameObjects
             Velocity = new Vector2(0, 0);
             Speed = 5.0f;
             Size = new Vector2(3.0f, 3.0f);
-            Position = new Vector2(500, 500);
+            Position = new Vector2(300, 500);
             _displayManager.CurrentPerspective.View.Center = Position;
             _shape = new CircleShape(Size.X);
             _shape.FillColor = Color.Red;
-            _collider = new CircleCollider(Position - Size / 2, Position / Size, Size.X);
+            _collider = new CircleCollider(Position, Position / Size, Size.X);
         }
 
         public void Tick()
@@ -62,7 +62,7 @@ namespace FreeScape.GameObjects
 
         public void Render(RenderTarget target)
         {
-            _shape.Position = Position - Size / 2;
+            _shape.Position = Position - Size;
             target.Draw(_shape);
         }
 

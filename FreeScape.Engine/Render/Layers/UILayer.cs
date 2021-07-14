@@ -11,7 +11,7 @@ namespace FreeScape.Engine.Render.Layers
     public abstract class UILayer : ILayer
     {
         protected List<IUIObject> UIObjects;
-        public int ZIndex { get; }
+        public int ZIndex { get; set; }
 
         public UILayer()
         {

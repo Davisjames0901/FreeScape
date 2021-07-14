@@ -1,8 +1,8 @@
 [
-    { "Action": "MoveUp", "Button": "Comma", "Device": "keyboard", "OnPressed": true, "OnReleased": true },   
+    { "Action": "MoveUp", "Button": "W", "Device": "keyboard", "OnPressed": true, "OnReleased": true },   
     { "Action": "MoveLeft", "Button": "A", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
-    { "Action": "MoveDown", "Button": "O", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
-    { "Action": "MoveRight", "Button": "E", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
+    { "Action": "MoveDown", "Button": "S", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
+    { "Action": "MoveRight", "Button": "D", "Device": "keyboard" , "OnPressed": true, "OnReleased": true },
     { "Action": "LeftClick", "Button": "Left", "Device": "mouse" , "OnPressed": true, "OnReleased": false },
-    { "Action": "Punch", "Button": "P", "Device": "keyboard" , "OnPressed": true, "OnReleased": false }
+    { "Action": "Punch", "Button": "F", "Device": "keyboard" , "OnPressed": true, "OnReleased": false }
 ]

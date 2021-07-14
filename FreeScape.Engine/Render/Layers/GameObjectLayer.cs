@@ -16,59 +16,75 @@ namespace FreeScape.Engine.Render.Layers
     public abstract class GameObjectLayer : ILayer
     {
 
-        private readonly TileSetProvider _tileSetProvider;
+        private readonly MapProvider _mapProvider;
         public abstract MapInfo Map { get; }
         public abstract int ZIndex { get; }
 
         public List<IGameObject> GameObjects;
+        public List<RectangleShape> _colliderDebugShapes;
 
         private Movement _movement;
 
-        public GameObjectLayer(Movement movement, TileSetProvider tileSetProvider)
+        public GameObjectLayer(Movement movement, MapProvider mapProvider)
         {
-            _tileSetProvider = tileSetProvider;
+            _mapProvider = mapProvider;
+            _colliderDebugShapes = new();
             _movement = movement;
             GameObjects = new List<IGameObject>();
         }
 
         public virtual void Init()
         {
-            //LoadObjectLayer();
+            LoadObjectLayer();
         }
 
         public void LoadObjectLayer()
         {
-
-            var tileSet = Map.TileSets.First();//
-            _tileSetProvider.GetTileSet(Map.TileSets.First().Image);
-
-            //CachedTileSet cachedTileSet = new CachedTileSet();
-            var mapObjectLayer = Map.Layers.Where(x => x.Type == "objectgroup").First();
-            var i = 0;
-            foreach (var mapObject in mapObjectLayer.Objects)
+            foreach (var mapGameObject in Map.Layers.Where(x => x.Type == "objectgroup" && x.Name == "TerrainObjects").First().Objects)
             {
-                TileSetTile mapObjectTile = tileSet.Tiles.ElementAt(mapObject.GId - 1);
-                if (mapObjectTile == null)
+                CachedTileSetTile tileSetTile = _mapProvider.GetTileSetTileById(mapGameObject.GId - 1);
+                CachedTileSet tileSet = _mapProvider.GetTileSetByTileId(mapGameObject.GId - 1);
+                if (tileSetTile == null)
                 {
                     continue;
                 }
                 MapGameObject gameObject = null;
-                if (mapObjectTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
-                {
 
-                    var tileObjectGroup = mapObjectTile.ObjectGroup;
-                    var tileObjects = tileObjectGroup.Objects;
-                    foreach(var tileObject in tileObjects)
+                var objectPosition = new Vector2((float)mapGameObject.x, (float)mapGameObject.y - (float)mapGameObject.Height);
+                var objectSize = new Vector2((float)mapGameObject.Width, (float)mapGameObject.Height);
+                var objectRotation = 0; // (float)mapGameObject.Rotation;
+                var scale = objectSize / (new Vector2(tileSet.TileWidth, tileSet.TileHeight));
+                if (tileSetTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
+                {
+                    foreach (var tileObject in tileSetTile.ObjectGroup.Objects)
                     {
                         switch (tileObject.Type)
                         {
+                            case "tile":
+                                RectangleCollider tileCollider = new RectangleCollider((new Vector2(tileObject.Width, tileObject.Height) * scale), objectPosition + (new Vector2(tileObject.X, tileObject.Y) * scale));
+                                _movement.Colliders.Add(tileCollider);
+                                var tileColliderShape = new RectangleShape();
+                                tileColliderShape.Position = tileCollider.Position;
+                                tileColliderShape.Size = tileCollider.Size;
+                                tileColliderShape.FillColor = Color.Transparent;
+                                tileColliderShape.OutlineColor = Color.Red;
+                                tileColliderShape.OutlineThickness = 1;
+                                //tileColliderShape.Rotation = objectRotation;
+                                _colliderDebugShapes.Add(tileColliderShape);
+
+                                break;
                             case "rectangle":
-                                //var ctile = new CollidableMapGameObject(
-                                //            new Vector2((float)mapObject.x, (float)(mapObject.y - mapObject.Height)),
-                                //            new Vector2((float)mapObject.Width, (float)mapObject.Height), 
-                                //            mapObjectTile, 
-                                //            tileSet.Sheet);
-                                //_movement.Colliders.Add(ctile.Collider);
+                                RectangleCollider rectCollider = new RectangleCollider((new Vector2(tileObject.Width, tileObject.Height) * scale), objectPosition + (new Vector2(tileObject.X, tileObject.Y) * scale));
+                                _movement.Colliders.Add(rectCollider);
+                                var rShape = new RectangleShape();
+
+                                rShape.Position = rectCollider.Position;
+                                rShape.Size = rectCollider.Size;
+                                rShape.FillColor = Color.Transparent;
+                                rShape.OutlineColor = Color.Red;
+                                rShape.OutlineThickness = 1;
+                                _colliderDebugShapes.Add(rShape);
+
                                 break;
                             case "circle":
 
@@ -82,8 +98,13 @@ namespace FreeScape.Engine.Render.Layers
                     //_movement.Colliders.Add(ctile.Collider);
                     //gameObject = ctile;
                 }
+                gameObject = new MapGameObject(
+                                        objectPosition,
+                                        objectSize,
+                                        objectRotation,
+                                        tileSetTile,
+                                        tileSet.Sheet);
                 GameObjects.Add(gameObject);
-                i++;
             }
         }
 
@@ -92,6 +113,10 @@ namespace FreeScape.Engine.Render.Layers
             foreach (var gameObject in GameObjects)
             {
                 gameObject.Render(target);
+            }
+            foreach (var rshape in _colliderDebugShapes)
+            {
+                target.Draw(rshape);
             }
         }
 

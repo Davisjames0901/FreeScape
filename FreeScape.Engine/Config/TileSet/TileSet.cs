@@ -12,10 +12,10 @@ namespace FreeScape.Engine.Config.Map
         public int ImageHeight { get; set; }
         public int ImageWidth { get; set; }
         public int Margin { get; set; }
-        public string Spacing { get; set; }
-        public string TileCount { get; set; }
-        public string TileHeight { get; set; }
-        public string TileWidth { get; set; }
+        public int Spacing { get; set; }
+        public int TileCount { get; set; }
+        public int TileHeight { get; set; }
+        public int TileWidth { get; set; }
         public List<TileSetTile> Tiles { get; set; }
     }
 }

@@ -13,15 +13,16 @@ namespace FreeScape.Engine.GameObjects.Entities
         public Vector2 Size { get; set; }
         public bool Collidable { get; set; }
         public Vector2 Position { get; set; }
-
+        public float Rotation { get; set; }
         public Vector2 ColliderSize { get; set; }
 
         public Sprite Sprite;
-        public MapGameObject(Vector2 position, Vector2 size, TileSetTile tileInfo, Texture texture)
+        public MapGameObject(Vector2 position, Vector2 size, float rotation, CachedTileSetTile tileInfo, Texture texture)
         {
             _tileInfo = tileInfo;
             Size = size;
             Position = position;
+            Rotation = rotation;
             ColliderSize = size;
             var tile = new Sprite(texture);
             tile.TextureRect = tileInfo.TextureLocation;
@@ -34,6 +35,7 @@ namespace FreeScape.Engine.GameObjects.Entities
         {
             var scale = Size / (new Vector2(Sprite.TextureRect.Width, Sprite.TextureRect.Height));
             Sprite.Scale = scale;
+            Sprite.Rotation = Rotation;
             target.Draw(Sprite);
             if (this is CollidableMapGameObject)
             {

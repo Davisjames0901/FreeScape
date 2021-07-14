@@ -28,7 +28,7 @@ namespace FreeScape.Layers
             _gameObjectProvider = gameObjectProvider;
             _displayManager = displayManager;
             _uIObjectProvider = uIObjectProvider;
-
+            ZIndex = 9999;
             actionProvider.SubscribeOnPressed(a =>
             {
                 if (a == "LeftClick")
