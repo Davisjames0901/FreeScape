@@ -13,6 +13,8 @@ namespace FreeScape.Engine.Config.TileSet
         public List<MapProperties> Properties { get; set; }
         public TileObjectGroup ObjectGroup { get; set; }
         public string Type { get; set; }
+
+        public List<AnimationFrame> Animation;
         public override string ToString()
         {
             return $"Id: {Id}; Location: {TextureLocation}";

@@ -58,6 +58,7 @@ namespace FreeScape.Engine.Render.Layers
                 {
                     foreach (var tileObject in tileSetTile.ObjectGroup.Objects)
                     {
+                        
                         switch (tileObject.Type)
                         {
                             case "tile":
@@ -110,7 +111,7 @@ namespace FreeScape.Engine.Render.Layers
 
         public void Render(RenderTarget target)
         {
-            foreach (var gameObject in GameObjects)
+            foreach (var gameObject in GameObjects.OrderBy(x => x.Position.Y + x.Size.Y))
             {
                 gameObject.Render(target);
             }

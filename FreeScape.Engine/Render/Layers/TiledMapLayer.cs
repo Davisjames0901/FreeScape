@@ -35,7 +35,7 @@ namespace FreeScape.Engine.Render.Layers
 
         public virtual void Render(RenderTarget target)
         {
-            foreach (var tile in Tiles)
+            foreach (var tile in Tiles.OrderBy(x => x.Position.Y))
             {
                 RenderTile(target, tile);
             }

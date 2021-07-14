@@ -98,7 +98,7 @@ namespace FreeScape.Engine.Providers
                     string texturePath = tile.Image;
                 }
 
-
+                tileSetTile.Animation = tile.Animation;
                 tileSetTile.Id = tile.Id;
                 tileSetTile.Properties = tile.Properties;
                 tileSetTile.ObjectGroup = tile.ObjectGroup;
