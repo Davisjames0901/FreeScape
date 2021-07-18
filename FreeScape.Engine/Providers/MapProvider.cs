@@ -19,11 +19,15 @@ namespace FreeScape.Engine.Providers
         private readonly Dictionary<string, MapInfo> _maps;
         private readonly Dictionary<string, CachedTileSet> _tileSets;
         private readonly GameInfo _gameInfo;
+        private readonly AnimationProvider _animationProvider;
 
-        public MapProvider(GameInfo gameInfo, JsonSerializerOptions options)
+        public string CurrentMapName { get; set; }
+
+        public MapProvider(GameInfo gameInfo, JsonSerializerOptions options, AnimationProvider animationProvider)
         {
             _options = options;
             _gameInfo = gameInfo;
+            _animationProvider = animationProvider;
             _maps = new Dictionary<string, MapInfo>();
             _tileSets = new Dictionary<string, CachedTileSet>();
             foreach (var file in Directory.EnumerateFiles(gameInfo.MapDirectory)
@@ -75,7 +79,7 @@ namespace FreeScape.Engine.Providers
             var i = 0;
             foreach(var tile in tileSet.Tiles)
             {
-                var tileSetTile = new CachedTileSetTile();
+                var cachedTileSetTile = new CachedTileSetTile();
 
                 if (tileSet.Image != null)
                 {
@@ -83,39 +87,52 @@ namespace FreeScape.Engine.Providers
                     var tileSize = new Vector2(tileSet.TileWidth, tileSet.TileWidth);
                     var imageSize = new Vector2(tileSet.ImageWidth, tileSet.ImageHeight);
                     imageSize = Maths.Floor(imageSize / tileSize) * tileSize;
-                    if(i == 44)
-                    {
-                        Console.WriteLine();
-                    }
                     var tileLocation = new Vector2(tile.Id % tileSet.Columns, (int)Math.Floor((float)tile.Id / tileSet.Columns)) * tileSize;
                     IntRect textureLocation = new IntRect(tileLocation,
                                                         new Vector2(tileSet.TileWidth, tileSet.TileHeight));
-                    tileSetTile.TextureLocation = textureLocation;
+                    cachedTileSetTile.UsesSheet = true;
+                    cachedTileSetTile.TextureLocation = textureLocation;
                 }
                 else
                 {
-
-                    string texturePath = tile.Image;
+                    cachedTileSetTile.UsesSheet = false;
+                    var newTexture = new Texture($"{ _gameInfo.TextureDirectory }{ Path.DirectorySeparatorChar}{ tile.Image}");
+                    cachedTileSetTile.ImageHeight = tile.ImageHeight;
+                    cachedTileSetTile.ImageWidth = tile.ImageWidth;
+                    cachedTileSetTile.ImageTexture = newTexture;
                 }
 
-                tileSetTile.Animation = tile.Animation;
-                tileSetTile.Id = tile.Id;
-                tileSetTile.Properties = tile.Properties;
-                tileSetTile.ObjectGroup = tile.ObjectGroup;
-                tileSetTile.Type = tile.Type;
-                tileSetTile.TileSetName = tileSet.Name;
-                cachedTileSetTiles.Add(tile.Id, tileSetTile);
+                cachedTileSetTile.Animation = tile.Animation;
+                cachedTileSetTile.Id = tile.Id;
+                cachedTileSetTile.Properties = tile.Properties;
+                cachedTileSetTile.ObjectGroup = tile.ObjectGroup;
+                cachedTileSetTile.Type = tile.Type;
+                cachedTileSetTile.TileSetName = tileSet.Name;
+                cachedTileSetTiles.Add(tile.Id, cachedTileSetTile);
+                if (cachedTileSetTile.Animation is not null)
+                {
+                    _animationProvider.CreateAndAddAnimation(cachedTileSetTile);
+                }
                 i++;
             }
             return cachedTileSetTiles;
         }
-        public CachedTileSet GetTileSetByTileId(int id)
+        public CachedTileSet GetTileSet(string tileSetName)
+        {
+            if (_tileSets.TryGetValue(CurrentMapName + ":" + tileSetName, out CachedTileSet tileSet))
+            {
+                return tileSet;
+            }
+            else
+                throw new Exception($"TileSet does not exist with name {tileSetName}");
+        }
+        public CachedTileSet GetTileSetBy(int tileId)
         {
 
             foreach (var tileSet in _tileSets.OrderBy(x => x.Value.FirstGid))
             {
                 //Check the ID of the tile vs the tileSet's largest ID. If our tile ID is larger, it's not in this tileset
-                if (id > tileSet.Value.FirstGid + tileSet.Value.Tiles.OrderByDescending(x => x.Value.Id).FirstOrDefault().Value.Id)
+                if (tileId > tileSet.Value.FirstGid + tileSet.Value.Tiles.OrderByDescending(x => x.Value.Id).FirstOrDefault().Value.Id)
                     continue;
 
                 return tileSet.Value;
@@ -123,19 +140,21 @@ namespace FreeScape.Engine.Providers
 
             return null;
         }
-        public CachedTileSetTile GetTileSetTileById(int id)
+        public CachedTileSetTile GetTileSetTile(string tileSetName, int tileId)
         {
-            //TODO send the map name to speed things up
-            //Check each tileset in an ascending order based on the FirstGid property.
-            foreach (var tileSet in _tileSets.OrderBy(x => x.Value.FirstGid))
+            var tileSet = GetTileSet(tileSetName);
+            if (tileSet.Tiles.TryGetValue((uint)tileId, out CachedTileSetTile tile))
             {
-                //Check the ID of the tile vs the tileSet's largest ID. If our tile ID is larger, it's not in this tileset
-                if (id > tileSet.Value.FirstGid + tileSet.Value.Tiles.OrderByDescending(x => x.Value.Id).FirstOrDefault().Value.Id)
-                    continue;
-                if (tileSet.Value.Tiles.TryGetValue((uint)id, out CachedTileSetTile tile))
-                {
-                    return tile;
-                }
+                return tile;
+            }
+
+            return null;
+        }
+        public CachedTileSetTile GetTileSetTile(CachedTileSet tileSet, int tileId)
+        {
+            if (tileSet.Tiles.TryGetValue((uint)tileId, out CachedTileSetTile tile))
+            {
+                return tile;
             }
 
             return null;
@@ -144,7 +163,10 @@ namespace FreeScape.Engine.Providers
         public MapInfo GetMap(string mapName)
         {
             if (_maps.ContainsKey(mapName))
+            {
+                CurrentMapName = mapName;
                 return _maps[mapName];
+            }
             return null;
         }
 

@@ -9,6 +9,7 @@ namespace FreeScape.Engine.GameObjects.UI
 {
     public class Button : IRenderable, IButton
     {
+        public Vector2 Scale { get; set; } = Vector2.One;
         public Vector2 Position { get; set; }
         public Vector2 Size { get; set; }
         public Texture ButtonTextureDefault { get; set; }

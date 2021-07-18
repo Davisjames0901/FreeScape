@@ -42,8 +42,8 @@ namespace FreeScape.Engine.Render.Layers
         {
             foreach (var mapGameObject in Map.Layers.Where(x => x.Type == "objectgroup" && x.Name == "TerrainObjects").First().Objects)
             {
-                CachedTileSetTile tileSetTile = _mapProvider.GetTileSetTileById(mapGameObject.GId - 1);
-                CachedTileSet tileSet = _mapProvider.GetTileSetByTileId(mapGameObject.GId - 1);
+                CachedTileSet tileSet = _mapProvider.GetTileSetBy(mapGameObject.GId);
+                CachedTileSetTile tileSetTile = _mapProvider.GetTileSetTile(tileSet, mapGameObject.GId - tileSet.FirstGid);
                 if (tileSetTile == null)
                 {
                     continue;
@@ -54,7 +54,7 @@ namespace FreeScape.Engine.Render.Layers
                 var objectSize = new Vector2((float)mapGameObject.Width, (float)mapGameObject.Height);
                 var objectRotation = 0; // (float)mapGameObject.Rotation;
                 var scale = objectSize / (new Vector2(tileSet.TileWidth, tileSet.TileHeight));
-                if (tileSetTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
+                if (tileSetTile.Properties != null && tileSetTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
                 {
                     foreach (var tileObject in tileSetTile.ObjectGroup.Objects)
                     {
@@ -99,12 +99,14 @@ namespace FreeScape.Engine.Render.Layers
                     //_movement.Colliders.Add(ctile.Collider);
                     //gameObject = ctile;
                 }
-                gameObject = new MapGameObject(
-                                        objectPosition,
-                                        objectSize,
-                                        objectRotation,
-                                        tileSetTile,
-                                        tileSet.Sheet);
+                if (tileSetTile.UsesSheet)
+                {
+                    gameObject = new MapGameObject(objectPosition, objectSize, scale, objectRotation, tileSetTile, tileSet.Sheet);
+                }
+                else if (!tileSetTile.UsesSheet)
+                {
+                    gameObject = new MapGameObject(objectPosition, objectSize, scale, objectRotation, tileSetTile);
+                }
                 GameObjects.Add(gameObject);
             }
         }

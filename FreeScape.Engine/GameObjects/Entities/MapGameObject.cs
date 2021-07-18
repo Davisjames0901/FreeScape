@@ -10,26 +10,42 @@ namespace FreeScape.Engine.GameObjects.Entities
     {
         private readonly CachedTileSetTile _tileInfo;
 
+        public Vector2 Scale { get; set; } = Vector2.One;
         public Vector2 Size { get; set; }
         public bool Collidable { get; set; }
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
         public Vector2 ColliderSize { get; set; }
-
+        private bool _usesSheet { get; set; }
         public Sprite Sprite;
-        public MapGameObject(Vector2 position, Vector2 size, float rotation, CachedTileSetTile tileInfo, Texture texture)
+        public MapGameObject(Vector2 position, Vector2 size, Vector2 scale, float rotation, CachedTileSetTile tileInfo, Texture texture)
         {
             _tileInfo = tileInfo;
+            _usesSheet = tileInfo.UsesSheet;
             Size = size;
+            Scale = scale;
             Position = position;
             Rotation = rotation;
             ColliderSize = size;
             var tile = new Sprite(texture);
             tile.TextureRect = tileInfo.TextureLocation;
-
             tile.Texture = texture;
             tile.Position = new Vector2(Position.X, Position.Y);
             Sprite = tile;
+        }
+        public MapGameObject(Vector2 position, Vector2 size, Vector2 scale, float rotation, CachedTileSetTile tileInfo)
+        {
+            _tileInfo = tileInfo;
+            _usesSheet = tileInfo.UsesSheet;
+            Size = size;
+            Scale = scale;
+            Position = position;
+            Rotation = rotation;
+            ColliderSize = size;
+            Sprite = new Sprite();
+            Sprite.Texture = tileInfo.ImageTexture;
+            Sprite.Position = position;
+            Sprite.Origin = new Vector2(0, 0);
         }
         public void Render(RenderTarget target)
         {
@@ -37,15 +53,6 @@ namespace FreeScape.Engine.GameObjects.Entities
             Sprite.Scale = scale;
             Sprite.Rotation = Rotation;
             target.Draw(Sprite);
-            if (this is CollidableMapGameObject)
-            {
-                var circ = new CircleShape(Size.X/2);
-                circ.Position = Sprite.Position;
-                circ.FillColor = Color.Transparent;
-                circ.OutlineThickness = 2;
-                circ.OutlineColor = Color.Yellow;
-                target.Draw(circ);
-            }
         }
 
         public void Tick()

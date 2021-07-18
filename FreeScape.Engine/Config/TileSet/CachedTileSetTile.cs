@@ -15,6 +15,11 @@ namespace FreeScape.Engine.Config.TileSet
         public string Type { get; set; }
 
         public List<AnimationFrame> Animation;
+        public float ImageWidth { get; set; }
+        public float ImageHeight { get; set; }
+        public Texture ImageTexture { get; set; }
+        public bool UsesSheet { get; set; }
+        public RectangleShape RectangleShape { get; set; }
         public override string ToString()
         {
             return $"Id: {Id}; Location: {TextureLocation}";

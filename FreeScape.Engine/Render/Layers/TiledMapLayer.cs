@@ -63,8 +63,8 @@ namespace FreeScape.Engine.Render.Layers
                 var i = 0;
                 foreach(var num in chunk.Data) 
                 {
-                    CachedTileSetTile tileSetTile = _mapProvider.GetTileSetTileById((int)num - 1);
-                    CachedTileSet tileSet = _mapProvider.GetTileSetByTileId((int)num - 1);
+                    CachedTileSet tileSet = _mapProvider.GetTileSetBy((int)num);
+                    CachedTileSetTile tileSetTile = _mapProvider.GetTileSetTile(tileSet, (int)num - tileSet.FirstGid);
                     if (tileSetTile == null)
                     {
                         continue;

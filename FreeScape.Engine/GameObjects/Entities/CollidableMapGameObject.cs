@@ -10,8 +10,8 @@ namespace FreeScape.Engine.GameObjects.Entities
     {
 
         public ICollider Collider { get; }
-        public CollidableMapGameObject(Vector2 position, Vector2 size, float rotation, CachedTileSetTile tileInfo, Texture texture) : base(
-            position, size, rotation, tileInfo, texture)
+        public CollidableMapGameObject(Vector2 position, Vector2 size, Vector2 scale, float rotation, CachedTileSetTile tileInfo, Texture texture) : base(
+            position, size, scale, rotation, tileInfo, texture)
         {
 
             Collider = new CircleCollider( position, position + (size/2), size.X/2);
