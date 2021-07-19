@@ -100,6 +100,7 @@ namespace FreeScape.Engine.Providers
 
         private void OnKeyPressed(object sender, KeyEventArgs args)
         {
+            Console.WriteLine(args);
             var actionName = _actionResolver.GetAction(args.Code);
             var action = _actionMap.GetMappedPressedAction(actionName);
             if(action == null)

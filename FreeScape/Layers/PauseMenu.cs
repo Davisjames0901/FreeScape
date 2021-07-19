@@ -1,16 +1,16 @@
-﻿using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.GameObjects.UI;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Layers;
 using FreeScape.Scenes;
-using System;
 using System.Numerics;
 using FreeScape.Engine.Config.UI;
+using SFML.Graphics;
 
 namespace FreeScape.Layers
 {
-    public class MainMenuHome : UILayer
+    public class PauseMenu : UILayer
     {
         private readonly ActionProvider _actionProvider;
         private readonly SceneManager _sceneManager;
@@ -22,32 +22,43 @@ namespace FreeScape.Layers
         Button BackButton;
         EmptyGameObject MainMenuCenter;
         EmptyGameObject MainMenuSettingsCenter;
-        public MainMenuHome(ActionProvider actionProvider, GameManager gameManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider)
+        private bool _isHidden;
+        public override int ZIndex => 99999999;
+
+        public PauseMenu(ActionProvider actionProvider, GameManager gameManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider)
         {
             _actionProvider = actionProvider;
             _sceneManager = sceneManager;
             _uIObjectProvider = uIObjectProvider;
             _gameManager = gameManager;
         }
-
-        public override int ZIndex => 999;
-
         public override void Init()
         {
             MainMenuCenter = new EmptyGameObject();
             MainMenuSettingsCenter = new EmptyGameObject();
             MainMenuCenter.Position = new Vector2(50, 125);
             MainMenuSettingsCenter.Position = new Vector2(550, 125);
-
-            _sceneManager.SetPerspectiveTarget("main", MainMenuCenter);
-            _sceneManager.SetPerspectiveCenter(MainMenuCenter.Position);
+            _isHidden = true;
 
             GenerateButtons();
-
+            
             _actionProvider.SubscribeOnPressed(a =>
             {
                 if (a == "LeftClick")
                     MouseClick();
+                if (a == "Pause")
+                {
+                    if (_isHidden)
+                    {
+                        _actionProvider.SwitchActionMap("MainMenu");
+                        _isHidden = false;
+                    }
+                    else
+                    {
+                        _actionProvider.SwitchActionMap("Player");
+                        _isHidden = true;
+                    }
+                }
             });
         }
 
@@ -97,12 +108,20 @@ namespace FreeScape.Layers
             UIObjects.Add(QuitButton);
         }
 
+        public override void Render(RenderTarget target)
+        {
+            
+            foreach (var item in UIObjects)
+            {
+                item.Render(target);
+            }
+        }
+
         public void MouseClick()
         {
-            var mouseCoords = _actionProvider.GetMouseWorldCoods();
-            foreach (var UIObject in UIObjects)
+            foreach (var uiObject in UIObjects)
             {
-                if (UIObject.Hovered && UIObject is IButton button)
+                if (uiObject.Hovered && uiObject is IButton button)
                 {
                     button.OnClick();
                     break;

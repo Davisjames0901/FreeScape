@@ -21,6 +21,7 @@ namespace FreeScape.Layers
 
         Button HomeButton;
         EmptyGameObject pauseMenuLocation;
+        
         public PlayerUI(ActionProvider actionProvider, GameObjectProvider gameObjectProvider, DisplayManager displayManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider)
         {
             _actionProvider = actionProvider;
@@ -51,6 +52,8 @@ namespace FreeScape.Layers
                 }
             }
         }
+
+        public override int ZIndex { get; }
 
         public override void Tick()
         {
