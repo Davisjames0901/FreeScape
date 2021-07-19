@@ -33,6 +33,7 @@ namespace FreeScape
             services.AddTransient<MainMenuScene>();
             services.AddTransient<TestScene>();
             services.AddTransient<Player>();
+            services.AddTransient<PlayerUI>();
             services.AddTransient<TestTileMap>();
             services.AddTransient<EntityLayer>();
             services.AddTransient<MainMenuOptions>();

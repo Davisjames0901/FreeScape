@@ -8,6 +8,7 @@ namespace FreeScape.Engine.GameObjects
     {
         Vector2 Size { get; }
         Vector2 Position { get; }
+        Vector2 Scale { get; }
 
         public abstract void Init();
 

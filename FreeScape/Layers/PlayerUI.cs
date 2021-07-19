@@ -29,7 +29,7 @@ namespace FreeScape.Layers
             _gameObjectProvider = gameObjectProvider;
             _displayManager = displayManager;
             _uIObjectProvider = uIObjectProvider;
-
+            ZIndex = 9999;
             actionProvider.SubscribeOnPressed(a =>
             {
                 if (a == "LeftClick")
@@ -69,8 +69,7 @@ namespace FreeScape.Layers
             homeButtonInfo.Size = new Vector2(50, 25);
             homeButtonInfo.Name = "homebutton";
             homeButtonInfo.OnClickAction = () => { _sceneManager.SetScene<MainMenuScene>(); };
-            homeButtonInfo.ButtonTextureDefault = "Buttons/Blue/Text/Home";
-            homeButtonInfo.ButtonTextureHover = "Buttons/Orange/Text/Home";
+            homeButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Menu";
 
             HomeButton = _uIObjectProvider.CreateButton(homeButtonInfo);
 

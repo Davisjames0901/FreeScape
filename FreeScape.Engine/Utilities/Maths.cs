@@ -37,7 +37,7 @@ namespace FreeScape.Engine.Utilities
             var vec = new Vector2(GetXMovement(left, right), GetYMovement(up, down));
             //Detects a diagonal so we have to divide by two so speed isnt doubled
             if (vec.X != 0 && vec.Y != 0)
-                return vec / 2;
+                return vec / (float)1.75;
             return vec;
         }
         

@@ -1,44 +1,60 @@
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
-using SFML.Graphics;
+//using FreeScape.Engine.Render.Utilities;
 using System;
 using System.Numerics;
 using FreeScape.Engine.Config.UI;
+using SFML.Graphics;
+using FreeScape.Engine.Render.Utilities;
+using System.Diagnostics;
 
 namespace FreeScape.Engine.GameObjects.UI
 {
     public class Button : IRenderable, IButton
     {
+        public Vector2 Scale { get; set; } = Vector2.One;
         public Vector2 Position { get; set; }
         public Vector2 Size { get; set; }
-        public Texture ButtonTextureDefault { get; set; }
-        public Texture ButtonTextureHover { get; set; }
+        public Texture ButtonTexture { get; set; }
+
+        public Color DefaultColor = Color.White;
+        public Color HoverColor = Color.Green;
+        public Sprite ButtonSprite { get; set; }
 
         public Action OnClickAction;
 
         public bool Hovered { get; set; } = false;
 
-        private RectangleShape rectangleShape;
+        private bool _wigglable = false;
+        private bool _wiggling = false;
+        private float _wiggleSpeed = 0.05f;
+        private float _maxWiggleAngle = 3f;
+
+        private Stopwatch _wiggleTimer;
+
+        private int _wiggleDuration = 150;
 
         private readonly ActionProvider _actionProvider;
 
         public ButtonInfo Info;
 
 
-        public Button(ButtonInfo info, Texture defaultTexture, Texture hoverTexture, ActionProvider actionProvider)
+        public Button(ButtonInfo info, Texture defaultTexture, ActionProvider actionProvider)
         {
             Info = info;
             _actionProvider = actionProvider;
             OnClickAction = Info.OnClickAction;
             Size = Info.Size;
             Position = Info.Position;
-            ButtonTextureDefault = defaultTexture;
-            ButtonTextureHover = hoverTexture;
-            rectangleShape = new RectangleShape(Size);
-            rectangleShape.Texture = defaultTexture;
-            rectangleShape.Position = Position;
+            ButtonTexture = defaultTexture;
+            var scale = Size / new Vector2(600, 200);
+            ButtonSprite = new Sprite(defaultTexture);
+            ButtonSprite.Scale = scale;
+            ButtonSprite.Position = Position;
+            ButtonSprite.Origin = new Vector2(300, 100);
+            _wiggleTimer = new Stopwatch();
+            _wigglable = info.Wigglable;
         }
-
         public void Init()
         {
 
@@ -47,36 +63,59 @@ namespace FreeScape.Engine.GameObjects.UI
         {
             if (Hovered)
             {
-                rectangleShape.Texture = ButtonTextureHover;
+                ButtonSprite.Color = HoverColor;
             }
             else
             {
-                rectangleShape.Texture = ButtonTextureDefault;
+                ButtonSprite.Color = DefaultColor;
             }
-            target.Draw(rectangleShape);
+            target.Draw(ButtonSprite);
         }
 
         public void OnHover()
         {
             Hovered = true;
+            if(_wigglable)
+                StartWiggle();
         }
         public void OnHoverEnd()
         {
             Hovered = false;
         }
-        
-        public void Tick()
+        public void StartWiggle()
         {
-            var mouseCoords = _actionProvider.GetMouseWorldCoods();
-            if (mouseCoords.X > Position.X && mouseCoords.Y > Position.Y && mouseCoords.X < Position.X + Size.X && mouseCoords.Y < Position.Y + Size.Y)
+            _wiggling = true;
+            _wiggleTimer.Restart();
+        }
+        private void wiggle()
+        {
+            if(_wiggleTimer.ElapsedMilliseconds < _wiggleDuration)
             {
-                OnHover();
+                ButtonSprite.Rotation = ButtonSprite.Rotation + _wiggleSpeed;
+                if (ButtonSprite.Rotation > _maxWiggleAngle || ButtonSprite.Rotation < -_maxWiggleAngle) _wiggleSpeed = -_wiggleSpeed;
             }
             else
             {
+                _wiggling = false;
+                ButtonSprite.Rotation = 0;
+                _wiggleTimer.Stop();
+            }
+        }
+        public void Tick()
+        {
+            var mouseCoords = _actionProvider.GetMouseWorldCoods();
+            var hovering = mouseCoords.X > Position.X - Size.X / 2 && mouseCoords.Y  > Position.Y - Size.Y / 2 && mouseCoords.X < Position.X + Size.X / 2 && mouseCoords.Y < Position.Y + Size.Y / 2;
+            if (!Hovered && hovering)
+            {
+                OnHover();
+            }
+            else if(!hovering)
+            {
                 OnHoverEnd();
             }
-            rectangleShape.Position = Position;
+            if (_wiggling)
+                wiggle();
+            ButtonSprite.Position = Position;
         }
 
         public void OnClick()

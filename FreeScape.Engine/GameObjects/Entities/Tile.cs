@@ -9,6 +9,7 @@ namespace FreeScape.Engine.GameObjects.Entities
     {
         private readonly CachedTileSetTile _tileInfo;
 
+        public Vector2 Scale { get; set; } = Vector2.One;
         public Vector2 Size { get; set; }
         public bool Collidable { get; set; }
         public Vector2 Position { get; set; }

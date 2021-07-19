@@ -6,8 +6,7 @@ namespace FreeScape.Engine.GameObjects.UI
 {
     public interface IButton : IUIObject
     {
-        Texture ButtonTextureDefault { get; set; }
-        Texture ButtonTextureHover { get; set; }
+        Texture ButtonTexture { get; set; }
         void OnClick();
         
     }

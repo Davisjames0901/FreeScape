@@ -1,10 +1,6 @@
 ﻿using FreeScape.Engine.GameObjects.UI;
 using SFML.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FreeScape.Engine.Render.Layers
 {
@@ -12,6 +8,7 @@ namespace FreeScape.Engine.Render.Layers
     {
         protected List<IUIObject> UIObjects;
         public abstract int ZIndex { get; }
+        public Sprite Background;
 
         public UILayer()
         {
@@ -22,6 +19,8 @@ namespace FreeScape.Engine.Render.Layers
 
         public virtual void Render(RenderTarget target)
         {
+            if(Background is not null)
+                target.Draw(Background);
             foreach(var UIObject in UIObjects)
             {
                 UIObject.Render(target);

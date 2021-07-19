@@ -21,13 +21,13 @@ namespace FreeScape.Engine.Providers
         {
             _info = info;
             _options = options;
-            _tileSets = new List<CachedTileSet>();
-            foreach (var file in Directory.EnumerateFiles(info.TileSetDirectory).Where(x => x.EndsWith(".json", StringComparison.CurrentCultureIgnoreCase)))
-            {
-                var name = file.Split(Path.DirectorySeparatorChar).Last().Split('.').First();
-                var descriptor = GetDescriptor(file);
-                CacheTileSet(descriptor);
-            }
+            //_tileSets = new List<CachedTileSet>();
+            //foreach (var file in Directory.EnumerateFiles(info.TileSetDirectory).Where(x => x.EndsWith(".json", StringComparison.CurrentCultureIgnoreCase)))
+            //{
+            //    var name = file.Split(Path.DirectorySeparatorChar).Last().Split('.').First();
+            //    var descriptor = GetDescriptor(file);
+            //    CacheTileSet(descriptor);
+            //}
         }
 
         private void CacheTileSet(TileSetInfo info)

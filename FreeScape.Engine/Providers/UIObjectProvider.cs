@@ -26,7 +26,7 @@ namespace FreeScape.Engine.Providers
         }
         public Button CreateButton(ButtonInfo info)
         {
-            return new Button(info, _textureProvider.GetTextureByFile(info.ButtonTextureDefault, $"{info.Name}:default"), _textureProvider.GetTextureByFile(info.ButtonTextureHover, $"{info.Name}:hover"), _actionProvider);
+            return new Button(info, _textureProvider.GetTextureByFile(info.ButtonTexture, $"{info.Name}:default"), _actionProvider);
         }
     }
 }
