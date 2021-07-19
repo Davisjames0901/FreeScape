@@ -7,6 +7,8 @@ using FreeScape.Scenes;
 using System;
 using System.Numerics;
 using FreeScape.Engine.Config.UI;
+using FreeScape.Engine.Config;
+using SFML.Graphics;
 
 namespace FreeScape.Layers
 {
@@ -22,19 +24,25 @@ namespace FreeScape.Layers
         Button BackButton;
         EmptyGameObject MainMenuCenter;
         EmptyGameObject MainMenuSettingsCenter;
-        public MainMenuHome(ActionProvider actionProvider, GameManager gameManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider)
+
+        Texture BackgroundTexture;
+        public MainMenuHome(GameInfo gameInfo, ActionProvider actionProvider, TextureProvider textureProvider, GameManager gameManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider)
         {
             _actionProvider = actionProvider;
             _sceneManager = sceneManager;
             _uIObjectProvider = uIObjectProvider;
             _gameManager = gameManager;
+            BackgroundTexture = textureProvider.GetTextureByFile("UI/MenuBackground", "MenuBackground");
+            Background = new Sprite(BackgroundTexture);
+            Background.Position = new Vector2(-750, -1300);
         }
         public override void Init()
         {
             MainMenuCenter = new EmptyGameObject();
             MainMenuSettingsCenter = new EmptyGameObject();
-            MainMenuCenter.Position = new Vector2(50, 125);
-            MainMenuSettingsCenter.Position = new Vector2(550, 125);
+            MainMenuCenter.Position = new Vector2(0, 125);
+            MainMenuSettingsCenter.Position = new Vector2(500, 125);
+
 
             _sceneManager.SetPerspectiveTarget("main", MainMenuCenter);
             _sceneManager.SetPerspectiveCenter(MainMenuCenter.Position);
@@ -52,36 +60,36 @@ namespace FreeScape.Layers
         {
 
             ButtonInfo playButtonInfo = new ButtonInfo();
-            playButtonInfo.Position = new Vector2(0, 0);
-            playButtonInfo.Size = new Vector2(100, 50);
-            playButtonInfo.Name = "playbutton";
+            playButtonInfo.Position = new Vector2(0, 100);
+            playButtonInfo.Size = new Vector2(100, 34);
+            playButtonInfo.Name = "play";
             playButtonInfo.OnClickAction = () => { _sceneManager.SetScene<TestScene>(); };
-            playButtonInfo.ButtonTextureDefault = "Buttons/Blue/Text/Play";
-            playButtonInfo.ButtonTextureHover = "Buttons/Orange/Text/Play";
+            playButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Play";
+            playButtonInfo.Wigglable = true;
 
             ButtonInfo settingsButtonInfo = new ButtonInfo();
-            settingsButtonInfo.Position = new Vector2(-7.5f, 75);
-            settingsButtonInfo.Size = new Vector2(115, 50);
-            settingsButtonInfo.Name = "settingsbutton";
+            settingsButtonInfo.Position = new Vector2(0, 150);
+            settingsButtonInfo.Size = new Vector2(100, 34);
+            settingsButtonInfo.Name = "settings";
             settingsButtonInfo.OnClickAction = () => { _sceneManager.SetPerspectiveTarget("main", MainMenuSettingsCenter); };
-            settingsButtonInfo.ButtonTextureDefault = "Buttons/Blue/Text/Check";
-            settingsButtonInfo.ButtonTextureHover = "Buttons/Orange/Text/Check";
+            settingsButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Settings";
+            settingsButtonInfo.Wigglable = true;
 
             ButtonInfo quitButtonInfo = new ButtonInfo();
-            quitButtonInfo.Position = new Vector2(0, 150);
-            quitButtonInfo.Size = new Vector2(100, 50);
-            quitButtonInfo.Name = "quitbutton";
+            quitButtonInfo.Position = new Vector2(0, 200);
+            quitButtonInfo.Size = new Vector2(100, 34);
+            quitButtonInfo.Name = "quit";
             quitButtonInfo.OnClickAction = () => { _gameManager.Stop(); };
-            quitButtonInfo.ButtonTextureDefault = "Buttons/Blue/Text/Quit";
-            quitButtonInfo.ButtonTextureHover = "Buttons/Orange/Text/Quit";
+            quitButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Quit";
+            quitButtonInfo.Wigglable = true;
 
             ButtonInfo backButtonInfo = new ButtonInfo();
             backButtonInfo.Position = new Vector2(500, 150);
-            backButtonInfo.Size = new Vector2(100, 50);
-            backButtonInfo.Name = "backbutton";
+            backButtonInfo.Size = new Vector2(100, 34);
+            backButtonInfo.Name = "back";
             backButtonInfo.OnClickAction = () => { _sceneManager.SetPerspectiveTarget("main", MainMenuCenter); };
-            backButtonInfo.ButtonTextureDefault = "Buttons/Blue/Text/Back";
-            backButtonInfo.ButtonTextureHover = "Buttons/Orange/Text/Back";
+            backButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Back";
+            backButtonInfo.Wigglable = true;
 
             BackButton = _uIObjectProvider.CreateButton(backButtonInfo);
             PlayButton = _uIObjectProvider.CreateButton(playButtonInfo);
@@ -93,7 +101,10 @@ namespace FreeScape.Layers
             UIObjects.Add(SettingsButton);
             UIObjects.Add(QuitButton);
         }
+        public void Render()
+        {
 
+        }
         public void MouseClick()
         {
             var mouseCoords = _actionProvider.GetMouseWorldCoods();

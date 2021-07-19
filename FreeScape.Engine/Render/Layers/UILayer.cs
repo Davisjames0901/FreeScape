@@ -11,6 +11,7 @@ namespace FreeScape.Engine.Render.Layers
     public abstract class UILayer : ILayer
     {
         protected List<IUIObject> UIObjects;
+        public Sprite Background;
         public int ZIndex { get; set; }
 
         public UILayer()
@@ -22,6 +23,8 @@ namespace FreeScape.Engine.Render.Layers
 
         public virtual void Render(RenderTarget target)
         {
+            if(Background is not null)
+                target.Draw(Background);
             foreach(var UIObject in UIObjects)
             {
                 UIObject.Render(target);

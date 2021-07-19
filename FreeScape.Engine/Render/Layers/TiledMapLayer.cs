@@ -21,6 +21,7 @@ namespace FreeScape.Engine.Render.Layers
         public abstract MapInfo Map { get; }
         public abstract int ZIndex { get; }
         public List<Tile> Tiles;
+        public Sprite TiledMapSprite;
 
         private List<RectangleShape> _colliderDebugShapes;
 
@@ -35,10 +36,15 @@ namespace FreeScape.Engine.Render.Layers
 
         public virtual void Render(RenderTarget target)
         {
-            foreach (var tile in Tiles.OrderBy(x => x.Position.Y))
+            if(TiledMapSprite is not null)
             {
-                RenderTile(target, tile);
+                target.Draw(TiledMapSprite);
             }
+            else
+                foreach (var tile in Tiles.OrderBy(x => x.Position.Y))
+                {
+                    RenderTile(target, tile);
+                }
         }
 
         public void Init()

@@ -7,9 +7,9 @@ namespace FreeScape.Engine.Config.UI
         public string Name;
         public Vector2 Position;
         public Vector2 Size;
-        public string ButtonTextureDefault;
-        public string ButtonTextureHover;
+        public string ButtonTexture;
         public System.Action OnClickAction;
+        public bool Wigglable = false;
 
 
     }

@@ -54,7 +54,6 @@ namespace FreeScape.Engine.Providers
 
             if (_textures.ContainsKey(gtl))
                 return _textures[gtl];
-
             var texture = new Texture(path);
             _textures.Add(gtl, texture);
 

@@ -64,27 +64,27 @@ namespace FreeScape.Engine.Render.Layers
                             case "tile":
                                 RectangleCollider tileCollider = new RectangleCollider((new Vector2(tileObject.Width, tileObject.Height) * scale), objectPosition + (new Vector2(tileObject.X, tileObject.Y) * scale));
                                 _movement.Colliders.Add(tileCollider);
-                                var tileColliderShape = new RectangleShape();
-                                tileColliderShape.Position = tileCollider.Position;
-                                tileColliderShape.Size = tileCollider.Size;
-                                tileColliderShape.FillColor = Color.Transparent;
-                                tileColliderShape.OutlineColor = Color.Red;
-                                tileColliderShape.OutlineThickness = 1;
-                                //tileColliderShape.Rotation = objectRotation;
-                                _colliderDebugShapes.Add(tileColliderShape);
+                                //var tileColliderShape = new RectangleShape();
+                                //tileColliderShape.Position = tileCollider.Position;
+                                //tileColliderShape.Size = tileCollider.Size;
+                                //tileColliderShape.FillColor = Color.Transparent;
+                                //tileColliderShape.OutlineColor = Color.Red;
+                                //tileColliderShape.OutlineThickness = 1;
+                                ////tileColliderShape.Rotation = objectRotation;
+                                //_colliderDebugShapes.Add(tileColliderShape);
 
                                 break;
                             case "rectangle":
                                 RectangleCollider rectCollider = new RectangleCollider((new Vector2(tileObject.Width, tileObject.Height) * scale), objectPosition + (new Vector2(tileObject.X, tileObject.Y) * scale));
                                 _movement.Colliders.Add(rectCollider);
-                                var rShape = new RectangleShape();
+                                //var rShape = new RectangleShape();
 
-                                rShape.Position = rectCollider.Position;
-                                rShape.Size = rectCollider.Size;
-                                rShape.FillColor = Color.Transparent;
-                                rShape.OutlineColor = Color.Red;
-                                rShape.OutlineThickness = 1;
-                                _colliderDebugShapes.Add(rShape);
+                                //rShape.Position = rectCollider.Position;
+                                //rShape.Size = rectCollider.Size;
+                                //rShape.FillColor = Color.Transparent;
+                                //rShape.OutlineColor = Color.Red;
+                                //rShape.OutlineThickness = 1;
+                                //_colliderDebugShapes.Add(rShape);
 
                                 break;
                             case "circle":
@@ -117,10 +117,10 @@ namespace FreeScape.Engine.Render.Layers
             {
                 gameObject.Render(target);
             }
-            foreach (var rshape in _colliderDebugShapes)
-            {
-                target.Draw(rshape);
-            }
+            //foreach (var rshape in _colliderDebugShapes)
+            //{
+            //    target.Draw(rshape);
+            //}
         }
 
         public virtual void Tick()

@@ -10,7 +10,7 @@ namespace FreeScape.Layers
         private readonly MapProvider _mapProvider;
         
 
-        public TestTileMap(TileSetProvider textureProvider, MapProvider mapProvider, Movement movement) : base(textureProvider, mapProvider, movement)
+        public TestTileMap(TileSetProvider tileSetProvider,TextureProvider textureProvider, MapProvider mapProvider, Movement movement) : base(tileSetProvider, mapProvider, movement)
         {
             _mapProvider = mapProvider;
         }
