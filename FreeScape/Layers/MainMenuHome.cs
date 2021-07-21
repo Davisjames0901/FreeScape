@@ -9,6 +9,7 @@ using System.Numerics;
 using FreeScape.Engine.Config.UI;
 using FreeScape.Engine.Config;
 using SFML.Graphics;
+using FreeScape.Engine.Utilities;
 
 namespace FreeScape.Layers
 {
@@ -24,7 +25,6 @@ namespace FreeScape.Layers
         Button BackButton;
         EmptyGameObject MainMenuCenter;
         EmptyGameObject MainMenuSettingsCenter;
-
         Texture BackgroundTexture;
         public MainMenuHome(GameInfo gameInfo, ActionProvider actionProvider, TextureProvider textureProvider, GameManager gameManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider)
         {
@@ -58,7 +58,36 @@ namespace FreeScape.Layers
                     MouseClick();
             });
         }
+        private Vector2 backgroundTrailPoint1 = new Vector2(-750, -1300);
+        private Vector2 backgroundTrailPoint2 = new Vector2(-950, -1500);
+        private Vector2 backgroundTrailPoint3 = new Vector2(-1150, -1300);
+        private Vector2 backgroundTrailPoint4 = new Vector2(-950, -1100);
+        int target = 1;
+        private void BackgroundMovement()
+        {
+            if (Maths.NearEquals(Background.Position, backgroundTrailPoint1, 1f))
+                target = 2;
+            if (Maths.NearEquals(Background.Position, backgroundTrailPoint2, 1f))
+                target = 3;
+            if (Maths.NearEquals(Background.Position, backgroundTrailPoint3, 1f))
+                target = 4;
+            if (Maths.NearEquals(Background.Position, backgroundTrailPoint4, 1f))
+                target = 1;
 
+            if (target == 1)
+                Background.Position = Maths.Lerp(Background.Position, backgroundTrailPoint1, 0.0005f);
+            if (target == 2)
+                Background.Position = Maths.Lerp(Background.Position, backgroundTrailPoint2, 0.0005f);
+            if (target == 3)
+                Background.Position = Maths.Lerp(Background.Position, backgroundTrailPoint3, 0.0005f);
+            if (target == 4)
+                Background.Position = Maths.Lerp(Background.Position, backgroundTrailPoint4, 0.0005f);
+        }
+        public override void Tick()
+        {
+            BackgroundMovement();
+            base.Tick();
+        }
         private void GenerateButtons()
         {
 
