@@ -80,7 +80,7 @@ namespace FreeScape.Engine.GameObjects.UI
             if (!(_wiggleDuration > 0)) 
                 return;
             
-            _wiggleDuration = _wiggleDuration - _frameTimeProvider.DeltaTimeMilliSeconds;
+            _wiggleDuration -= _frameTimeProvider.DeltaTimeMilliSeconds;
             if (_wiggleDuration <= 0)
             {
                 _buttonSprite.Rotation = 0;
