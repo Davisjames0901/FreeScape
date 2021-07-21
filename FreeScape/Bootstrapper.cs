@@ -5,6 +5,7 @@ using FreeScape.Engine;
 using FreeScape.Engine.Config;
 using FreeScape.GameObjects;
 using FreeScape.Layers;
+using FreeScape.Layers.MainMenu;
 using FreeScape.Scenes;
 using Microsoft.Extensions.DependencyInjection;
 

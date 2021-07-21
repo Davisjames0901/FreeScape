@@ -1,12 +1,12 @@
-﻿using FreeScape.Engine.GameObjects.UI;
+﻿using System.Numerics;
+using FreeScape.Engine.Config.UI;
+using FreeScape.Engine.GameObjects.UI;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Layers;
 using FreeScape.Scenes;
-using System.Numerics;
-using FreeScape.Engine.Config.UI;
 
-namespace FreeScape.Layers
+namespace FreeScape.Layers.MainMenu
 {
     public class MainMenuHome : UILayer
     {

@@ -1,6 +1,6 @@
 ﻿using FreeScape.Engine.Render.Layers;
 
-namespace FreeScape.Layers
+namespace FreeScape.Layers.MainMenu
 {
     public class MainMenuOptions : UILayer
     {

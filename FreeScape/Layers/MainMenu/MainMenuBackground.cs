@@ -7,7 +7,7 @@ using FreeScape.Engine.Render.Layers;
 using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 
-namespace FreeScape.Layers
+namespace FreeScape.Layers.MainMenu
 {
     public class MainMenuBackground : ILayer
     {
