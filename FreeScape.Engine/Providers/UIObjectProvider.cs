@@ -21,8 +21,8 @@ namespace FreeScape.Engine.Providers
         {
             var texture = _provider.CurrentScope.ServiceProvider.GetService<TextureProvider>();
             var actionProvider = _provider.CurrentScope.ServiceProvider.GetService<ActionProvider>();
-            var displayManager = _provider.CurrentScope.ServiceProvider.GetService<DisplayManager>();
-            return new Button(info, texture.GetTextureByFile(info.ButtonTexture, $"{info.Name}:default"), actionProvider, displayManager);
+            var frameTime = _provider.CurrentScope.ServiceProvider.GetService<FrameTimeProvider>();
+            return new Button(info, texture.GetTextureByFile(info.ButtonTexture, $"{info.ButtonTexture}:default"), actionProvider, frameTime);
         }
     }
 }

@@ -41,7 +41,6 @@ namespace FreeScape.Layers.MainMenu
             ButtonInfo playButtonInfo = new ButtonInfo();
             playButtonInfo.Position = new Vector2(0, -100);
             playButtonInfo.Size = new Vector2(100, 34);
-            playButtonInfo.Name = "play";
             playButtonInfo.OnClickAction = () => { _sceneManager.SetScene<TestScene>(); };
             playButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Play";
             playButtonInfo.Wigglable = true;
@@ -49,7 +48,6 @@ namespace FreeScape.Layers.MainMenu
             ButtonInfo settingsButtonInfo = new ButtonInfo();
             settingsButtonInfo.Position = new Vector2(0, -50);
             settingsButtonInfo.Size = new Vector2(100, 34);
-            settingsButtonInfo.Name = "settings";
             settingsButtonInfo.OnClickAction = () => { /*Yeah I need to fix this*/ };
             settingsButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Settings";
             settingsButtonInfo.Wigglable = true;
@@ -57,7 +55,6 @@ namespace FreeScape.Layers.MainMenu
             ButtonInfo quitButtonInfo = new ButtonInfo();
             quitButtonInfo.Position = new Vector2(0, 0);
             quitButtonInfo.Size = new Vector2(100, 34);
-            quitButtonInfo.Name = "quit";
             quitButtonInfo.OnClickAction = () => { _gameManager.Stop(); };
             quitButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Quit";
             quitButtonInfo.Wigglable = true;
@@ -65,7 +62,6 @@ namespace FreeScape.Layers.MainMenu
             ButtonInfo backButtonInfo = new ButtonInfo();
             backButtonInfo.Position = new Vector2(500, 150);
             backButtonInfo.Size = new Vector2(100, 34);
-            backButtonInfo.Name = "back";
             backButtonInfo.OnClickAction = () => { /*Need to figure out a new way to do this too*/ };
             backButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Back";
             backButtonInfo.Wigglable = true;

@@ -61,7 +61,6 @@ namespace FreeScape.Layers
             ButtonInfo playButtonInfo = new ButtonInfo();
             playButtonInfo.Position = new Vector2(0, -100);
             playButtonInfo.Size = new Vector2(100, 34);
-            playButtonInfo.Name = "play";
             playButtonInfo.OnClickAction = () => 
             { 
                 _actionProvider.SwitchActionMap("Player");
@@ -74,7 +73,6 @@ namespace FreeScape.Layers
             ButtonInfo settingsButtonInfo = new ButtonInfo();
             settingsButtonInfo.Position = new Vector2(0, -50);
             settingsButtonInfo.Size = new Vector2(100, 34);
-            settingsButtonInfo.Name = "settings";
             settingsButtonInfo.OnClickAction = () => {  };
             settingsButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Settings";
             settingsButtonInfo.Wigglable = true;
@@ -82,7 +80,6 @@ namespace FreeScape.Layers
             ButtonInfo quitButtonInfo = new ButtonInfo();
             quitButtonInfo.Position = new Vector2(0, 0);
             quitButtonInfo.Size = new Vector2(100, 34);
-            quitButtonInfo.Name = "quit";
             quitButtonInfo.OnClickAction = () => { _sceneManager.SetScene<MainMenuScene>(); };
             quitButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Quit";
             quitButtonInfo.Wigglable = true;

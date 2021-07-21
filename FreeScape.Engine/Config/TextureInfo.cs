@@ -8,5 +8,6 @@ namespace FreeScape.Engine.Config
         public int Height { get; set; }
         public string Name { get; set; }
         public string File { get; set; }
+        public bool Smooth { get; set; }
     }
 }

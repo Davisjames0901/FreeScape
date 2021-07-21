@@ -64,7 +64,6 @@ namespace FreeScape.Layers
             var homeButtonInfo = new ButtonInfo();
             homeButtonInfo.Position = new Vector2(0, 0);
             homeButtonInfo.Size = new Vector2(50, 25);
-            homeButtonInfo.Name = "homebutton";
             homeButtonInfo.OnClickAction = () => { _sceneManager.SetScene<MainMenuScene>(); };
             homeButtonInfo.ButtonTexture = "UI/Buttons/MainMenu/Menu";
 

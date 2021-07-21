@@ -18,8 +18,4 @@
       <None Include="Assets\**" CopyToOutputDirectory="Always" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Assets\Textures\UI\Buttons\PauseMenu\" />
-    </ItemGroup>
-
 </Project>

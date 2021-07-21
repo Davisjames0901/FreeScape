@@ -36,6 +36,8 @@ namespace FreeScape.Layers.MainMenu
         {
             _currentBackgroundTarget = _backgroundTrack.Dequeue();
             _backgroundTrack.Enqueue(_currentBackgroundTarget);
+            if(_displayManager.CurrentPerspective != null)
+                SetNextTarget(_displayManager.CurrentPerspective);
         }
         
         public void Render(RenderTarget target)
@@ -60,7 +62,7 @@ namespace FreeScape.Layers.MainMenu
         {
             _currentBackgroundTarget = _backgroundTrack.Dequeue();
             _backgroundTrack.Enqueue(_currentBackgroundTarget);
-            perspective.Track(_currentBackgroundTarget, 3.2f);
+            perspective.Track(_currentBackgroundTarget, 0.02f);
         }
     }
 }

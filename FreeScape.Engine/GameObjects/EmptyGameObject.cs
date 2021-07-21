@@ -15,6 +15,11 @@ namespace FreeScape.Engine.GameObjects
         public Vector2 Position { get; set; }
         public Vector2 Scale { get; set; } = Vector2.Zero;
 
+        public EmptyGameObject(Vector2 position)
+        {
+            Position = position;
+        }
+
         public void Render(RenderTarget target)
         {
         }

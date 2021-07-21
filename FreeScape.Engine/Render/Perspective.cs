@@ -12,8 +12,8 @@ namespace FreeScape.Engine.Render
         private readonly FrameTimeProvider _frameTime;
 
         private readonly Vector2 _screenSize;
-        private Vector2? _target;
-        public Vector2? TargetPosition => _target;
+        private IGameObject _target;
+        public Vector2? TargetPosition => _target?.Position;
         private float? _trackSpeed;
         public Perspective(string name, Vector2 center, Vector2 size, float scale, FrameTimeProvider frameTime)
         {
@@ -35,16 +35,16 @@ namespace FreeScape.Engine.Render
             WorldView.Center = position;
         }
 
-        public void Track(IGameObject go)
+        public void Track(IGameObject go, float speed = 0.5f)
         {
-            _target = go.Position;
-            _trackSpeed = null;
+            _target = go;
+            _trackSpeed = speed;
         }
 
         public void Track(Vector2 position, float speed)
         {
             Console.WriteLine($"Tracking: {position}, at speed: {speed}");
-            _target = position;
+            _target = new EmptyGameObject(position);
             _trackSpeed = speed;
         }
         
@@ -52,10 +52,10 @@ namespace FreeScape.Engine.Render
         {
             if (_target != null)
             {
-                float speed = WorldScaling / (_trackSpeed ?? 4.5f);
+                float speed = WorldScaling / ((_trackSpeed ?? 0.5f) + WorldScaling);
                 var dt = (float)_frameTime.DeltaTimeMilliSeconds;
-                speed = (float)(1 - Math.Pow((double)speed, dt));
-                WorldView.Center = Maths.Lerp(WorldView.Center, _target.Value, speed, 0.1f);
+                speed = (float)(1 - Math.Pow(speed, dt));
+                WorldView.Center = WorldView.Center.Lerp(_target.Position, speed, 0.1f);
             }
         }
     }
