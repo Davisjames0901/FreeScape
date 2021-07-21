@@ -29,8 +29,8 @@ namespace FreeScape.Engine.Managers
             while (_isRunning)
             {
                 _frameTime.Tick();
-                _tick();
                 _render();
+                _tick();
             }
         }
 

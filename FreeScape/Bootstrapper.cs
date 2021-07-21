@@ -40,6 +40,7 @@ namespace FreeScape
             services.AddTransient<MainMenuHome>();
             services.AddTransient<PlayerUI>();
             services.AddTransient<PauseMenu>();
+            services.AddTransient<MainMenuBackground>();
 
             return services;
         }

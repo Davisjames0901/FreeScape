@@ -25,6 +25,7 @@ namespace FreeScape.Scenes
             Active = true;
             Layers.Add(_layerProvider.Provide<MainMenuHome>());
             Layers.Add(_layerProvider.Provide<MainMenuOptions>());
+            Layers.Add(_layerProvider.Provide<MainMenuBackground>());
             _sounds.PlayMusic("intro");
         }
 
