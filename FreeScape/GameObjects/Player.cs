@@ -55,7 +55,7 @@ namespace FreeScape.GameObjects
             Scale = new Vector2(2.0f, 2.0f);
             Size = new Vector2(4.0f, 4.0f);
             Position = new Vector2(300, 500);
-            _displayManager.CurrentPerspective.View.Center = Position;
+            _displayManager.CurrentPerspective.WorldView.Center = Position;
             _shape = new CircleShape(Size.X);
             _shape.FillColor = Color.Red;
             _collider = new CircleCollider(Position, Position / Size * Scale, Size.X * Scale.X);

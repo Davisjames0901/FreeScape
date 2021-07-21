@@ -1,23 +1,16 @@
-﻿
-using FreeScape.Engine.GameObjects.UI;
+﻿using FreeScape.Engine.GameObjects.UI;
 using Microsoft.Extensions.DependencyInjection;
-using SFML.Graphics;
-using System;
-using System.Numerics;
 using FreeScape.Engine.Config.UI;
+using FreeScape.Engine.Managers;
 
 namespace FreeScape.Engine.Providers
 {
     public class UIObjectProvider
     {
         private readonly ServiceScopeProvider _provider;
-        private readonly TextureProvider _textureProvider;
-        private readonly ActionProvider _actionProvider;
 
-        public UIObjectProvider(ServiceScopeProvider scope, TextureProvider textureProvider, ActionProvider actionProvider)
+        public UIObjectProvider(ServiceScopeProvider scope)
         {
-            _textureProvider = textureProvider;
-            _actionProvider = actionProvider;
             _provider = scope;
         }
         public T Provide<T>() where T : IUIObject
@@ -26,7 +19,10 @@ namespace FreeScape.Engine.Providers
         }
         public Button CreateButton(ButtonInfo info)
         {
-            return new Button(info, _textureProvider.GetTextureByFile(info.ButtonTexture, $"{info.Name}:default"), _actionProvider);
+            var texture = _provider.CurrentScope.ServiceProvider.GetService<TextureProvider>();
+            var actionProvider = _provider.CurrentScope.ServiceProvider.GetService<ActionProvider>();
+            var displayManager = _provider.CurrentScope.ServiceProvider.GetService<DisplayManager>();
+            return new Button(info, texture.GetTextureByFile(info.ButtonTexture, $"{info.Name}:default"), actionProvider, displayManager);
         }
     }
 }

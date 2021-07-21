@@ -17,18 +17,19 @@ namespace FreeScape.Engine.Render.Layers
     {
 
         private readonly MapProvider _mapProvider;
-        public abstract MapInfo Map { get; }
+        private readonly Movement _movement;
+
+        protected readonly List<IGameObject> GameObjects;
+
+        public RenderMode RenderMode => RenderMode.World;
+        
+        protected abstract MapInfo Map { get; }
         public abstract int ZIndex { get; }
 
-        public List<IGameObject> GameObjects;
-        public List<RectangleShape> _colliderDebugShapes;
-
-        private Movement _movement;
 
         public GameObjectLayer(Movement movement, MapProvider mapProvider)
         {
             _mapProvider = mapProvider;
-            _colliderDebugShapes = new();
             _movement = movement;
             GameObjects = new List<IGameObject>();
         }

@@ -7,6 +7,7 @@ using FreeScape.Engine.Config.UI;
 using SFML.Graphics;
 using FreeScape.Engine.Render.Utilities;
 using System.Diagnostics;
+using FreeScape.Engine.Managers;
 
 namespace FreeScape.Engine.GameObjects.UI
 {
@@ -35,14 +36,16 @@ namespace FreeScape.Engine.GameObjects.UI
         private int _wiggleDuration = 150;
 
         private readonly ActionProvider _actionProvider;
+        private readonly DisplayManager _displayManager;
 
         public ButtonInfo Info;
 
 
-        public Button(ButtonInfo info, Texture defaultTexture, ActionProvider actionProvider)
+        public Button(ButtonInfo info, Texture defaultTexture, ActionProvider actionProvider, DisplayManager displayManager)
         {
             Info = info;
             _actionProvider = actionProvider;
+            _displayManager = displayManager;
             OnClickAction = Info.OnClickAction;
             Size = Info.Size;
             Position = Info.Position;
@@ -59,6 +62,7 @@ namespace FreeScape.Engine.GameObjects.UI
         {
 
         }
+
         public void Render(RenderTarget target)
         {
             if (Hovered)
@@ -69,6 +73,7 @@ namespace FreeScape.Engine.GameObjects.UI
             {
                 ButtonSprite.Color = DefaultColor;
             }
+
             target.Draw(ButtonSprite);
         }
 

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using FreeScape.Engine.Physics;
 using FreeScape.Engine.Render.Layers;
 using SFML.Graphics;
 
@@ -17,9 +16,16 @@ namespace FreeScape.Engine.Render.Scenes
 
         public bool Active { get; set; }
 
-        public virtual void Render(RenderTarget target)
+        public virtual void RenderWorld(RenderTarget target)
         {
-            foreach (var layer in Layers.OrderBy(x => x.ZIndex))
+            foreach (var layer in Layers.Where(x=> x.RenderMode == RenderMode.World).OrderBy(x => x.ZIndex))
+            {
+                layer.Render(target);
+            }
+        }
+        public virtual void RenderScreen(RenderTarget target)
+        {
+            foreach (var layer in Layers.Where(x=> x.RenderMode == RenderMode.Screen).OrderBy(x => x.ZIndex))
             {
                 layer.Render(target);
             }

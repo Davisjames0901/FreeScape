@@ -17,7 +17,7 @@ namespace FreeScape.Layers
         private readonly MapProvider _mapProvider;
 
         public override int ZIndex => 999;
-        public override MapInfo Map => _mapProvider.GetMap("TiledTestMap");
+        protected override MapInfo Map => _mapProvider.GetMap("TiledTestMap");
 
         public EntityLayer(ActionProvider actionProvider, GameObjectProvider gameObjectProvider, DisplayManager displayManager, Movement movement, TileSetProvider tileSetProvider, MapProvider mapProvider):base(movement, mapProvider)
         {

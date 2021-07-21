@@ -1,6 +1,7 @@
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Scenes;
 using FreeScape.Layers;
+using SFML.Graphics;
 
 namespace FreeScape.Scenes
 {
@@ -8,38 +9,41 @@ namespace FreeScape.Scenes
     {
         private readonly LayerProvider _layerProvider;
         private readonly SoundProvider _sounds;
-        private MainMenuHome _pauseScreen;
+        private PauseMenu _pauseMenu;
 
         public TestScene(ActionProvider actionProvider, LayerProvider layerProvider, SoundProvider sounds)
         {
             _layerProvider = layerProvider;
             _sounds = sounds;
             actionProvider.SwitchActionMap("Player");
-            actionProvider.SubscribeOnPressed(x =>
-            {
-                if (x == "Pause")
-                {
-                    if (Layers.Contains(_pauseScreen))
-                        Layers.Remove(_pauseScreen);
-                    else
-                        Layers.Add(_pauseScreen);
-                }
-            });
         }
 
         public override void Init()
         {
-            _pauseScreen = _layerProvider.Provide<MainMenuHome>();
             var map = _layerProvider.Provide<TestTileMap>();
             var entityLayer = _layerProvider.Provide<EntityLayer>();
             var playerUI = _layerProvider.Provide<PlayerUI>();
-            var pauseMenu = _layerProvider.Provide<PauseMenu>();
+            _pauseMenu = _layerProvider.Provide<PauseMenu>();
             Layers.Add(map);
             Layers.Add(entityLayer);
             Layers.Add(playerUI);
-            Layers.Add(pauseMenu);
+            Layers.Add(_pauseMenu);
 
-            _sounds.PlayMusic("cave");
+            _sounds.PlayMusic("smooth");
+        }
+
+        public override void Tick()
+        {
+            if (_pauseMenu.IsPaused)
+            {
+                _pauseMenu.Tick();
+                return;
+            }
+            
+            foreach (var layer in Layers)
+            {
+                layer.Tick();
+            }
         }
 
         public override void Dispose()

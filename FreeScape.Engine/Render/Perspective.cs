@@ -18,17 +18,19 @@ namespace FreeScape.Engine.Render
             _frameTime = frameTime;
             _screenSize = size;
             Name = name;
-            View = new View(center, size/scale);
+            WorldView = new View(center, size/scale);
+            ScreenView = new View(Vector2.Zero, size/scale);
         }
         
         public string Name { get; }
-        public View View { get; }
-        public float Scaling => _screenSize.X / View.Size.X;
-        public Vector2 Corner => (View.Center - View.Size / 2)*Scaling;
+        public View WorldView { get; }
+        public View ScreenView { get; }
+        public float WorldScaling => _screenSize.X / WorldView.Size.X;
+        public Vector2 WorldCorner => (WorldView.Center - WorldView.Size / 2)*WorldScaling;
 
         public void SetCenter(Vector2 position)
         {
-            View.Center = position;
+            WorldView.Center = position;
         }
 
         public void Track(IGameObject go)
@@ -39,10 +41,10 @@ namespace FreeScape.Engine.Render
         {
             if (_target != null)
             {
-                float speed = Scaling / 4.5f;
+                float speed = WorldScaling / 4.5f;
                 var dt = (float)_frameTime.DeltaTimeMilliSeconds;
                 speed = (float)(1 - Math.Pow((double)speed, dt));
-                View.Center = Maths.Lerp(View.Center, _target.Position, speed, 0.1f);
+                WorldView.Center = Maths.Lerp(WorldView.Center, _target.Position, speed, 0.1f);
             }
         }
     }

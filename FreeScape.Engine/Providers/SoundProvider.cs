@@ -55,6 +55,16 @@ namespace FreeScape.Engine.Providers
             }
         }
 
+        public void PauseMusic()
+        {
+            _currentTrack?.Pause();
+        }
+
+        public void PlayMusic()
+        {
+            _currentTrack?.Play();
+        }
+
         private SoundInfo GetDescriptor(string path, string name)
         {
             var text = File.ReadAllText(path);
@@ -68,7 +78,6 @@ namespace FreeScape.Engine.Providers
             var sound = new PreloadedSound(info);
             _preloadSounds.Add(name, sound);
         }
-
 
         public void Dispose()
         {

@@ -6,9 +6,11 @@ namespace FreeScape.Engine.Render.Layers
 {
     public abstract class UILayer : ILayer
     {
+        public Sprite Background;
         protected List<IUIObject> UIObjects;
         public abstract int ZIndex { get; }
-        public Sprite Background;
+
+        public RenderMode RenderMode => RenderMode.Screen;
 
         public UILayer()
         {

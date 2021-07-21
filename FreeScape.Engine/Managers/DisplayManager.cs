@@ -6,6 +6,7 @@ using FreeScape.Engine.Config;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
+using FreeScape.Engine.Render.Scenes;
 using SFML.Graphics;
 using SFML.Window;
 
@@ -30,7 +31,7 @@ namespace FreeScape.Engine.Managers
             Reset();
         }
 
-        public void Render(IRenderable renderable)
+        public void Render(IScene scene)
         {
             _renderTarget.Clear();
             _renderTarget.DispatchEvents();
@@ -38,8 +39,10 @@ namespace FreeScape.Engine.Managers
             {
                 CurrentPerspective = view;
                 view.Tick();
-                _renderTarget.SetView(view.View);
-                renderable.Render(_renderTarget);
+                _renderTarget.SetView(view.WorldView);
+                scene.RenderWorld(_renderTarget);
+                _renderTarget.SetView(view.ScreenView);
+                scene.RenderScreen(_renderTarget);
                 _renderTarget.Display();
             }
         }

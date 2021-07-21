@@ -18,12 +18,13 @@ namespace FreeScape.Engine.Render.Layers
         private readonly TileSetProvider _tileSetProvider;
         private readonly MapProvider _mapProvider;
         private Movement _movement;
-        public abstract MapInfo Map { get; }
-        public abstract int ZIndex { get; }
+        private List<RectangleShape> _colliderDebugShapes;
         public List<Tile> Tiles;
         public Sprite TiledMapSprite;
+        public abstract MapInfo Map { get; }
+        public abstract int ZIndex { get; }
+        public RenderMode RenderMode => RenderMode.World;
 
-        private List<RectangleShape> _colliderDebugShapes;
 
         public TiledMapLayer(TileSetProvider tileSetProvider, MapProvider mapProvider, Movement movement)
         {
