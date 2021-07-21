@@ -108,6 +108,8 @@ namespace FreeScape.Layers
 
         public void MouseClick()
         {
+            if (!IsPaused)
+                return;
             foreach (var uiObject in UIObjects)
             {
                 if (uiObject.Hovered && uiObject is IButton button)
