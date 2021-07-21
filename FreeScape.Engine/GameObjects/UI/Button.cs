@@ -73,7 +73,7 @@ namespace FreeScape.Engine.GameObjects.UI
         private void StartWiggle()
         {
             _wiggleDuration = 1;
-            _wiggleSpeed = 1f;
+            _wiggleSpeed = 1.5f;
         }
         private void Wiggle()
         {
@@ -87,7 +87,7 @@ namespace FreeScape.Engine.GameObjects.UI
                 return;
             }
             _buttonSprite.Rotation = _buttonSprite.Rotation + _wiggleSpeed;
-            if (_buttonSprite.Rotation > Math.Abs(_maxWiggleAngle)) 
+            if (Math.Abs(_buttonSprite.Rotation) > _maxWiggleAngle) 
                 _wiggleSpeed = -_wiggleSpeed;
         }
         public void Tick()
