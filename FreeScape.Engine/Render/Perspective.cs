@@ -28,6 +28,7 @@ namespace FreeScape.Engine.Render
         public View WorldView { get; }
         public View ScreenView { get; }
         public float WorldScaling => _screenSize.X / WorldView.Size.X;
+        public float ScreenScaling => _screenSize.X / ScreenView.Size.X;
         public Vector2 WorldCorner => (WorldView.Center - WorldView.Size / 2)*WorldScaling;
 
         public void SetCenter(Vector2 position)

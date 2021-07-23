@@ -3,6 +3,7 @@ using System.Reflection;
 using AsperandLabs.UnitStrap.Core.Extenstions;
 using FreeScape.Engine;
 using FreeScape.Engine.Config;
+using FreeScape.Engine.Config.UserSettings;
 using FreeScape.GameObjects;
 using FreeScape.Layers;
 using FreeScape.Layers.MainMenu;
@@ -17,19 +18,29 @@ namespace FreeScape
         {
             var config = new GameInfo
             {
-                ScreenHeight = 1080,
-                ScreenWidth = 1920,
                 Name = "FreeScape",
-                VSyncEnabled = true,
-                RefreshRate = 144,
-                SfxVolume = 100.0f,
-                MusicVolume = 10.0f,
                 AssetDirectory =
                     $"{Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)}{Path.DirectorySeparatorChar}Assets"
+            };
+
+            var sound = new SoundSettings
+            {
+                SfxVolume = 100.0f,
+                MusicVolume = 10.0f
+            };
+
+            var graphics = new GraphicsSettings
+            {
+                ScreenHeight = 1080,
+                ScreenWidth = 1920,
+                VSyncEnabled = true,
+                RefreshRate = 144
             };
             
             services.AddUnitStrapper();
             services.AddUnit<EngineUnitstrapper, GameInfo>(config);
+            services.AddSingleton(sound);
+            services.AddSingleton(graphics);
 
             services.AddTransient<MainMenuScene>();
             services.AddTransient<TestScene>();

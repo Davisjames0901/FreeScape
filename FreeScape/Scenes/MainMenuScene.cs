@@ -1,3 +1,5 @@
+using System;
+using FreeScape.Engine.Config.UserSettings;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Scenes;
@@ -12,12 +14,20 @@ namespace FreeScape.Scenes
         private readonly LayerProvider _layerProvider;
         private readonly SoundProvider _sounds;
         private readonly DisplayManager _displayManager;
-        public MainMenuScene(ActionProvider actionProvider, LayerProvider layerProvider,  SoundProvider sounds, DisplayManager displayManager)
+        public MainMenuScene(ActionProvider actionProvider, LayerProvider layerProvider,  SoundProvider sounds, DisplayManager displayManager, SoundSettings sound)
         {
             actionProvider.SwitchActionMap("MainMenu");
             _displayManager = displayManager;
             _layerProvider = layerProvider;
             _sounds = sounds;
+            actionProvider.SubscribeOnPressed(x =>
+            {
+                if (x == "VolUp")
+                {
+                    sound.MusicVolume++;
+                    Console.WriteLine($"Volume set to: {sound.MusicVolume}");
+                }
+            });
         }
 
 

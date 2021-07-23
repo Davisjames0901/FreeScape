@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.Config.Sound;
+using FreeScape.Engine.Config.UserSettings;
 using FreeScape.Engine.GameObjects;
 using SFML.Audio;
 
@@ -13,15 +14,18 @@ namespace FreeScape.Engine.Providers
     public class SoundProvider : IDisposable
     {
         private readonly GameInfo _info;
+        private readonly SoundSettings _settings;
         private readonly Dictionary<string, SoundInfo> _soundDescriptors;
         private readonly Dictionary<string, PreloadedSound> _preloadSounds;
         private Music _currentTrack;
         
-        public SoundProvider(GameInfo info)
+        public SoundProvider(GameInfo info, SoundSettings settings)
         {
             _info = info;
+            _settings = settings;
             _soundDescriptors = new Dictionary<string, SoundInfo>();
             _preloadSounds = new Dictionary<string, PreloadedSound>();
+            _settings.Subscribe(SetSettings);
             
             foreach (var file in Directory.EnumerateFiles(info.SoundDirectory).Where(x => x.EndsWith(".json", StringComparison.CurrentCultureIgnoreCase)))
             {
@@ -37,7 +41,7 @@ namespace FreeScape.Engine.Providers
         {
             if (_preloadSounds.TryGetValue(name, out var sound))
             {
-                sound.Sound.Volume = _info.SfxVolume;
+                sound.Sound.Volume = _settings.SfxVolume;
                 sound.Sound.Play();
             }
         }
@@ -49,7 +53,7 @@ namespace FreeScape.Engine.Providers
                 _currentTrack?.Stop();
                 _currentTrack?.Dispose();
                 _currentTrack = new Music(soundInfo.FilePath);
-                _currentTrack.Volume = _info.MusicVolume;
+                _currentTrack.Volume = _settings.MusicVolume;
                 _currentTrack.Loop = soundInfo.IsLooped;
                 _currentTrack.Play();
             }
@@ -77,6 +81,12 @@ namespace FreeScape.Engine.Providers
         {
             var sound = new PreloadedSound(info);
             _preloadSounds.Add(name, sound);
+        }
+
+        private void SetSettings()
+        {
+            if(_currentTrack != null)
+                _currentTrack.Volume = _settings.MusicVolume;
         }
 
         public void Dispose()

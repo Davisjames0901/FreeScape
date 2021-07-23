@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using FreeScape.Engine.Config;
+using FreeScape.Engine.Config.UserSettings;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
@@ -15,6 +16,7 @@ namespace FreeScape.Engine.Managers
     public class DisplayManager
     {
         private readonly GameInfo _info;
+        private readonly GraphicsSettings _graphicsSettings;
         private readonly GameManager _gameManager;
         private readonly FrameTimeProvider _frameTime;
         private RenderWindow _renderTarget;
@@ -22,12 +24,14 @@ namespace FreeScape.Engine.Managers
         private bool _hasFocus = true;
         public Perspective CurrentPerspective { get; private set; }
 
-        public DisplayManager(GameInfo info, GameManager gameManager, FrameTimeProvider frameTime)
+        public DisplayManager(GameInfo info, GraphicsSettings graphicsSettings, GameManager gameManager, FrameTimeProvider frameTime)
         {
             _frameTime = frameTime;
             _info = info;
+            _graphicsSettings = graphicsSettings;
             _gameManager = gameManager;
             _perspectives = new List<Perspective>();
+            _graphicsSettings.Subscribe(SetSettings);
             Reset();
         }
 
@@ -50,18 +54,32 @@ namespace FreeScape.Engine.Managers
         public void Reset()
         {
             _renderTarget?.Close();
-            var videoMode = new VideoMode(_info.ScreenWidth, _info.ScreenHeight);
+            var videoMode = new VideoMode(_graphicsSettings.ScreenWidth, _graphicsSettings.ScreenHeight);
             _renderTarget = new RenderWindow(videoMode, _info.Name);
-            var view = new Perspective("main", new Vector2(0.0f, 0.0f), _info.ScreenSize, 3.0f, _frameTime);
+            var view = new Perspective("main", new Vector2(0.0f, 0.0f), _graphicsSettings.ScreenSize, 3.0f, _frameTime);
             _perspectives.Add(view);
-            if(_info.VSyncEnabled)
+            if(_graphicsSettings.VSyncEnabled)
                 _renderTarget.SetVerticalSyncEnabled(true);
             else
-                _renderTarget.SetFramerateLimit(_info.RefreshRate);
+                _renderTarget.SetFramerateLimit(_graphicsSettings.RefreshRate);
             _renderTarget.SetActive(false);
             _renderTarget.Closed += (sender, args) => _gameManager.Stop();
             _renderTarget.LostFocus += (sender, args) => _hasFocus = false; 
             _renderTarget.GainedFocus += (sender, args) => _hasFocus = true; 
+        }
+
+        private void SetSettings()
+        {
+            _renderTarget.Size = _graphicsSettings.ScreenSize;
+            if(_graphicsSettings.VSyncEnabled)
+                _renderTarget.SetVerticalSyncEnabled(true);
+            else
+                _renderTarget.SetFramerateLimit(_graphicsSettings.RefreshRate);
+            foreach (var p in _perspectives)
+            {
+                p.WorldView.Size = _renderTarget.Size / p.WorldScaling;
+                p.ScreenView.Size = _renderTarget.Size / p.ScreenScaling;
+            }
         }
 
         public void Track(Func<Perspective, bool> selector, IGameObject target)

@@ -1,4 +1,5 @@
 [
     { "Action": "LeftClick", "Button": "Left", "Device": "mouse" , "OnPressed": true, "OnReleased": false },
-    { "Action": "Pause", "Button": "Escape", "Device": "keyboard" , "OnPressed": true, "OnReleased": false }
+    { "Action": "Pause", "Button": "Escape", "Device": "keyboard" , "OnPressed": true, "OnReleased": false },
+    { "Action": "VolUp", "Button": "F", "Device": "keyboard" , "OnPressed": true, "OnReleased": false }
 ]
