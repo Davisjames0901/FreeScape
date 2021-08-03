@@ -15,5 +15,10 @@ namespace FreeScape.Engine.GameObjects.Entities
         }
         
         public ICollider Collider { get; }
+
+        public void CollisionEnter(ICollidable collidable)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

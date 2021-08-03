@@ -31,7 +31,7 @@ namespace FreeScape.Engine.Render
                 else _frameCounter = 0;
             }
         }
-        private string animationName;
+        private string animationName = "";
         public string AnimationName
         {
             get
@@ -40,19 +40,23 @@ namespace FreeScape.Engine.Render
             }
             set
             {
-                if(animationName != value)
+                if (animationName.Split(':')[0] != value.Split(':')[0])
                 {
                     animationName = value;
                     UpdateAnimation();
+                }
+                else
+                {
+                    animationName = value;
                 }
             }
         }
         private float _animationDuration { get; set; }
         private float _animationTimePassed { get; set; }
+        private int _animationIterations { get; set; } = 0;
         public float AnimationDuration { get { return _animationDuration; } }
-        public float AnimationTimeRemaining { get { return _animationDuration - _animationTimePassed; } }
+        public int AnimationIterations { get { return _animationIterations; } }
         private Animation _currentAnimation { get; set; }
-
         public Dictionary<string, Animation> Animations { get; set; }
         public Sprite AnimationSprite { get; set; }
 
@@ -64,12 +68,17 @@ namespace FreeScape.Engine.Render
         }
         private void ResetTimers()
         {
+            Console.WriteLine($"Inside ResetTimers() : {AnimationName}, iterations : {_animationIterations} passed : {_animationTimePassed}, duration : {_animationDuration}, frameCounter : {_frameCounter}");
+
             _animationTimePassed = 0;
-            if(Timer is not null)
+            _frameCounter = 0;
+            _animationIterations = 0;
+            if (Timer is not null)
                 Timer.Restart();
         }
         private void UpdateAnimation()
         {
+            if (AnimationName.Length > 0 && Animations.Count > 0)
             if (Animations.TryGetValue(AnimationName,  out Animation value))
             {
                 _currentAnimation = value;
@@ -80,7 +89,7 @@ namespace FreeScape.Engine.Render
                     total += frame.Duration;
                 }
                 _animationDuration = total;
-                _animationTimePassed = 0;
+                ResetTimers();
             }
             else throw new Exception($"Player does not contain an Animation with name {AnimationName}.");
         }
@@ -110,11 +119,17 @@ namespace FreeScape.Engine.Render
         
         public void Tick()
         {
-            if (Timer.ElapsedMilliseconds > CurrentFrame.Duration)
+            if (Timer.ElapsedMilliseconds >= CurrentFrame.Duration)
             {
-                _animationTimePassed += Timer.ElapsedMilliseconds;
-                Timer.Restart();
+                 _animationTimePassed += Timer.ElapsedMilliseconds;
                 AnimationTick();
+                Timer.Restart();
+                Console.WriteLine($"Before Iteration Check : {AnimationName}, iterations : {_animationIterations} passed : {_animationTimePassed}, duration : {_animationDuration}, frameCounter : {_frameCounter}");
+                if (_animationTimePassed > _animationDuration)
+                {
+                    _animationIterations++;
+                    _animationTimePassed = 0;
+                }
             }
         }
         private void AnimationTick()

@@ -16,5 +16,10 @@ namespace FreeScape.Engine.GameObjects.Entities
 
             Collider = new CircleCollider( position, position + (size/2), size.X/2);
         }
+
+        public void CollisionEnter(ICollidable collidable)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

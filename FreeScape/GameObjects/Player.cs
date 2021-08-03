@@ -10,39 +10,33 @@ using SFML.Graphics;
 
 namespace FreeScape.GameObjects
 {
-    public class Player: Animated, IMovable, ICollidable
+    public class Player : PlayerController, IMovable, ICollidable 
     {
         private readonly ActionProvider _actionProvider;
         private readonly DisplayManager _displayManager;
-        public readonly AnimationProvider _animationProvider;
         private CircleShape _shape;
         public int ZIndex { get; set; }
         public float Weight { get; set; }
         public Vector2 Size { get; set; }
         public Vector2 Scale { get; set; }
-        public float Speed { get; set; }
+        private float speed = 0;
+        public float Speed { 
+            get { return speed * PlayerActionSpeedModifier; }
+            set { speed = value; } }
         public Vector2 HeadingVector { get; private set; }
         private CircleCollider _collider;
         public ICollider Collider => _collider;
         public Vector2 Velocity { get; set; }
         public Vector2 Position { get; set; }
-        public string AnimationDirection { get; set; }
-
-        private bool _performingAction = false;
-        private string _action = "none";
-
         
-        public Player(ActionProvider actionProvider, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(animationProvider, mapProvider)
+        public Player(ColliderProvider colliderProvider, ActionProvider actionProvider, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(actionProvider, soundProvider, frameTimeProvider, animationProvider, mapProvider)
         {
             _actionProvider = actionProvider;
             _displayManager = displayManager;
-            _animationProvider = animationProvider;
-
-
+            //colliderProvider.RegisterCollidable(this);
+            
             actionProvider.SubscribeOnPressed(a =>
             {
-                if(a == "Punch")
-                    soundProvider.PlaySound("punch");
             });
         }
 
@@ -51,18 +45,16 @@ namespace FreeScape.GameObjects
             TileSetName = "CharacterSprites";
             ZIndex = 999;
             Velocity = new Vector2(0, 0);
-            Speed = 5.0f;
+            Speed = 10.0f;
             Scale = new Vector2(2.0f, 2.0f);
             Size = new Vector2(4.0f, 4.0f);
             Position = new Vector2(300, 500);
-            _displayManager.CurrentPerspective.WorldView.Center = Position;
+            _displayManager.CurrentPerspective.WorldView.Center= Position;
             _shape = new CircleShape(Size.X);
             _shape.FillColor = Color.Red;
             _collider = new CircleCollider(Position, Position / Size * Scale, Size.X * Scale.X);
             GetAnimations();
-            AnimationDirection = "down";
 
-            AnimationName = "idle:down";
             base.Init();
         }
 
@@ -72,7 +64,6 @@ namespace FreeScape.GameObjects
             {
                 Animations.Add(animation.Type, animation);
             }
-
             foreach (var animation in _animationProvider.GetMovementAnimation("walk"))
             {
                 Animations.Add(animation.Type, animation);
@@ -81,94 +72,37 @@ namespace FreeScape.GameObjects
             {
                 Animations.Add(animation.Type, animation);
             }
+
+            foreach (var animation in _animationProvider.GetMovementAnimation("roll"))
+            {
+                Animations.Add(animation.Type, animation);
+            }
+            foreach (var animation in _animationProvider.GetMovementAnimation("block"))
+            {
+                Animations.Add(animation.Type, animation);
+            }
         }
 
-        public void Tick()
+ 
+        new public void Tick()
         {
             var up = _actionProvider.IsActionActivated("MoveUp");
             var down = _actionProvider.IsActionActivated("MoveDown");
             var left = _actionProvider.IsActionActivated("MoveLeft");
             var right = _actionProvider.IsActionActivated("MoveRight");
             var attack = _actionProvider.IsActionActivated("LeftClick");
-            var animationName = "";
-            if (!_performingAction)
-            {
-                if ((up || down || left || right) && !_performingAction)
-                {
-                    animationName = "walk";
-                }
-                else animationName = "idle";
+            var block = _actionProvider.IsActionActivated("RightClick");
+            var roll = _actionProvider.IsActionActivated("Roll");
 
+            HeadingVector = Maths.GetHeadingVectorFromMovement(up, down, left, right);
 
-                if (left)
-                {
-                    AnimationDirection = "left";
-                }
-                if (right)
-                {
-                    AnimationDirection = "right";
-                }
-                if (left && right)
-                {
-                    AnimationDirection = "down";
-                }
-                if (up)
-                {
-                    AnimationDirection = "up";
-                }
-                if (down)
-                {
-                    AnimationDirection = "down";
-                }
-                if (attack)
-                {
-                    PlayerAttack();
-                }
-                if(!_performingAction)
-                    AnimationName = animationName + ":" + AnimationDirection;
-                PlayerMove(up, down, left, right);
-            }
-            else
-            {
-                PlayerAction();
-            }
+            ControllerTick(HeadingVector, roll, attack, block);
+
+            PlayerMove(up, down, left, right);
             base.Tick();
-        }
-        private void PlayerAction()
-        {
-            switch (_action)
-            {
-                case "attack":
-                    PlayerAttack();
-                    break;
-                default:
-                    break;
-            }
-        }
-        public void PlayerAttack()
-        {
-            AnimationName = "attack:" + AnimationDirection;
-            if (AnimationTimeRemaining > 0)
-            {
-            _performingAction = true;
-            _action = "attack";
-            }
-            else
-            {
-                AnimationName = "idle:" + AnimationDirection;
-
-                _performingAction = false;
-            }
         }
         private void PlayerMove(bool up, bool down, bool left, bool right)
         {
-            if (!_performingAction)
-            {
-                HeadingVector = Maths.GetHeadingVectorFromMovement(up, down, left, right);
-            }
-            else HeadingVector = Vector2.Zero;
-
-
             _collider.Position = Position - Size / 2 * Scale;
         }
 
@@ -179,5 +113,9 @@ namespace FreeScape.GameObjects
             target.Draw(AnimationSprite);
         }
 
+        public void CollisionEnter(ICollidable collidable)
+        {
+            //set player to previous position if collidable is solid
+        }
     }
 }
