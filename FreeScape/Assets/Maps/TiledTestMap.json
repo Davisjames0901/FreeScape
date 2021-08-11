@@ -2370,18 +2370,6 @@
                  "width":64,
                  "x":636,
                  "y":415
-                }, 
-                {
-                 "gid":4,
-                 "height":512,
-                 "id":259,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":512,
-                 "x":523.694094420849,
-                 "y":427.694088544907
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2390,7 +2378,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":260,
+ "nextobjectid":261,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.7.0",
@@ -5394,28 +5382,52 @@
                  "imagewidth":64
                 }, 
                 {
+                 "animation":[
+                        {
+                         "duration":150,
+                         "tileid":20
+                        }],
                  "id":20,
                  "image":"CharacterSprites\/Character with sword and shield\/block\/block down.png",
                  "imageheight":64,
-                 "imagewidth":64
+                 "imagewidth":64,
+                 "type":"block:down"
                 }, 
                 {
+                 "animation":[
+                        {
+                         "duration":150,
+                         "tileid":21
+                        }],
                  "id":21,
                  "image":"CharacterSprites\/Character with sword and shield\/block\/block left.png",
                  "imageheight":64,
-                 "imagewidth":64
+                 "imagewidth":64,
+                 "type":"block:left"
                 }, 
                 {
+                 "animation":[
+                        {
+                         "duration":150,
+                         "tileid":22
+                        }],
                  "id":22,
                  "image":"CharacterSprites\/Character with sword and shield\/block\/block right.png",
                  "imageheight":64,
-                 "imagewidth":64
+                 "imagewidth":64,
+                 "type":"block:right"
                 }, 
                 {
+                 "animation":[
+                        {
+                         "duration":150,
+                         "tileid":23
+                        }],
                  "id":23,
                  "image":"CharacterSprites\/Character with sword and shield\/block\/block up.png",
                  "imageheight":64,
-                 "imagewidth":64
+                 "imagewidth":64,
+                 "type":"block:up"
                 }, 
                 {
                  "animation":[

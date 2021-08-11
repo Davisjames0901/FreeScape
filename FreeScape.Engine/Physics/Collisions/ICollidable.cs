@@ -5,5 +5,6 @@ namespace FreeScape.Engine.Physics
     public interface ICollidable
     {
         public ICollider Collider { get; }
+        public void CollisionEnter(ICollidable collidable);
     }
 }

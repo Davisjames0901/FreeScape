@@ -32,7 +32,8 @@ namespace FreeScape.Engine
             services.AddSingleton<Movement>();
             services.AddSingleton<TileSetProvider>();
             services.AddSingleton<AnimationProvider>();
-            
+            services.AddSingleton<ColliderProvider>();
+
             services.AddSingleton(new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
