@@ -11,7 +11,7 @@ namespace FreeScape.Engine.Tests
             var timer = Stopwatch.StartNew();
             while (true)
             {
-                if (timer.ElapsedMilliseconds == 1)
+                if (timer.ElapsedMilliseconds == ms)
                     break;
             }
         }
