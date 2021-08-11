@@ -1,10 +1,11 @@
+using System;
 using System.Diagnostics;
 
 namespace FreeScape.Engine.Providers
 {
     public class FrameTimeProvider
     {
-        private const double TICKS_PER_SECOND = 100000000;
+        private const double MS_PER_SECOND = 1000;
         private long _lastTicks;
         private readonly Stopwatch _stopwatch;
         
@@ -19,7 +20,7 @@ namespace FreeScape.Engine.Providers
             _stopwatch.Restart();
         }
 
-        public double DeltaTimeSeconds => DeltaTimeMilliSeconds/TICKS_PER_SECOND;
+        public double DeltaTimeSeconds => DeltaTimeMilliSeconds/MS_PER_SECOND;
         public double DeltaTimeMilliSeconds => (_lastTicks / (float)Stopwatch.Frequency) * 1000;
     }
 }

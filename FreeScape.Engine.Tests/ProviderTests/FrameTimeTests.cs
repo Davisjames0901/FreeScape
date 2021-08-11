@@ -41,7 +41,7 @@ namespace FreeScape.Engine.Tests.ProviderTests
                 _frameTime.Tick();
                 AccurateWaiter.WaitMs(1000);
                 _frameTime.Tick();
-                times.Add(_frameTime.DeltaTimeMilliSeconds);
+                times.Add(_frameTime.DeltaTimeSeconds);
             }
             CustomAsserts.AverageIsEqual(times, 1, ACCEPTABLE_ACCURACY);
             CustomAsserts.AssertInBounds(times, 1, MAXIMUM_DELTA);
