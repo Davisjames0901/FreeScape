@@ -16,6 +16,11 @@
       <ProjectReference Include="..\Sfml\src\SFML.System\SFML.System.csproj" />
       <ProjectReference Include="..\Sfml\src\SFML.Window\SFML.Window.csproj" />
     </ItemGroup>
-
+    
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
 
 </Project>

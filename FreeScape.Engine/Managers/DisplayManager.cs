@@ -64,8 +64,8 @@ namespace FreeScape.Engine.Managers
                 _renderTarget.SetFramerateLimit(_graphicsSettings.RefreshRate);
             _renderTarget.SetActive(false);
             _renderTarget.Closed += (sender, args) => _gameManager.Stop();
-            _renderTarget.LostFocus += (sender, args) => _hasFocus = false; 
-            _renderTarget.GainedFocus += (sender, args) => _hasFocus = true; 
+            _renderTarget.LostFocus += (sender, args) => _hasFocus = false;
+            _renderTarget.GainedFocus += (sender, args) => _hasFocus = true;
         }
 
         private void SetSettings()
