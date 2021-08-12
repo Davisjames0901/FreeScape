@@ -36,7 +36,7 @@ namespace FreeScape.Engine.Render
             WorldView.Center = position;
         }
 
-        public void Track(IGameObject go, float sharpness = 0.5f)
+        public void Track(IGameObject go, float sharpness = 0.002f)
         {
             _target = go;
             _trackSharpness = sharpness;

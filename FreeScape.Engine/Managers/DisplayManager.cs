@@ -43,9 +43,9 @@ namespace FreeScape.Engine.Managers
             {
                 CurrentPerspective = view;
                 view.Tick();
-                _renderTarget.SetView(view.WorldView);
+                _renderTarget.View = view.WorldView;
                 scene.RenderWorld(_renderTarget);
-                _renderTarget.SetView(view.ScreenView);
+                _renderTarget.View = view.ScreenView;
                 scene.RenderScreen(_renderTarget);
                 _renderTarget.Display();
             }
