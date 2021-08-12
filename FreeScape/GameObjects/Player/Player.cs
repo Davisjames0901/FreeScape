@@ -2,7 +2,7 @@ using System;
 using System.Numerics;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Physics;
-using FreeScape.Engine.Physics.Colliders;
+using FreeScape.Engine.Physics.Collisions.Colliders;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
 using FreeScape.Engine.Utilities;
@@ -28,13 +28,14 @@ namespace FreeScape.GameObjects
         public ICollider Collider => _collider;
         public Vector2 Velocity { get; set; }
         public Vector2 Position { get; set; }
-        
+
+        public ColliderType ColliderType { get; set; }
+
         public Player(ColliderProvider colliderProvider, ActionProvider actionProvider, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(actionProvider, soundProvider, frameTimeProvider, animationProvider, mapProvider)
         {
             _actionProvider = actionProvider;
             _displayManager = displayManager;
-            //colliderProvider.RegisterCollidable(this);
-            
+            ColliderType = ColliderType.Solid;
             actionProvider.SubscribeOnPressed(a =>
             {
             });

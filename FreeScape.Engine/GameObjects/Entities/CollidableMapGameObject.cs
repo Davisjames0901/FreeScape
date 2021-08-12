@@ -1,6 +1,6 @@
 ﻿using FreeScape.Engine.Config.TileSet;
 using FreeScape.Engine.Physics;
-using FreeScape.Engine.Physics.Colliders;
+using FreeScape.Engine.Physics.Collisions.Colliders;
 using SFML.Graphics;
 using System.Numerics;
 
@@ -16,7 +16,7 @@ namespace FreeScape.Engine.GameObjects.Entities
 
             Collider = new CircleCollider( position, position + (size/2), size.X/2);
         }
-
+        public ColliderType ColliderType { get; } = ColliderType.Solid;
         public void CollisionEnter(ICollidable collidable)
         {
             throw new System.NotImplementedException();

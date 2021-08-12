@@ -3,7 +3,7 @@ using FreeScape.Engine.Providers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using FreeScape.Engine.Physics.Colliders;
+using FreeScape.Engine.Physics.Collisions.Colliders;
 using FreeScape.Engine.Utilities;
 
 namespace FreeScape.Engine.Physics

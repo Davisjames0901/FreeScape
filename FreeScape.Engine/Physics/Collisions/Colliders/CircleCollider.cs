@@ -4,7 +4,7 @@ using System.Linq;
 using System.Numerics;
 using FreeScape.Engine.Utilities;
 
-namespace FreeScape.Engine.Physics.Colliders
+namespace FreeScape.Engine.Physics.Collisions.Colliders
 {
     public class CircleCollider : ICollider
     {

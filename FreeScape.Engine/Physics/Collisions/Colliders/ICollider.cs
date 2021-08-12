@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace FreeScape.Engine.Physics.Colliders
+namespace FreeScape.Engine.Physics.Collisions.Colliders
 {
     public interface ICollider
     {

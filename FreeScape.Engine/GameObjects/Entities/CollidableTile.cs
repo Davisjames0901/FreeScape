@@ -1,7 +1,7 @@
 using System.Numerics;
 using FreeScape.Engine.Config.TileSet;
 using FreeScape.Engine.Physics;
-using FreeScape.Engine.Physics.Colliders;
+using FreeScape.Engine.Physics.Collisions.Colliders;
 using SFML.Graphics;
 
 namespace FreeScape.Engine.GameObjects.Entities
@@ -15,6 +15,8 @@ namespace FreeScape.Engine.GameObjects.Entities
         }
         
         public ICollider Collider { get; }
+
+        public ColliderType ColliderType { get; } = ColliderType.Solid;
 
         public void CollisionEnter(ICollidable collidable)
         {

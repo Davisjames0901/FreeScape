@@ -9,7 +9,7 @@ using System.Linq;
 using System.Numerics;
 using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Config.TileSet;
-using FreeScape.Engine.Physics.Colliders;
+using FreeScape.Engine.Physics.Collisions.Colliders;
 
 namespace FreeScape.Engine.Render.Layers
 {

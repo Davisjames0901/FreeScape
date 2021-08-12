@@ -3,7 +3,7 @@ using FreeScape.Engine.Config.TileSet;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Physics;
-using FreeScape.Engine.Physics.Colliders;
+using FreeScape.Engine.Physics.Collisions.Colliders;
 using FreeScape.Engine.Providers;
 using SFML.Graphics;
 using SFML.System;
