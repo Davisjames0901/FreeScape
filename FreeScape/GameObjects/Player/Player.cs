@@ -45,7 +45,7 @@ namespace FreeScape.GameObjects
             TileSetName = "CharacterSprites";
             ZIndex = 999;
             Velocity = new Vector2(0, 0);
-            Speed = 10.0f;
+            Speed = 0.1f;
             Scale = new Vector2(2.0f, 2.0f);
             Size = new Vector2(4.0f, 4.0f);
             Position = new Vector2(300, 500);
