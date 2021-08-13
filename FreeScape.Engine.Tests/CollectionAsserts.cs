@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace FreeScape.Engine.Tests
 {
-    public static class CustomAsserts
+    public static class CollectionAsserts
     {
         public static void AssertInBounds(IEnumerable<double> source, double average, double maximumDelta)
         {

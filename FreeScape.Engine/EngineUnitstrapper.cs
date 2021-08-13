@@ -6,6 +6,7 @@ using FreeScape.Engine.Config.Action;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Physics;
+using FreeScape.Engine.Physics.Movements;
 using Microsoft.Extensions.DependencyInjection;
 using FreeScape.Engine.Physics.Collisions;
 
@@ -45,6 +46,8 @@ namespace FreeScape.Engine
 
             services.AddScoped<ActionProvider>();
             services.AddScoped<GameObjectProvider>();
+            services.AddScoped<KeyboardMovement>();
+            services.AddScoped<UserInputMovement>();
             services.AddSingleton<SoundProvider>();
             
             return services;

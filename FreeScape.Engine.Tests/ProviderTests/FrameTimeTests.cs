@@ -28,8 +28,8 @@ namespace FreeScape.Engine.Tests.ProviderTests
                 _frameTime.Tick();
                 times.Add(_frameTime.DeltaTimeMilliSeconds);
             }
-            CustomAsserts.AverageIsEqual(times, 1, ACCEPTABLE_ACCURACY);
-            CustomAsserts.AssertInBounds(times, 1, MAXIMUM_DELTA);
+            CollectionAsserts.AverageIsEqual(times, 1, ACCEPTABLE_ACCURACY);
+            CollectionAsserts.AssertInBounds(times, 1, MAXIMUM_DELTA);
         }
 
         [Test]
@@ -43,8 +43,8 @@ namespace FreeScape.Engine.Tests.ProviderTests
                 _frameTime.Tick();
                 times.Add(_frameTime.DeltaTimeSeconds);
             }
-            CustomAsserts.AverageIsEqual(times, 1, ACCEPTABLE_ACCURACY);
-            CustomAsserts.AssertInBounds(times, 1, MAXIMUM_DELTA);
+            CollectionAsserts.AverageIsEqual(times, 1, ACCEPTABLE_ACCURACY);
+            CollectionAsserts.AssertInBounds(times, 1, MAXIMUM_DELTA);
         }
     }
 }

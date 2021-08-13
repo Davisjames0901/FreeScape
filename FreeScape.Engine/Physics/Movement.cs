@@ -23,7 +23,7 @@ namespace FreeScape.Engine.Physics
         public void BasicMove(IMovable movable)
         {
             var deltaTime = (float) _frameTime.DeltaTimeMilliSeconds;
-            var velocity = Maths.GetVelocity(movable.HeadingVector, movable.Speed, deltaTime);
+            var velocity = Maths.GetDistance(movable.HeadingVector.Vector, movable.Speed, deltaTime);
             movable.Position = movable.Position + velocity;
         }
 

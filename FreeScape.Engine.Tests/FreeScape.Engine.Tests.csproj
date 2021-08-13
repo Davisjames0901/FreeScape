@@ -16,4 +16,8 @@
       <ProjectReference Include="..\FreeScape.Engine\FreeScape.Engine.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="RenderTests" />
+    </ItemGroup>
+
 </Project>
