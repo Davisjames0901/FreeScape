@@ -1,22 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Physics;
-using FreeScape.Engine.Physics.Colliders;
 using FreeScape.Engine.Physics.Movements;
 using FreeScape.Engine.Physics.Collisions;
 using FreeScape.Engine.Physics.Collisions.Colliders;
 using FreeScape.Engine.Providers;
-using FreeScape.Engine.Render;
-using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 
 namespace FreeScape.GameObjects
 {
-    public class Player : PlayerController, IMovable, ICollidable 
+    public class Player : PlayerActions, IMovable, ICollidable 
     {
         private readonly UserInputMovement _movement;
         private readonly DisplayManager _displayManager;
@@ -34,7 +30,7 @@ namespace FreeScape.GameObjects
         public Vector2 Velocity { get; set; }
         public Vector2 Position { get; set; }
 
-        public Player(UserInputMovement movement, CollisionEngine collisionEngine, ColliderProvider colliderProvider, ActionProvider actionProvider, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(actionProvider, soundProvider, frameTimeProvider, animationProvider, mapProvider)
+        public Player(UserInputMovement movement, ActionProvider actionProvider, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(soundProvider, frameTimeProvider, animationProvider, mapProvider)
         {
             _movement = movement;
             _displayManager = displayManager;
@@ -85,8 +81,7 @@ namespace FreeScape.GameObjects
                 Animations.Add(animation.Type, animation);
             }
         }
-
- 
+        
         new public void Tick()
         {
             _movement.Tick();
@@ -95,17 +90,13 @@ namespace FreeScape.GameObjects
             var block = _movement.CurrentActionProvider.IsActionActivated("RightClick");
             var roll = _movement.CurrentActionProvider.IsActionActivated("Roll");
 
-            ControllerTick(HeadingVector, roll, attack, block);
+            ActionTick(HeadingVector, roll, attack, block);
 
-            PlayerMove(up, down, left, right);
-            base.Tick();
-        }
-        private void PlayerMove(bool up, bool down, bool left, bool right)
-        {
             foreach(var collider in Colliders)
             {
                 collider.Position = Position - Size / 2 * Scale;
             }
+            base.Tick();
         }
         
         public void Render(RenderTarget target)
