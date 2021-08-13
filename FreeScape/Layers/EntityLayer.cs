@@ -5,6 +5,7 @@ using FreeScape.Engine.Managers;
 using FreeScape.Engine.GameObjects.UI;
 using FreeScape.GameObjects;
 using FreeScape.Engine.Config.Map;
+using FreeScape.Engine.Physics.Collisions;
 
 namespace FreeScape.Layers
 {
@@ -19,7 +20,7 @@ namespace FreeScape.Layers
         public override int ZIndex => 999;
         protected override MapInfo Map => _mapProvider.GetMap("TiledTestMap");
 
-        public EntityLayer(ActionProvider actionProvider, GameObjectProvider gameObjectProvider, DisplayManager displayManager, Movement movement, TileSetProvider tileSetProvider, MapProvider mapProvider):base(movement, mapProvider)
+        public EntityLayer(CollisionEngine collisionEngine, ActionProvider actionProvider, GameObjectProvider gameObjectProvider, DisplayManager displayManager, Movement movement, TileSetProvider tileSetProvider, MapProvider mapProvider):base(movement, mapProvider, collisionEngine)
         {
             _actionProvider = actionProvider;
             _gameObjectProvider = gameObjectProvider;

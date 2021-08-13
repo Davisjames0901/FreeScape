@@ -3,7 +3,7 @@ using FreeScape.Engine.Providers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using FreeScape.Engine.Physics.Colliders;
+using FreeScape.Engine.Physics.Collisions.Colliders;
 using FreeScape.Engine.Utilities;
 
 namespace FreeScape.Engine.Physics
@@ -24,14 +24,7 @@ namespace FreeScape.Engine.Physics
         {
             var deltaTime = (float) _frameTime.DeltaTimeMilliSeconds;
             var velocity = Maths.GetVelocity(movable.HeadingVector, movable.Speed, deltaTime);
-            var newPosition = movable.Position + velocity;
-            if (movable is ICollidable collidable)
-            {
-                movable.Position = CheckCollision(movable, collidable.Collider, newPosition);
-                return;
-            }
-
-            movable.Position = newPosition;
+            movable.Position = movable.Position + velocity;
         }
 
         public Vector2 CheckCollision(IMovable sourceMovable, ICollider collider, Vector2 desiredPosition)
