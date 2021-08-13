@@ -128,11 +128,11 @@ namespace FreeScape.Engine.Render.Layers
         {
             foreach(IGameObject gameObject in GameObjects)
             {
+                gameObject.Tick();
                 if(gameObject is IMovable movable)
                 {
                     _movement.BasicMove(movable);
                 }
-                gameObject.Tick();
             }
         }
 

@@ -3,6 +3,7 @@ using System.Numerics;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Physics;
 using FreeScape.Engine.Physics.Colliders;
+using FreeScape.Engine.Physics.Movements;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
 using FreeScape.Engine.Utilities;
@@ -12,7 +13,7 @@ namespace FreeScape.GameObjects
 {
     public class Player : PlayerController, IMovable, ICollidable 
     {
-        private readonly ActionProvider _actionProvider;
+        private readonly UserInputMovement _movement;
         private readonly DisplayManager _displayManager;
         private CircleShape _shape;
         public int ZIndex { get; set; }
@@ -23,21 +24,16 @@ namespace FreeScape.GameObjects
         public float Speed { 
             get { return speed * PlayerActionSpeedModifier; }
             set { speed = value; } }
-        public Vector2 HeadingVector { get; private set; }
+        public HeadingVector HeadingVector { get; private set; }
         private CircleCollider _collider;
         public ICollider Collider => _collider;
         public Vector2 Velocity { get; set; }
         public Vector2 Position { get; set; }
         
-        public Player(ColliderProvider colliderProvider, ActionProvider actionProvider, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(actionProvider, soundProvider, frameTimeProvider, animationProvider, mapProvider)
+        public Player(UserInputMovement movement, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(soundProvider, frameTimeProvider, animationProvider, mapProvider)
         {
-            _actionProvider = actionProvider;
+            _movement = movement;
             _displayManager = displayManager;
-            //colliderProvider.RegisterCollidable(this);
-            
-            actionProvider.SubscribeOnPressed(a =>
-            {
-            });
         }
 
         public override void Init()
@@ -86,26 +82,18 @@ namespace FreeScape.GameObjects
  
         new public void Tick()
         {
-            var up = _actionProvider.IsActionActivated("MoveUp");
-            var down = _actionProvider.IsActionActivated("MoveDown");
-            var left = _actionProvider.IsActionActivated("MoveLeft");
-            var right = _actionProvider.IsActionActivated("MoveRight");
-            var attack = _actionProvider.IsActionActivated("LeftClick");
-            var block = _actionProvider.IsActionActivated("RightClick");
-            var roll = _actionProvider.IsActionActivated("Roll");
-
-            HeadingVector = Maths.GetHeadingVectorFromMovement(up, down, left, right);
+            _movement.Tick();
+            HeadingVector = _movement.HeadingVector;
+            var attack = _movement.CurrentActionProvider.IsActionActivated("LeftClick");
+            var block = _movement.CurrentActionProvider.IsActionActivated("RightClick");
+            var roll = _movement.CurrentActionProvider.IsActionActivated("Roll");
 
             ControllerTick(HeadingVector, roll, attack, block);
 
-            PlayerMove(up, down, left, right);
+            _collider.Position = Position - Size / 2 * Scale;
             base.Tick();
         }
-        private void PlayerMove(bool up, bool down, bool left, bool right)
-        {
-            _collider.Position = Position - Size / 2 * Scale;
-        }
-
+        
         public void Render(RenderTarget target)
         {
             AnimationSprite.Position = Position - new Vector2(AnimationSprite.TextureRect.Width / 2, AnimationSprite.TextureRect.Height / 2) * Scale;

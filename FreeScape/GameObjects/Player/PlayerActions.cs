@@ -1,6 +1,7 @@
 ﻿using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
 using System.Numerics;
+using FreeScape.Engine.Physics.Movements;
 
 namespace FreeScape.GameObjects
 {
@@ -13,22 +14,17 @@ namespace FreeScape.GameObjects
         private bool _performingPlayerAction = false;
 
         public float PlayerActionSpeedModifier = 1.0f;
-        public PlayerActions(ActionProvider actionProvider, SoundProvider soundProvider, FrameTimeProvider frameTimeProvider, 
+        public PlayerActions(SoundProvider soundProvider, FrameTimeProvider frameTimeProvider, 
                                 AnimationProvider animationProvider, MapProvider mapProvider) : base(animationProvider, mapProvider)
         {
             PlayerActionName = _defaultPlayerActionName;
             PlayerActionDirection = _defaultPlayerDirection;
             AnimationName = _defaultPlayerActionName + ":" + _defaultPlayerDirection;
         }
-        public bool IsValidMovement(Vector2 HeadingVector)
+        
+        public void ActionTick(HeadingVector headingVector, bool roll, bool attack, bool block)
         {
-            if (HeadingVector == Vector2.Zero)
-                return false;
-            return true;
-        }
-        public void ActionTick(Vector2 HeadingVector, bool roll, bool attack, bool block)
-        {
-            PlayerActionDirection = GetAnimationDirection(HeadingVector);
+            PlayerActionDirection = GetAnimationDirection(headingVector);
             
             if(PlayerActionName == "block")
             {
@@ -55,7 +51,7 @@ namespace FreeScape.GameObjects
                 {
                     StartAction("attack");
                 }
-                else if (IsValidMovement(HeadingVector))
+                else if (headingVector.Direction != Direction.None)
                 {
                     StartAction("walk");
                 }
@@ -63,12 +59,12 @@ namespace FreeScape.GameObjects
             }
 
         }
-        public string GetAnimationDirection(Vector2 HeadingVector)
+        public string GetAnimationDirection(HeadingVector headingVector)
         {
-            if (HeadingVector.Y > 0) return "down";
-            if (HeadingVector.Y < 0) return "up";
-            if (HeadingVector.X < 0) return "left";
-            if (HeadingVector.X > 0) return "right";
+            if (headingVector.Direction.HasFlag(Direction.Left)) return "left";
+            if (headingVector.Direction.HasFlag(Direction.Right)) return "right";
+            if (headingVector.Direction.HasFlag(Direction.Up)) return "up";
+            if (headingVector.Direction.HasFlag(Direction.Down)) return "down";
             return PlayerActionDirection;
         }
 

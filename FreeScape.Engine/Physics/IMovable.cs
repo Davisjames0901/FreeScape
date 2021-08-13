@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Physics.Movements;
 using SFML.System;
 
 namespace FreeScape.Engine.Physics
@@ -8,7 +9,7 @@ namespace FreeScape.Engine.Physics
     {
         float Weight { get; }
         float Speed { get; }
-        Vector2 HeadingVector { get; }
+        HeadingVector HeadingVector { get; }
         new Vector2 Position { get; set; }
     }
 }

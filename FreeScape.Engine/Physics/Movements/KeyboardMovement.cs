@@ -1,3 +1,4 @@
+using System;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Utilities;
 
@@ -5,21 +6,23 @@ namespace FreeScape.Engine.Physics.Movements
 {
     public class KeyboardMovement : IMovement
     {
-        private readonly ActionProvider _actionProvider;
+        public readonly ActionProvider ActionProvider;
         
-        public HeadingVector HeadingVector { get; private set; }
+        public HeadingVector HeadingVector { get; }
 
         public KeyboardMovement(ActionProvider actionProvider)
         {
-            _actionProvider = actionProvider;
+            ActionProvider = actionProvider;
+            HeadingVector = new HeadingVector();
         }
         
         public void Tick()
         {
-            var up = _actionProvider.IsActionActivated("MoveUp");
-            var down = _actionProvider.IsActionActivated("MoveDown");
-            var left = _actionProvider.IsActionActivated("MoveLeft");
-            var right = _actionProvider.IsActionActivated("MoveRight");
+            var up = ActionProvider.IsActionActivated("MoveUp");
+            var down = ActionProvider.IsActionActivated("MoveDown");
+            var left = ActionProvider.IsActionActivated("MoveLeft");
+            var right = ActionProvider.IsActionActivated("MoveRight");
+            Console.WriteLine($"{up} {down} {left} {right}");
 
             HeadingVector.UpdateHeadingVector(Maths.GetHeadingVectorFromMovement(up, down, left, right));
         }

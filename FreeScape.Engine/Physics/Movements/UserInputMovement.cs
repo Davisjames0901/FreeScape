@@ -1,3 +1,5 @@
+using FreeScape.Engine.Providers;
+
 namespace FreeScape.Engine.Physics.Movements
 {
     public class UserInputMovement : IMovement
@@ -8,12 +10,14 @@ namespace FreeScape.Engine.Physics.Movements
         {
             _keyboardMovement = keyboardMovement;
         }
-         
-        public HeadingVector HeadingVector { get; }
+
+        public ActionProvider CurrentActionProvider => _keyboardMovement.ActionProvider;
+        
+        public HeadingVector HeadingVector { get; private set; }
         public void Tick()
         {
             _keyboardMovement.Tick();
-            throw new System.NotImplementedException();
+            HeadingVector = _keyboardMovement.HeadingVector;
         }
     }
 }

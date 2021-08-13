@@ -5,20 +5,21 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using FreeScape.Engine.Physics.Movements;
 
 namespace FreeScape.GameObjects
 {
     public class PlayerController : PlayerActions
     {
-        public PlayerController(ActionProvider actionProvider, SoundProvider soundProvider, FrameTimeProvider frameTimeProvider,
-                                AnimationProvider animationProvider, MapProvider mapProvider) : base(actionProvider, soundProvider, frameTimeProvider, animationProvider, mapProvider)
+        public PlayerController(SoundProvider soundProvider, FrameTimeProvider frameTimeProvider,
+                                AnimationProvider animationProvider, MapProvider mapProvider) : base(soundProvider, frameTimeProvider, animationProvider, mapProvider)
         {
 
         }
 
-        public void ControllerTick(Vector2 HeadingVector, bool roll, bool attack, bool block)
+        public void ControllerTick(HeadingVector headingVector, bool roll, bool attack, bool block)
         {
-            ActionTick(HeadingVector, roll, attack, block);
+            ActionTick(headingVector, roll, attack, block);
         }
     }
 }
