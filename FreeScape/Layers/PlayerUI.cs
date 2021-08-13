@@ -18,7 +18,6 @@ namespace FreeScape.Layers
         private readonly ActionProvider _actionProvider;
 
         Button HomeButton;
-        EmptyGameObject pauseMenuLocation;
         
         public PlayerUI(ActionProvider actionProvider, GameObjectProvider gameObjectProvider, DisplayManager displayManager, SceneManager sceneManager, UIObjectProvider uIObjectProvider)
         {

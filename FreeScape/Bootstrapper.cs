@@ -33,8 +33,8 @@ namespace FreeScape
             {
                 ScreenHeight = 1080,
                 ScreenWidth = 1920,
-                VSyncEnabled = true,
-                RefreshRate = 144
+                VSyncEnabled = false,
+                RefreshRate = 99999999
             };
             
             services.AddUnitStrapper();

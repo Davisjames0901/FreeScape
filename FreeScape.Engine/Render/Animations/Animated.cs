@@ -68,7 +68,7 @@ namespace FreeScape.Engine.Render
         }
         private void ResetTimers()
         {
-            Console.WriteLine($"Inside ResetTimers() : {AnimationName}, iterations : {_animationIterations} passed : {_animationTimePassed}, duration : {_animationDuration}, frameCounter : {_frameCounter}");
+            //Console.WriteLine($"Inside ResetTimers() : {AnimationName}, iterations : {_animationIterations} passed : {_animationTimePassed}, duration : {_animationDuration}, frameCounter : {_frameCounter}");
 
             _animationTimePassed = 0;
             _frameCounter = 0;
@@ -124,7 +124,7 @@ namespace FreeScape.Engine.Render
                  _animationTimePassed += Timer.ElapsedMilliseconds;
                 AnimationTick();
                 Timer.Restart();
-                Console.WriteLine($"Before Iteration Check : {AnimationName}, iterations : {_animationIterations} passed : {_animationTimePassed}, duration : {_animationDuration}, frameCounter : {_frameCounter}");
+                //Console.WriteLine($"Before Iteration Check : {AnimationName}, iterations : {_animationIterations} passed : {_animationTimePassed}, duration : {_animationDuration}, frameCounter : {_frameCounter}");
                 if (_animationTimePassed > _animationDuration)
                 {
                     _animationIterations++;

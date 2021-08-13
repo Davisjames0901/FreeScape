@@ -1,7 +1,7 @@
 [
   {
     "Action": "MoveUp",
-    "Button": "W",
+    "Button": "Comma",
     "Device": "keyboard",
     "OnPressed": true,
     "OnReleased": true
@@ -15,14 +15,14 @@
   },
   {
     "Action": "MoveDown",
-    "Button": "S",
+    "Button": "O",
     "Device": "keyboard",
     "OnPressed": true,
     "OnReleased": true
   },
   {
     "Action": "MoveRight",
-    "Button": "D",
+    "Button": "E",
     "Device": "keyboard",
     "OnPressed": true,
     "OnReleased": true
@@ -50,14 +50,14 @@
   },
   {
     "Action": "Punch",
-    "Button": "F",
+    "Button": "Dot",
     "Device": "keyboard",
     "OnPressed": true,
     "OnReleased": false
   },
   {
     "Action": "Roll",
-    "Button": "Space",
+    "Button": "Delete",
     "Device": "keyboard",
     "OnPressed": true,
     "OnReleased": false

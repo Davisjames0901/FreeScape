@@ -23,8 +23,8 @@ namespace FreeScape.Engine.Physics
         public void BasicMove(IMovable movable)
         {
             var deltaTime = (float) _frameTime.DeltaTimeMilliSeconds;
-            var velocity = Maths.GetVelocity(movable.HeadingVector, movable.Speed, deltaTime);
-            var newPosition = movable.Position + velocity;
+            var distance = Maths.GetDistance(movable.HeadingVector, movable.Speed, deltaTime);
+            var newPosition = movable.Position + distance;
             if (movable is ICollidable collidable)
             {
                 movable.Position = CheckCollision(movable, collidable.Collider, newPosition);

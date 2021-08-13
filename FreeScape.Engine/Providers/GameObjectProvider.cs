@@ -1,5 +1,6 @@
 ﻿
 using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.Physics;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FreeScape.Engine.Providers
