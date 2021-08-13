@@ -20,14 +20,16 @@ namespace FreeScape.Engine.Providers
         private readonly Dictionary<string, CachedTileSet> _tileSets;
         private readonly GameInfo _gameInfo;
         private readonly AnimationProvider _animationProvider;
+        private readonly TextureProvider _textureProvider;
 
         public string CurrentMapName { get; set; }
 
-        public MapProvider(GameInfo gameInfo, JsonSerializerOptions options, AnimationProvider animationProvider)
+        public MapProvider(GameInfo gameInfo, JsonSerializerOptions options, AnimationProvider animationProvider, TextureProvider textureProvider)
         {
             _options = options;
             _gameInfo = gameInfo;
             _animationProvider = animationProvider;
+            _textureProvider = textureProvider;
             _maps = new Dictionary<string, MapInfo>();
             _tileSets = new Dictionary<string, CachedTileSet>();
             foreach (var file in Directory.EnumerateFiles(gameInfo.MapDirectory)
@@ -111,6 +113,7 @@ namespace FreeScape.Engine.Providers
                 cachedTileSetTiles.Add(tile.Id, cachedTileSetTile);
                 if (cachedTileSetTile.Animation is not null)
                 {
+                    _textureProvider.AddTexture(cachedTileSetTile.ImageTexture, $"animation:{cachedTileSetTile.Type}");
                     _animationProvider.CreateAndAddAnimation(cachedTileSetTile);
                 }
                 i++;

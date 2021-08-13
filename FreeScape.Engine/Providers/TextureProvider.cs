@@ -45,6 +45,14 @@ namespace FreeScape.Engine.Providers
             return texture;
         }
 
+        public void AddTexture(Texture texture, string gtl)
+        {
+            if (_textures.ContainsKey(gtl))
+                throw new Exception("That gtl is already in use");
+            
+            _textures.Add(gtl, texture);
+        }
+
         public Texture GetTextureByFile(string filePath, string gtl)
         {
             var path = $"{_info.TextureDirectory}/{filePath}.png";
@@ -59,6 +67,7 @@ namespace FreeScape.Engine.Providers
 
             return texture;
         }
+        
         public Texture GetTexture(string gtl)
         {
             var tokens = gtl.Split(':');

@@ -14,7 +14,7 @@ namespace FreeScape.Engine.Config.TileSet
         public TileObjectGroup ObjectGroup { get; set; }
         public string Type { get; set; }
 
-        public List<AnimationFrame> Animation;
+        public List<AnimationFrameInfo> Animation;
         public float ImageWidth { get; set; }
         public float ImageHeight { get; set; }
         public Texture ImageTexture { get; set; }

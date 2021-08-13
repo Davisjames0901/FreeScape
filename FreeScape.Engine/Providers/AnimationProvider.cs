@@ -1,19 +1,21 @@
 ﻿using FreeScape.Engine.Config.TileSet;
-using FreeScape.Engine.Render;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FreeScape.Engine.Render.Animations;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FreeScape.Engine.Providers
 {
     public class AnimationProvider
     {
+        private readonly IServiceProvider _serviceProvider;
+        private readonly TextureProvider _textureProvider;
         private readonly Dictionary<string, Animation> _animations;
 
-        public AnimationProvider()
+        public AnimationProvider(IServiceProvider serviceProvider, TextureProvider textureProvider)
         {
+            _serviceProvider = serviceProvider;
+            _textureProvider = textureProvider;
             _animations = new();
         }
 
@@ -28,24 +30,37 @@ namespace FreeScape.Engine.Providers
             _animations.Add(animation.Type, animation);
         }
 
-        public Animation GetAnimation(string name)
+        public T GetAnimation<T>(string name) where T : IAnimation
         {
-            if (_animations.TryGetValue(name, out Animation value))
+            var animation = _serviceProvider.GetService<T>();
+            if (animation == null)
+                throw new Exception($"There is no IAnimation impl registered for type {typeof(T)}");
+            if (!_animations.ContainsKey(name))
+                throw new Exception($"There is no animation with the name {name}");
+            
+            var animationInfo = _animations[name];
+            var frames = new List<AnimationFrame>();
+            foreach (var frameInfo in animationInfo.AnimationFrames)
             {
-                return value;
+                var texture = _textureProvider.GetTexture($"animation:{frameInfo.TileId}");
+                frames.Add(new AnimationFrame
+                {
+                    Texture = texture,
+                    Duration = frameInfo.Duration
+                });
             }
-            else
-                throw new Exception($"An Animation does not exist for {name}.");
+            animation.LoadFrames(frames);
+            return animation;
         }
-        public List<Animation> GetMovementAnimation(string name)
-        {
-            List<Animation> animations = new();
-            animations.Add(GetAnimation(name + ":up"));
-            animations.Add(GetAnimation(name + ":down"));
-            animations.Add(GetAnimation(name + ":left"));
-            animations.Add(GetAnimation(name + ":right"));
-
-            return animations;
-        }
+        // public List<Animation> GetMovementAnimations(string name)
+        // {
+        //     List<Animation> animations = new();
+        //     animations.Add(GetAnimation(name + ":up"));
+        //     animations.Add(GetAnimation(name + ":down"));
+        //     animations.Add(GetAnimation(name + ":left"));
+        //     animations.Add(GetAnimation(name + ":right"));
+        //
+        //     return animations;
+        // }
     }
 }

@@ -12,6 +12,6 @@ namespace FreeScape.Engine.Config.TileSet
         public string Image { get; set; }
         public float ImageWidth { get; set; }
         public float ImageHeight { get; set; }
-        public List<AnimationFrame> Animation { get; set; }
+        public List<AnimationFrameInfo> Animation { get; set; }
     }
 }

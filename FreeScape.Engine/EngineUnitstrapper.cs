@@ -9,6 +9,7 @@ using FreeScape.Engine.Physics;
 using FreeScape.Engine.Physics.Movements;
 using Microsoft.Extensions.DependencyInjection;
 using FreeScape.Engine.Physics.Collisions;
+using FreeScape.Engine.Render.Animations;
 
 namespace FreeScape.Engine
 {
@@ -49,6 +50,8 @@ namespace FreeScape.Engine
             services.AddScoped<KeyboardMovement>();
             services.AddScoped<UserInputMovement>();
             services.AddSingleton<SoundProvider>();
+
+            services.AddTransient<CyclicAnimation>();
             
             return services;
         }
