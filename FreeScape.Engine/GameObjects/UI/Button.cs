@@ -72,14 +72,11 @@ namespace FreeScape.Engine.GameObjects.UI
         }
         private void StartWiggle()
         {
-            _wiggleDuration = 1;
+            _wiggleDuration = 100;
             _wiggleSpeed = 1.5f;
         }
         private void Wiggle()
         {
-            if (!(_wiggleDuration > 0)) 
-                return;
-            
             _wiggleDuration -= _frameTimeProvider.DeltaTimeMilliSeconds;
             if (_wiggleDuration <= 0)
             {

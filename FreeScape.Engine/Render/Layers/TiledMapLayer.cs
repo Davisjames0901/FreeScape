@@ -10,6 +10,8 @@ using System.Numerics;
 using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Config.TileSet;
 using FreeScape.Engine.Physics.Collisions.Colliders;
+using FreeScape.Engine.Physics.Collisions;
+using System;
 
 namespace FreeScape.Engine.Render.Layers
 {
@@ -17,6 +19,7 @@ namespace FreeScape.Engine.Render.Layers
     {
         private readonly TileSetProvider _tileSetProvider;
         private readonly MapProvider _mapProvider;
+        private readonly CollisionEngine _collisionEngine;
         private Movement _movement;
         private List<RectangleShape> _colliderDebugShapes;
         public List<Tile> Tiles;
@@ -26,11 +29,12 @@ namespace FreeScape.Engine.Render.Layers
         public RenderMode RenderMode => RenderMode.World;
 
 
-        public TiledMapLayer(TileSetProvider tileSetProvider, MapProvider mapProvider, Movement movement)
+        public TiledMapLayer(TileSetProvider tileSetProvider, MapProvider mapProvider, Movement movement, CollisionEngine collisionEngine)
         {
             _movement = movement;
             _tileSetProvider = tileSetProvider;
             _mapProvider = mapProvider;
+            _collisionEngine = collisionEngine;
             _colliderDebugShapes = new List<RectangleShape>();
             Tiles = new List<Tile>();
         }
@@ -81,36 +85,23 @@ namespace FreeScape.Engine.Render.Layers
                     var tilePosition = new Vector2((float)(chunk.X + i % chunk.Width) * Map.TileWidth, (float)(chunk.Y + i / chunk.Height) * Map.TileHeight);
                     var tileSize = new Vector2((float)tileSet.TileWidth, (float)tileSet.TileHeight);
 
+                    tile = new Tile(tilePosition,
+                                        tileSize,
+                                        tileSetTile,
+                                        tileSet.Sheet);
+
                     if (tileSetTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
                     {
                         foreach (var tileObject in tileSetTile.ObjectGroup.Objects)
                         {
                             switch (tileObject.Type)
                             {
-                                case "tile":
-                                    RectangleCollider tileCollider = new RectangleCollider(new Vector2(tileObject.Width, tileObject.Height), tilePosition + new Vector2(tileObject.X, tileObject.Y));
-                                    _movement.Colliders.Add(tileCollider);
-
-                                    var tileColliderShape = new RectangleShape();
-                                    tileColliderShape.Position = tileCollider.Position;
-                                    tileColliderShape.Size = tileCollider.Size;
-                                    tileColliderShape.FillColor = Color.Transparent;
-                                    tileColliderShape.OutlineColor = Color.Red;
-                                    tileColliderShape.OutlineThickness = 1;
-                                    _colliderDebugShapes.Add(tileColliderShape);
-
-                                    break;
                                 case "rectangle":
                                     RectangleCollider rectCollider = new RectangleCollider(new Vector2(tileObject.Width, tileObject.Height), tilePosition + new Vector2(tileObject.X, tileObject.Y));
 
-                                    var rectColliderShape = new RectangleShape();
-                                    rectColliderShape.Position = rectCollider.Position;
-                                    rectColliderShape.Size = rectCollider.Size;
-                                    rectColliderShape.FillColor = Color.Transparent;
-                                    rectColliderShape.OutlineColor = Color.Red;
-                                    rectColliderShape.OutlineThickness = 1;
-                                    _colliderDebugShapes.Add(rectColliderShape);
-                                    _movement.Colliders.Add(rectCollider);
+                                    rectCollider.ColliderType = ColliderType.Solid;
+                                    tile.Colliders.Add(rectCollider);
+
 
                                     break;
                                 case "circle":
@@ -120,16 +111,13 @@ namespace FreeScape.Engine.Render.Layers
                                     break;
                             }
                         }
+                        if(tileSetTile.ObjectGroup.Objects.Count > 0)
+                            _collisionEngine.RegisterStaticCollidable(tile);
 
                         //
                         //_movement.Colliders.Add(ctile.Collider);
                         //gameObject = ctile;
                     }
-                    tile = new Tile(
-                                            tilePosition,
-                                            tileSize,
-                                            tileSetTile,
-                                            tileSet.Sheet);
                     Tiles.Add(tile);
                     i++;
                 }

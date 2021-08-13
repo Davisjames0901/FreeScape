@@ -24,14 +24,7 @@ namespace FreeScape.Engine.Physics
         {
             var deltaTime = (float) _frameTime.DeltaTimeMilliSeconds;
             var velocity = Maths.GetVelocity(movable.HeadingVector, movable.Speed, deltaTime);
-            var newPosition = movable.Position + velocity;
-            if (movable is ICollidable collidable)
-            {
-                movable.Position = CheckCollision(movable, collidable.Collider, newPosition);
-                return;
-            }
-
-            movable.Position = newPosition;
+            movable.Position = movable.Position + velocity;
         }
 
         public Vector2 CheckCollision(IMovable sourceMovable, ICollider collider, Vector2 desiredPosition)

@@ -1,7 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Numerics;
+using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Managers;
 using FreeScape.Engine.Physics;
+using FreeScape.Engine.Physics.Collisions;
 using FreeScape.Engine.Physics.Collisions.Colliders;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render;
@@ -24,18 +28,14 @@ namespace FreeScape.GameObjects
             get { return speed * PlayerActionSpeedModifier; }
             set { speed = value; } }
         public Vector2 HeadingVector { get; private set; }
-        private CircleCollider _collider;
-        public ICollider Collider => _collider;
+        public List<ICollider> Colliders { get; set; }
         public Vector2 Velocity { get; set; }
         public Vector2 Position { get; set; }
 
-        public ColliderType ColliderType { get; set; }
-
-        public Player(ColliderProvider colliderProvider, ActionProvider actionProvider, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(actionProvider, soundProvider, frameTimeProvider, animationProvider, mapProvider)
+        public Player(CollisionEngine collisionEngine, ColliderProvider colliderProvider, ActionProvider actionProvider, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(actionProvider, soundProvider, frameTimeProvider, animationProvider, mapProvider)
         {
             _actionProvider = actionProvider;
             _displayManager = displayManager;
-            ColliderType = ColliderType.Solid;
             actionProvider.SubscribeOnPressed(a =>
             {
             });
@@ -46,14 +46,17 @@ namespace FreeScape.GameObjects
             TileSetName = "CharacterSprites";
             ZIndex = 999;
             Velocity = new Vector2(0, 0);
-            Speed = 10.0f;
+            Speed = 0.1f;
             Scale = new Vector2(2.0f, 2.0f);
             Size = new Vector2(4.0f, 4.0f);
             Position = new Vector2(300, 500);
             _displayManager.CurrentPerspective.WorldView.Center= Position;
             _shape = new CircleShape(Size.X);
             _shape.FillColor = Color.Red;
-            _collider = new CircleCollider(Position, Position / Size * Scale, Size.X * Scale.X);
+            var bodyCollider = new CircleCollider(Position, Position / Size * Scale, Size.X * Scale.X);
+            bodyCollider.ColliderType = ColliderType.Solid;
+            Colliders = new List<ICollider>();
+            Colliders.Add(bodyCollider);
             GetAnimations();
 
             base.Init();
@@ -104,7 +107,10 @@ namespace FreeScape.GameObjects
         }
         private void PlayerMove(bool up, bool down, bool left, bool right)
         {
-            _collider.Position = Position - Size / 2 * Scale;
+            foreach(var collider in Colliders)
+            {
+                collider.Position = Position - Size / 2 * Scale;
+            }
         }
 
         public void Render(RenderTarget target)
@@ -116,7 +122,10 @@ namespace FreeScape.GameObjects
 
         public void CollisionEnter(ICollidable collidable)
         {
-            //set player to previous position if collidable is solid
+            if (collidable is Tile tile)
+                Console.WriteLine("player is colliding with a " + tile._tileInfo.Type);
+            if (collidable is MapGameObject mgo)
+                Console.WriteLine("player is colliding with a " + mgo._tileInfo.Type);
         }
     }
 }

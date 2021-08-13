@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading;
 using FreeScape.Engine.Providers;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FreeScape.Engine.Managers
 {
@@ -30,10 +28,10 @@ namespace FreeScape.Engine.Managers
             
             while (_isRunning)
             {
-                _frameTime.Tick();
                 _render();
                 _tick();
                 _collisions();
+                _frameTime.Tick();            
             }
         }
 

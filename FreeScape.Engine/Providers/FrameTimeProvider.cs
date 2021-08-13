@@ -1,34 +1,26 @@
-using System.Diagnostics;
 using System;
+using System.Diagnostics;
 
 namespace FreeScape.Engine.Providers
 {
     public class FrameTimeProvider
     {
+        private const double MS_PER_SECOND = 1000;
+        private long _lastTicks;
         private readonly Stopwatch _stopwatch;
-        private readonly Stopwatch _renderStopwatch;
-        private const double TICKS_PER_SECOND = 100000000;
-        private double lastTickTime;
-
         
         public FrameTimeProvider()
         {
             _stopwatch = Stopwatch.StartNew();
-            _renderStopwatch = Stopwatch.StartNew();
         }
         
         internal void Tick()
         {
-            lastTickTime = _stopwatch.ElapsedTicks;
+            _lastTicks = _stopwatch.ElapsedTicks;
             _stopwatch.Restart();
         }
 
-        internal void RenderTick()
-        {
-            _renderStopwatch.Restart();
-        }
-
-        public double DeltaTimeSeconds => DeltaTimeMilliSeconds/TICKS_PER_SECOND;
-        public double DeltaTimeMilliSeconds => (lastTickTime / (float)Stopwatch.Frequency) * 10;
+        public double DeltaTimeSeconds => DeltaTimeMilliSeconds/MS_PER_SECOND;
+        public double DeltaTimeMilliSeconds => (_lastTicks / (float)Stopwatch.Frequency) * 1000;
     }
 }

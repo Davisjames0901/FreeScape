@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFML.System", "Sfml\src\SFM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFML.Window", "Sfml\src\SFML.Window\SFML.Window.csproj", "{F4B04116-C4D1-449E-AFD0-78131BE6BB80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FreeScape.Engine.Tests", "FreeScape.Engine.Tests\FreeScape.Engine.Tests.csproj", "{033502D5-8278-419F-95B9-CE66493F365F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{F4B04116-C4D1-449E-AFD0-78131BE6BB80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4B04116-C4D1-449E-AFD0-78131BE6BB80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4B04116-C4D1-449E-AFD0-78131BE6BB80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{033502D5-8278-419F-95B9-CE66493F365F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{033502D5-8278-419F-95B9-CE66493F365F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{033502D5-8278-419F-95B9-CE66493F365F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{033502D5-8278-419F-95B9-CE66493F365F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{406717E4-9F95-460B-8376-428BFB49FFE8} = {EA75A185-8EC2-43C6-A66E-2AE3DFB5D6A8}

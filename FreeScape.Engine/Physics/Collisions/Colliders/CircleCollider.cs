@@ -14,7 +14,7 @@ namespace FreeScape.Engine.Physics.Collisions.Colliders
         public float Radius { get; }
         private List<Vector2> _vertices;
         public Vector2[] Vertices => _vertices.ToArray();
-
+        public ColliderType ColliderType { get; set; } = ColliderType.Empty;
         public CircleCollider(Vector2 position, Vector2 center, float radius)
         {
             Position = position;

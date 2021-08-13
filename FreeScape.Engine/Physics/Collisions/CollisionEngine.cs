@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FreeScape.Engine.GameObjects;
+using FreeScape.Engine.GameObjects.Entities;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,42 +11,72 @@ namespace FreeScape.Engine.Physics.Collisions
 {
     public class CollisionEngine
     {
-        public ConcurrentBag<ICollidable> Collidables;
+        public List<ICollidable> StaticCollidables;
+        public List<ICollidable> GameObjectCollidables;
 
         public CollisionEngine()
         {
-            Collidables = new ConcurrentBag<ICollidable>();
+            StaticCollidables = new List<ICollidable>();
+            GameObjectCollidables = new List<ICollidable>();
         }
 
-        public void RegisterCollidable(ICollidable collidable)
+        public void RegisterStaticCollidable(ICollidable collidable)
         {
-            Collidables.Add(collidable);
+            StaticCollidables.Add(collidable);
+        }
+        public void RegisterGameObjectCollidable(ICollidable collidable)
+        {
+            GameObjectCollidables.Add(collidable);
         }
 
         public void CheckCollisions()
         {
-            var j = 1;
-            if (Collidables.Count > 1)
-                foreach (var firstCollidable in Collidables)
+            if (GameObjectCollidables.Count + StaticCollidables.Count > 1)
+            {
+                foreach (var firstCollidable in GameObjectCollidables)
                 {
-                    //Console.WriteLine(firstCollidable.Collider.Position);
-                    var firstCollider = firstCollidable.Collider;
-                    for (int i = j; i < Collidables.Count - 1; i++)
+                    if (firstCollidable is not IGameObject movableCollidable) continue;
+                    foreach (var collider in firstCollidable.Colliders)
                     {
-                        var secondCollidable = Collidables.ElementAt(i);
-                        var secondCollider = secondCollidable.Collider;
-                        var firstVertices = firstCollider.GetVerticesRelativeToPosition();
-                        var secondVertices = secondCollider.GetVerticesRelativeToPosition();
+                        var firstVertices = collider.Vertices.Select(x => x + movableCollidable.Position).ToArray();
 
-                        if (GJKCollision.GJKCheckCollision(firstVertices, secondVertices, out _))
+                        for (var i = 1; i < GameObjectCollidables.Count; i++)
                         {
-                            ////Trigger callback to collidables
-                            firstCollidable.CollisionEnter(secondCollidable);
-                            secondCollidable.CollisionEnter(firstCollidable);
+                            var secondCollidable = GameObjectCollidables.ElementAt(i);
+                            if (secondCollidable is not IGameObject secondMovableCollidable) continue;
+                            foreach (var secondCollider in secondCollidable.Colliders)
+                            {
+                                var secondVertices = secondCollider.Vertices.Select(x => x + secondMovableCollidable.Position).ToArray();
+                                if (GJKCollision.GJKCheckCollision(firstVertices, secondVertices, out var test))
+                                {
+                                    firstCollidable.CollisionEnter(secondCollidable);
+                                    secondCollidable.CollisionEnter(firstCollidable);
+                                }
+                            }
+                        }
+
+                        foreach (var staticCollidable in StaticCollidables)
+                        {
+                            foreach (var staticCollider in staticCollidable.Colliders)
+                            {
+                                var secondVertices = staticCollider.GetVerticesRelativeToPosition();
+                                if(staticCollidable is Tile mgo)
+                                {
+                                    if (mgo._tileInfo.Type == "Water" && mgo.Position.Y > 300)
+                                    {
+                                        //Console.WriteLine();
+                                    }
+                                }
+                                if (GJKCollision.GJKCheckCollision(firstVertices, secondVertices, out var test))
+                                {
+                                    firstCollidable.CollisionEnter(staticCollidable);
+                                    staticCollidable.CollisionEnter(firstCollidable);
+                                }
+                            }
                         }
                     }
-                    j++;
                 }
+            }
         }
     }
 }

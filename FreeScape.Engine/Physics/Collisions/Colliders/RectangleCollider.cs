@@ -8,9 +8,12 @@ namespace FreeScape.Engine.Physics.Collisions.Colliders
     public class RectangleCollider : ICollider
     {
         public Vector2 Size { get; }
-        public Vector2 Position { get; }
+        public Vector2 Position { get; set; }
         private List<Vector2> _vertices;
         public Vector2[] Vertices => _vertices.ToArray();
+
+        public ColliderType ColliderType { get; set; } = ColliderType.Empty;
+
         public RectangleCollider(Vector2 size, Vector2 position)
         {
             Size = size;

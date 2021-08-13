@@ -43,9 +43,9 @@ namespace FreeScape.Engine.Managers
             {
                 CurrentPerspective = view;
                 view.Tick();
-                _renderTarget.SetView(view.WorldView);
+                _renderTarget.View = view.WorldView;
                 scene.RenderWorld(_renderTarget);
-                _renderTarget.SetView(view.ScreenView);
+                _renderTarget.View = view.ScreenView;
                 scene.RenderScreen(_renderTarget);
                 _renderTarget.Display();
             }
@@ -64,8 +64,8 @@ namespace FreeScape.Engine.Managers
                 _renderTarget.SetFramerateLimit(_graphicsSettings.RefreshRate);
             _renderTarget.SetActive(false);
             _renderTarget.Closed += (sender, args) => _gameManager.Stop();
-            _renderTarget.LostFocus += (sender, args) => _hasFocus = false; 
-            _renderTarget.GainedFocus += (sender, args) => _hasFocus = true; 
+            _renderTarget.LostFocus += (sender, args) => _hasFocus = false;
+            _renderTarget.GainedFocus += (sender, args) => _hasFocus = true;
         }
 
         private void SetSettings()

@@ -3,10 +3,12 @@ using FreeScape.Engine.Config.TileSet;
 using FreeScape.Engine.GameObjects;
 using FreeScape.Engine.GameObjects.Entities;
 using FreeScape.Engine.Physics;
+using FreeScape.Engine.Physics.Collisions;
 using FreeScape.Engine.Physics.Collisions.Colliders;
 using FreeScape.Engine.Providers;
 using SFML.Graphics;
 using SFML.System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -18,6 +20,7 @@ namespace FreeScape.Engine.Render.Layers
 
         private readonly MapProvider _mapProvider;
         private readonly Movement _movement;
+        private readonly CollisionEngine _collisionEngine;
 
         protected readonly List<IGameObject> GameObjects;
 
@@ -27,8 +30,9 @@ namespace FreeScape.Engine.Render.Layers
         public abstract int ZIndex { get; }
 
 
-        public GameObjectLayer(Movement movement, MapProvider mapProvider)
+        public GameObjectLayer(Movement movement, MapProvider mapProvider, CollisionEngine collisionEngine)
         {
+            _collisionEngine = collisionEngine;
             _mapProvider = mapProvider;
             _movement = movement;
             GameObjects = new List<IGameObject>();
@@ -55,37 +59,27 @@ namespace FreeScape.Engine.Render.Layers
                 var objectSize = new Vector2((float)mapGameObject.Width, (float)mapGameObject.Height);
                 var objectRotation = 0; // (float)mapGameObject.Rotation;
                 var scale = objectSize / (new Vector2(tileSet.TileWidth, tileSet.TileHeight));
+
+                if (tileSetTile.UsesSheet)
+                {
+                    gameObject = new MapGameObject(objectPosition, objectSize, scale, objectRotation, tileSetTile, tileSet.Sheet);
+                }
+                else if (!tileSetTile.UsesSheet)
+                {
+                    gameObject = new MapGameObject(objectPosition, objectSize, scale, objectRotation, tileSetTile);
+                }
+
                 if (tileSetTile.Properties != null && tileSetTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
                 {
                     foreach (var tileObject in tileSetTile.ObjectGroup.Objects)
                     {
-                        
                         switch (tileObject.Type)
                         {
-                            case "tile":
-                                RectangleCollider tileCollider = new RectangleCollider((new Vector2(tileObject.Width, tileObject.Height) * scale), objectPosition + (new Vector2(tileObject.X, tileObject.Y) * scale));
-                                _movement.Colliders.Add(tileCollider);
-                                //var tileColliderShape = new RectangleShape();
-                                //tileColliderShape.Position = tileCollider.Position;
-                                //tileColliderShape.Size = tileCollider.Size;
-                                //tileColliderShape.FillColor = Color.Transparent;
-                                //tileColliderShape.OutlineColor = Color.Red;
-                                //tileColliderShape.OutlineThickness = 1;
-                                ////tileColliderShape.Rotation = objectRotation;
-                                //_colliderDebugShapes.Add(tileColliderShape);
-
-                                break;
                             case "rectangle":
                                 RectangleCollider rectCollider = new RectangleCollider((new Vector2(tileObject.Width, tileObject.Height) * scale), objectPosition + (new Vector2(tileObject.X, tileObject.Y) * scale));
-                                _movement.Colliders.Add(rectCollider);
-                                //var rShape = new RectangleShape();
 
-                                //rShape.Position = rectCollider.Position;
-                                //rShape.Size = rectCollider.Size;
-                                //rShape.FillColor = Color.Transparent;
-                                //rShape.OutlineColor = Color.Red;
-                                //rShape.OutlineThickness = 1;
-                                //_colliderDebugShapes.Add(rShape);
+                                rectCollider.ColliderType = ColliderType.Solid;
+                                gameObject.Colliders.Add(rectCollider);
 
                                 break;
                             case "circle":
@@ -95,18 +89,9 @@ namespace FreeScape.Engine.Render.Layers
                                 break;
                         }
                     }
+                    if(tileSetTile.ObjectGroup.Objects.Count > 0)
+                        _collisionEngine.RegisterStaticCollidable(gameObject);
 
-                    //
-                    //_movement.Colliders.Add(ctile.Collider);
-                    //gameObject = ctile;
-                }
-                if (tileSetTile.UsesSheet)
-                {
-                    gameObject = new MapGameObject(objectPosition, objectSize, scale, objectRotation, tileSetTile, tileSet.Sheet);
-                }
-                else if (!tileSetTile.UsesSheet)
-                {
-                    gameObject = new MapGameObject(objectPosition, objectSize, scale, objectRotation, tileSetTile);
                 }
                 GameObjects.Add(gameObject);
             }
@@ -118,10 +103,6 @@ namespace FreeScape.Engine.Render.Layers
             {
                 gameObject.Render(target);
             }
-            //foreach (var rshape in _colliderDebugShapes)
-            //{
-            //    target.Draw(rshape);
-            //}
         }
 
         public virtual void Tick()

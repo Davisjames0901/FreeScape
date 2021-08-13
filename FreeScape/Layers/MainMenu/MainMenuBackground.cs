@@ -62,7 +62,7 @@ namespace FreeScape.Layers.MainMenu
         {
             _currentBackgroundTarget = _backgroundTrack.Dequeue();
             _backgroundTrack.Enqueue(_currentBackgroundTarget);
-            perspective.Track(_currentBackgroundTarget, 0.02f);
+            perspective.Track(_currentBackgroundTarget, 0.0009f);
         }
     }
 }
