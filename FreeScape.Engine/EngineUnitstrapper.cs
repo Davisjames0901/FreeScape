@@ -8,6 +8,7 @@ using FreeScape.Engine.Providers;
 using FreeScape.Engine.Physics;
 using FreeScape.Engine.Physics.Movements;
 using Microsoft.Extensions.DependencyInjection;
+using FreeScape.Engine.Physics.Collisions;
 
 namespace FreeScape.Engine
 {
@@ -34,6 +35,7 @@ namespace FreeScape.Engine
             services.AddSingleton<TileSetProvider>();
             services.AddSingleton<AnimationProvider>();
             services.AddSingleton<ColliderProvider>();
+            services.AddSingleton<CollisionEngine>(); 
 
             services.AddSingleton(new JsonSerializerOptions
             {

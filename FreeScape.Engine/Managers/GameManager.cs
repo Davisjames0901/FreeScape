@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading;
 using FreeScape.Engine.Providers;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FreeScape.Engine.Managers
 {
@@ -10,6 +8,7 @@ namespace FreeScape.Engine.Managers
         private bool _isRunning;
         private Action _tick;
         private Action _render;
+        private Action _collisions;
         private readonly FrameTimeProvider _frameTime;
 
         public GameManager(FrameTimeProvider frameTime)
@@ -17,10 +16,11 @@ namespace FreeScape.Engine.Managers
             _frameTime = frameTime;
         }
 
-        public void Start(Action tick, Action render)
+        public void Start(Action tick, Action render, Action collisions)
         {
             _tick = tick;
             _render = render;
+            _collisions = collisions;
             _isRunning = true;
 
             if (OperatingSystem.IsLinux())
@@ -30,7 +30,8 @@ namespace FreeScape.Engine.Managers
             {
                 _render();
                 _tick();
-                _frameTime.Tick();
+                _collisions();
+                _frameTime.Tick();            
             }
         }
 
