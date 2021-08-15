@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
 using FreeScape.Engine.Config.TileSet;
 using FreeScape.Engine.Physics;
@@ -10,43 +9,23 @@ namespace FreeScape.Engine.GameObjects.Entities
 {
     public class MapGameObject : IGameObject, ICollidable
     {
-        public readonly CachedTileSetTile _tileInfo;
+        public readonly TileSetTile _tileInfo;
 
         public Vector2 Scale { get; set; } = Vector2.One;
         public Vector2 Size { get; set; }
-        public bool Collidable { get; set; }
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
-        private bool _usesSheet { get; set; }
-        public Sprite Sprite;
+        public Sprite Sprite { get; }
         public List<ICollider> Colliders { get; set; }
-        public MapGameObject(Vector2 position, Vector2 size, Vector2 scale, float rotation, CachedTileSetTile tileInfo, Texture texture)
+        public MapGameObject(Vector2 position, Vector2 size, Vector2 scale, float rotation, TileSetTile tileInfo, Sprite sprite)
         {
             _tileInfo = tileInfo;
-            _usesSheet = tileInfo.UsesSheet;
             Size = size;
             Scale = scale;
             Position = position;
             Rotation = rotation;
-            var tile = new Sprite(texture);
-            tile.TextureRect = tileInfo.TextureLocation;
-            tile.Texture = texture;
-            tile.Position = new Vector2(Position.X, Position.Y);
-            Sprite = tile;
-            Colliders = new List<ICollider>();
-        }
-        public MapGameObject(Vector2 position, Vector2 size, Vector2 scale, float rotation, CachedTileSetTile tileInfo)
-        {
-            _tileInfo = tileInfo;
-            _usesSheet = tileInfo.UsesSheet;
-            Size = size;
-            Scale = scale;
-            Position = position;
-            Rotation = rotation;
-            Sprite = new Sprite();
-            Sprite.Texture = tileInfo.ImageTexture;
-            Sprite.Position = position;
-            Sprite.Origin = new Vector2(0, 0);
+            Sprite = sprite;
+            Sprite.Position = new Vector2(Position.X, Position.Y);
             Colliders = new List<ICollider>();
         }
 
@@ -55,6 +34,7 @@ namespace FreeScape.Engine.GameObjects.Entities
             //if(collidable is IMovable player)
             //Console.WriteLine("object test " + player.Position);
         }
+        
         public void Render(RenderTarget target)
         {
             var scale = Size / (new Vector2(Sprite.TextureRect.Width, Sprite.TextureRect.Height));
@@ -63,12 +43,7 @@ namespace FreeScape.Engine.GameObjects.Entities
             target.Draw(Sprite);
         }
 
-        public void Tick()
-        {
-        }
-        public void Init()
-        {
-
-        }
+        public void Tick() { }
+        public void Init() { }
     }
 }

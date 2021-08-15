@@ -17,7 +17,7 @@ namespace FreeScape.Engine.Render.Layers
 {
     public abstract class TiledMapLayer : ILayer
     {
-        private readonly TileSetProvider _tileSetProvider;
+        private readonly TextureProvider _textureProvider;
         private readonly MapProvider _mapProvider;
         private readonly CollisionEngine _collisionEngine;
         private Movement _movement;
@@ -29,10 +29,10 @@ namespace FreeScape.Engine.Render.Layers
         public RenderMode RenderMode => RenderMode.World;
 
 
-        public TiledMapLayer(TileSetProvider tileSetProvider, MapProvider mapProvider, Movement movement, CollisionEngine collisionEngine)
+        public TiledMapLayer(TextureProvider textureProvider, MapProvider mapProvider, Movement movement, CollisionEngine collisionEngine)
         {
             _movement = movement;
-            _tileSetProvider = tileSetProvider;
+            _textureProvider = textureProvider;
             _mapProvider = mapProvider;
             _collisionEngine = collisionEngine;
             _colliderDebugShapes = new List<RectangleShape>();
@@ -64,31 +64,20 @@ namespace FreeScape.Engine.Render.Layers
         }
         private void LoadTileLayer()
         {
-            //var tileSet = Map.TileSets.First();//
-            //_tileSetProvider.GetTileSet(Map.TileSets.First().Image);
-
-            //CachedTileSet cachedTileSet = new CachedTileSet();
-            var mapTileLayer = Map.Layers.Where(x => x.Type == "tilelayer").First();
+            var mapTileLayer = Map.Layers.First(x => x.Type == "tilelayer");
             foreach (var chunk in Map.Layers.Where(x => x.Type == "tilelayer").SelectMany(x => x.Chunks))
             {
                 var i = 0;
                 foreach(var num in chunk.Data) 
                 {
-                    CachedTileSet tileSet = _mapProvider.GetTileSetBy((int)num);
-                    CachedTileSetTile tileSetTile = _mapProvider.GetTileSetTile(tileSet, (int)num - tileSet.FirstGid);
+                    var tileSetTile = _mapProvider.GetTile(num);
                     if (tileSetTile == null)
-                    {
                         continue;
-                    }
-                    Tile tile = null;
-
+                    
                     var tilePosition = new Vector2((float)(chunk.X + i % chunk.Width) * Map.TileWidth, (float)(chunk.Y + i / chunk.Height) * Map.TileHeight);
-                    var tileSize = new Vector2((float)tileSet.TileWidth, (float)tileSet.TileHeight);
-
-                    tile = new Tile(tilePosition,
-                                        tileSize,
-                                        tileSetTile,
-                                        tileSet.Sheet);
+                    var tileSize = new Vector2(Map.TileWidth, Map.TileHeight);
+                    var sprite = _textureProvider.GetSprite($"tiled:{tileSetTile.Id}");
+                    var tile = new Tile(tilePosition, tileSize, sprite);
 
                     if (tileSetTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
                     {
@@ -97,26 +86,17 @@ namespace FreeScape.Engine.Render.Layers
                             switch (tileObject.Type)
                             {
                                 case "rectangle":
-                                    RectangleCollider rectCollider = new RectangleCollider(new Vector2(tileObject.Width, tileObject.Height), tilePosition + new Vector2(tileObject.X, tileObject.Y));
-
+                                    var rectCollider = new RectangleCollider(new Vector2(tileObject.Width, tileObject.Height), tilePosition + new Vector2(tileObject.X, tileObject.Y));
                                     rectCollider.ColliderType = ColliderType.Solid;
                                     tile.Colliders.Add(rectCollider);
-
-
                                     break;
                                 case "circle":
 
-                                    break;
-                                default:
                                     break;
                             }
                         }
                         if(tileSetTile.ObjectGroup.Objects.Count > 0)
                             _collisionEngine.RegisterStaticCollidable(tile);
-
-                        //
-                        //_movement.Colliders.Add(ctile.Collider);
-                        //gameObject = ctile;
                     }
                     Tiles.Add(tile);
                     i++;

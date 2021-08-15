@@ -12,12 +12,15 @@ namespace FreeScape.Engine.Providers
     {
         private readonly GameInfo _info;
         private readonly Dictionary<string, List<TextureInfo>> _textureDescriptors;
-        private readonly Dictionary<string, Texture> _textures;
+        private readonly Dictionary<string, Texture> _textureCache;
+        private readonly Dictionary<string, Func<Sprite>> _spriteSelectors;
+        
         public TextureProvider(GameInfo info)
         {
             _info = info;
             _textureDescriptors = new Dictionary<string, List<TextureInfo>>();
-            _textures = new Dictionary<string, Texture>();
+            _spriteSelectors = new Dictionary<string, Func<Sprite>>();
+            _textureCache = new Dictionary<string, Texture>();
             foreach (var file in Directory.EnumerateFiles(info.TextureDirectory).Where(x => x.EndsWith(".json", StringComparison.CurrentCultureIgnoreCase)))
             {
                 var name = file.Split(Path.DirectorySeparatorChar).Last().Split('.').First();
@@ -33,62 +36,51 @@ namespace FreeScape.Engine.Providers
             return descriptor;
         }
 
-        private Texture CreateAndAddTexture(string textureName, string gtl, TextureInfo descriptor)
+        internal void CreateAndAddTexture(string gtl, TextureInfo descriptor)
         {
-            var path = $"{_info.TextureDirectory}/{textureName}.png";
+            var path = $"{_info.TextureDirectory}{Path.DirectorySeparatorChar}{descriptor.File}";
             if (!File.Exists(path))
-                return null;
+                return;
 
-            var texture = new Texture(path, new IntRect(descriptor.X, descriptor.Y, descriptor.Width, descriptor.Height));
-            _textures.Add(gtl, texture);
-
-            return texture;
-        }
-
-        public void AddTexture(Texture texture, string gtl)
-        {
-            if (_textures.ContainsKey(gtl))
-                throw new Exception("That gtl is already in use");
+            if(!_textureCache.ContainsKey(path))
+                _textureCache.Add(path, new Texture(path));
             
-            _textures.Add(gtl, texture);
+            _spriteSelectors.Add(gtl, () => new Sprite(_textureCache[path], descriptor.Location));
         }
 
+        //We should try to get rid of this and use the texture descriptors for loading instead
         public Texture GetTextureByFile(string filePath, string gtl)
         {
             var path = $"{_info.TextureDirectory}/{filePath}.png";
-
+        
             if (!File.Exists(path))
                 return null;
 
-            if (_textures.ContainsKey(gtl))
-                return _textures[gtl];
-            var texture = new Texture(path);
-            _textures.Add(gtl, texture);
-
-            return texture;
+            return new Texture(path);
         }
         
-        public Texture GetTexture(string gtl)
+        public Sprite GetSprite(string gtl)
         {
             var tokens = gtl.Split(':');
-            return GetTexture(tokens[0], tokens[1]);
+            return GetSprite(tokens[0], tokens[1]);
         }
         
-        public Texture GetTexture(string sheetName, string textureName)
+        public Sprite GetSprite(string sheetName, string textureName)
         {
             var gtl = $"{sheetName}:{textureName}";
-            if (_textures.ContainsKey(gtl))
-                return _textures[gtl];
+            
+            if (!_spriteSelectors.ContainsKey(gtl))
+            {
+                if (!_textureDescriptors.ContainsKey(sheetName))
+                    return null;
+                var sheet = _textureDescriptors[sheetName];
+                var texture = sheet.FirstOrDefault(x => x.Name == textureName);
+                if (texture == null)
+                    return null;
+                CreateAndAddTexture(gtl, texture);
+            }
 
-            if (!_textureDescriptors.ContainsKey(sheetName))
-                return null;
-
-            var sheet = _textureDescriptors[sheetName];
-            var texture = sheet.FirstOrDefault(x => x.Name == textureName);
-            if (texture == null)
-                return null;
-
-            return CreateAndAddTexture(sheetName, gtl, texture);
+            return _spriteSelectors[gtl]();
         }
     }
 }

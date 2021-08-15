@@ -7,11 +7,12 @@ namespace FreeScape.Engine.Render.Animations
     public class CyclicAnimation : IAnimation
     {
         private readonly FrameTimeProvider _timeProvider;
-        private readonly Queue<(Sprite Sprite, double Duration)> _animationQueue;
-        private readonly List<(Sprite Sprite, double Duration)> _animationCache;
+        private readonly Queue<AnimationFrame> _animationQueue;
+        private List<AnimationFrame> _animationCache;
         private double _frameTimeRemaining;
-        
-        public Sprite CurrentSprite { get; private set; }
+        private AnimationFrame _currentFrame;
+
+        public Sprite CurrentSprite => _currentFrame?.Sprite;
 
         public CyclicAnimation(FrameTimeProvider timeProvider)
         {
@@ -26,9 +27,9 @@ namespace FreeScape.Engine.Render.Animations
                 _frameTimeRemaining -= _timeProvider.DeltaTimeMilliSeconds;
             else if (_animationQueue.TryDequeue(out var newFrame))
             {
-                CurrentSprite = newFrame.Sprite;
+                _animationQueue.Enqueue(_currentFrame);
+                _currentFrame = newFrame;
                 _frameTimeRemaining = newFrame.Duration;
-                _animationQueue.Enqueue(newFrame);
             }
         }
 
@@ -39,14 +40,13 @@ namespace FreeScape.Engine.Render.Animations
             {
                 _animationQueue.Enqueue(frame);
             }
+
+            _currentFrame = _animationQueue.Dequeue();
         }
 
         void IAnimation.LoadFrames(List<AnimationFrame> frames)
         {
-            foreach (var frame in frames)
-            {
-                _animationCache.Add((new Sprite(frame.Texture), frame.Duration));
-            }
+            _animationCache = frames;
             Reset();
         }
     }

@@ -25,9 +25,8 @@ namespace FreeScape.GameObjects
         public float Speed { get; set; }
         public HeadingVector HeadingVector { get; private set; }
         public List<ICollider> Colliders { get; set; }
-        public Vector2 Velocity { get; set; }
         public Vector2 Position { get; set; }
-        private IAnimation _currentAnimation;
+        private DirectionAnimation _currentAnimation;
 
         public Player(UserInputMovement movement, DisplayManager displayManager, AnimationProvider animationProvider)
         {
@@ -40,7 +39,6 @@ namespace FreeScape.GameObjects
         {
             //TileSetName = "CharacterSprites";
             ZIndex = 999;
-            Velocity = new Vector2(0, 0);
             Speed = 0.1f;
             Scale = new Vector2(2.0f, 2.0f);
             Size = new Vector2(4.0f, 4.0f);
@@ -52,7 +50,7 @@ namespace FreeScape.GameObjects
             bodyCollider.ColliderType = ColliderType.Solid;
             Colliders = new List<ICollider>();
             Colliders.Add(bodyCollider);
-            _currentAnimation = _animationProvider.GetAnimation<CyclicAnimation>("idle:down");
+            _currentAnimation = _animationProvider.GetDirectionAnimation<CyclicAnimation>("idle", this);
         }
 
         public void Tick()
@@ -76,6 +74,8 @@ namespace FreeScape.GameObjects
         {
             _currentAnimation.Advance();
             var sprite = _currentAnimation.CurrentSprite;
+            if (sprite == null)
+                return;
             sprite.Position = Position - new Vector2(sprite.TextureRect.Width / 2, sprite.TextureRect.Height / 2) * Scale;
             sprite.Scale = Scale;
             target.Draw(sprite);
@@ -83,10 +83,7 @@ namespace FreeScape.GameObjects
 
         public void CollisionEnter(ICollidable collidable)
         {
-            if (collidable is Tile tile)
-                Console.WriteLine("player is colliding with a " + tile._tileInfo.Type);
-            if (collidable is MapGameObject mgo)
-                Console.WriteLine("player is colliding with a " + mgo._tileInfo.Type);
+            
         }
     }
 }

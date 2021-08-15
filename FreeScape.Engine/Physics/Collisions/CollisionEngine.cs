@@ -62,10 +62,7 @@ namespace FreeScape.Engine.Physics.Collisions
                                 var secondVertices = staticCollider.GetVerticesRelativeToPosition();
                                 if(staticCollidable is Tile mgo)
                                 {
-                                    if (mgo._tileInfo.Type == "Water" && mgo.Position.Y > 300)
-                                    {
-                                        //Console.WriteLine();
-                                    }
+                                    
                                 }
                                 if (GJKCollision.GJKCheckCollision(firstVertices, secondVertices, out var test))
                                 {

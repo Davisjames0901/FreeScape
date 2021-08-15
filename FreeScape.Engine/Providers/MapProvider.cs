@@ -7,8 +7,6 @@ using System.Text.Json;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.Config.Map;
 using FreeScape.Engine.Config.TileSet;
-using FreeScape.Engine.GameObjects.Entities;
-using FreeScape.Engine.Utilities;
 using SFML.Graphics;
 
 namespace FreeScape.Engine.Providers
@@ -17,8 +15,7 @@ namespace FreeScape.Engine.Providers
     {
         private readonly JsonSerializerOptions _options;
         private readonly Dictionary<string, MapInfo> _maps;
-        private readonly Dictionary<string, CachedTileSet> _tileSets;
-        private readonly GameInfo _gameInfo;
+        private readonly Dictionary<uint, TileSetTile> _tiles;
         private readonly AnimationProvider _animationProvider;
         private readonly TextureProvider _textureProvider;
 
@@ -27,140 +24,43 @@ namespace FreeScape.Engine.Providers
         public MapProvider(GameInfo gameInfo, JsonSerializerOptions options, AnimationProvider animationProvider, TextureProvider textureProvider)
         {
             _options = options;
-            _gameInfo = gameInfo;
             _animationProvider = animationProvider;
             _textureProvider = textureProvider;
             _maps = new Dictionary<string, MapInfo>();
-            _tileSets = new Dictionary<string, CachedTileSet>();
+            _tiles = new Dictionary<uint, TileSetTile>();
             foreach (var file in Directory.EnumerateFiles(gameInfo.MapDirectory)
                 .Where(x => x.EndsWith(".json", StringComparison.CurrentCultureIgnoreCase)))
             {
                 var name = file.Split(Path.DirectorySeparatorChar).Last().Split('.').First();
                 _maps.Add(name, ReadMapFile(file));
             }
-            foreach (var map in _maps)
-            {
-                var mapName = map.Key;
-                var mapInfo = map.Value;
-                foreach(var tileSet in mapInfo.TileSets)
-                {
-                    var name = $"{mapName}:{tileSet.Name}";
-
-                    CacheTileSet(name, tileSet);
-
-                    //CacheTilesFromTileSet(tileSet);
-                }
-            }
         }
-        private void CacheTileSet(string name, TileSet tileSet)
+        
+        private void ProcessAndAddTiles(TileSet tileSet)
         {
-            CachedTileSet cachedTileSet = new();
-            if (tileSet.Image != null)
-            {
-                Texture tileSheet = new Texture($"{_gameInfo.TileSetDirectory}{Path.DirectorySeparatorChar}{tileSet.Image}");
-                cachedTileSet.Sheet = tileSheet;
-            }
-            cachedTileSet.Tiles = CacheTilesFromTileSet(tileSet);
-            cachedTileSet.Name = tileSet.Name;
-            cachedTileSet.Columns = tileSet.Columns;
-            cachedTileSet.FirstGid = tileSet.FirstGid;
-            cachedTileSet.Image = tileSet.Image;
-            cachedTileSet.ImageHeight = tileSet.ImageHeight;
-            cachedTileSet.ImageWidth = tileSet.ImageWidth;
-            cachedTileSet.Spacing = tileSet.Spacing;
-            cachedTileSet.TileCount = tileSet.TileCount;
-            cachedTileSet.TileHeight = tileSet.TileHeight;
-            cachedTileSet.TileWidth = tileSet.TileWidth;
-
-
-            _tileSets.Add(name, cachedTileSet);
-        }
-        private Dictionary<uint, CachedTileSetTile> CacheTilesFromTileSet(TileSet tileSet)
-        {
-            Dictionary<uint, CachedTileSetTile> cachedTileSetTiles = new Dictionary<uint, CachedTileSetTile>(); ;
-            var i = 0;
             foreach(var tile in tileSet.Tiles)
             {
-                var cachedTileSetTile = new CachedTileSetTile();
-
+                TextureInfo textureInfo; 
+                var correctedId = tile.Id + (uint)tileSet.FirstGid;
                 if (tileSet.Image != null)
-                {
-                    var imageWidth = tileSet.Columns * tileSet.TileWidth;
-                    var tileSize = new Vector2(tileSet.TileWidth, tileSet.TileWidth);
-                    var imageSize = new Vector2(tileSet.ImageWidth, tileSet.ImageHeight);
-                    imageSize = Maths.Floor(imageSize / tileSize) * tileSize;
-                    var tileLocation = new Vector2(tile.Id % tileSet.Columns, (int)Math.Floor((float)tile.Id / tileSet.Columns)) * tileSize;
-                    IntRect textureLocation = new IntRect(tileLocation,
-                                                        new Vector2(tileSet.TileWidth, tileSet.TileHeight));
-                    cachedTileSetTile.UsesSheet = true;
-                    cachedTileSetTile.TextureLocation = textureLocation;
-                }
+                    textureInfo = GetTextureInfoFromTileSet(tile, tileSet, correctedId);
                 else
-                {
-                    cachedTileSetTile.UsesSheet = false;
-                    var newTexture = new Texture($"{ _gameInfo.TextureDirectory }{ Path.DirectorySeparatorChar}{ tile.Image}");
-                    cachedTileSetTile.ImageHeight = tile.ImageHeight;
-                    cachedTileSetTile.ImageWidth = tile.ImageWidth;
-                    cachedTileSetTile.ImageTexture = newTexture;
-                }
+                    textureInfo = GetTextureInfo(tile, correctedId);
 
-                cachedTileSetTile.Animation = tile.Animation;
-                cachedTileSetTile.Id = tile.Id;
-                cachedTileSetTile.Properties = tile.Properties;
-                cachedTileSetTile.ObjectGroup = tile.ObjectGroup;
-                cachedTileSetTile.Type = tile.Type;
-                cachedTileSetTile.TileSetName = tileSet.Name;
-                cachedTileSetTiles.Add(tile.Id, cachedTileSetTile);
-                if (cachedTileSetTile.Animation is not null)
-                {
-                    _textureProvider.AddTexture(cachedTileSetTile.ImageTexture, $"animation:{cachedTileSetTile.Type}");
-                    _animationProvider.CreateAndAddAnimation(cachedTileSetTile);
-                }
-                i++;
+                if (tile.Animation is not null)
+                    _animationProvider.CreateAndAddAnimation(tile.Animation, tileSet.FirstGid, tile.Type);
+
+                tile.Id = correctedId;
+                _textureProvider.CreateAndAddTexture($"tiled:{textureInfo.Name}", textureInfo);
+                _tiles.Add(correctedId, tile);
             }
-            return cachedTileSetTiles;
         }
-        public CachedTileSet GetTileSet(string tileSetName)
+        public TileSetTile GetTile(uint gid)
         {
-            if (_tileSets.TryGetValue(CurrentMapName + ":" + tileSetName, out CachedTileSet tileSet))
-            {
-                return tileSet;
-            }
-            else
-                throw new Exception($"TileSet does not exist with name {tileSetName}");
-        }
-        public CachedTileSet GetTileSetBy(int tileId)
-        {
-
-            foreach (var tileSet in _tileSets.OrderBy(x => x.Value.FirstGid))
-            {
-                //Check the ID of the tile vs the tileSet's largest ID. If our tile ID is larger, it's not in this tileset
-                if (tileId > tileSet.Value.FirstGid + tileSet.Value.Tiles.OrderByDescending(x => x.Value.Id).FirstOrDefault().Value.Id)
-                    continue;
-
-                return tileSet.Value;
-            }
-
-            return null;
-        }
-        public CachedTileSetTile GetTileSetTile(string tileSetName, int tileId)
-        {
-            var tileSet = GetTileSet(tileSetName);
-            if (tileSet.Tiles.TryGetValue((uint)tileId, out CachedTileSetTile tile))
-            {
+            if (_tiles.TryGetValue(gid, out var tile))
                 return tile;
-            }
-
-            return null;
-        }
-        public CachedTileSetTile GetTileSetTile(CachedTileSet tileSet, int tileId)
-        {
-            if (tileSet.Tiles.TryGetValue((uint)tileId, out CachedTileSetTile tile))
-            {
-                return tile;
-            }
-
-            return null;
+            
+            throw new Exception($"Tile does not exist with GID {gid}");
         }
 
         public MapInfo GetMap(string mapName)
@@ -173,11 +73,47 @@ namespace FreeScape.Engine.Providers
             return null;
         }
 
+        private TextureInfo GetTextureInfoFromTileSet(TileSetTile tile, TileSet tileSet, uint correctedId)
+        {
+            var tileSize = new Vector2(tileSet.TileWidth, tileSet.TileWidth);
+            var tileLocation = new Vector2(tile.Id % tileSet.Columns, (int)Math.Floor((float)tile.Id / tileSet.Columns)) * tileSize;
+            var textureLocation = new IntRect(tileLocation, new Vector2(tileSet.TileWidth, tileSet.TileHeight));
+            return new TextureInfo
+            {
+                File = $"TileSets{Path.DirectorySeparatorChar}{tileSet.Image}",
+                X = textureLocation.Left,
+                Y = textureLocation.Top,
+                Height = textureLocation.Height,
+                Width = textureLocation.Width,
+                Name = correctedId.ToString(),
+                Smooth = false
+            };
+        }
+
+        private TextureInfo GetTextureInfo(TileSetTile tile, uint correctedId)
+        {
+            return new TextureInfo
+            {
+                File = tile.Image,
+                Height = (int)tile.ImageHeight,
+                Width = (int)tile.ImageWidth,
+                X = 0,
+                Y = 0,
+                Name = correctedId.ToString(),
+                Smooth = true
+            };
+        }
+
         private MapInfo ReadMapFile(string path)
         {
             var text = File.ReadAllText(path);
-            
-            return JsonSerializer.Deserialize<MapInfo>(text, _options);
+            var map = JsonSerializer.Deserialize<MapInfo>(text, _options);
+            foreach (var tileSet in map.TileSets)
+            {
+                ProcessAndAddTiles(tileSet);
+            }
+
+            return map;
         }
     }
 }

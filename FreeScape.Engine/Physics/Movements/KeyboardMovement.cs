@@ -22,7 +22,6 @@ namespace FreeScape.Engine.Physics.Movements
             var down = ActionProvider.IsActionActivated("MoveDown");
             var left = ActionProvider.IsActionActivated("MoveLeft");
             var right = ActionProvider.IsActionActivated("MoveRight");
-            Console.WriteLine($"{up} {down} {left} {right}");
 
             HeadingVector.UpdateHeadingVector(Maths.GetHeadingVectorFromMovement(up, down, left, right));
         }

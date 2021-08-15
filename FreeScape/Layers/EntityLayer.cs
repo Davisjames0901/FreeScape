@@ -11,7 +11,6 @@ namespace FreeScape.Layers
 {
     public class EntityLayer : GameObjectLayer
     {
-
         private readonly GameObjectProvider _gameObjectProvider;
         private readonly DisplayManager _displayManager;
         private readonly ActionProvider _actionProvider;
@@ -20,7 +19,8 @@ namespace FreeScape.Layers
         public override int ZIndex => 999;
         protected override MapInfo Map => _mapProvider.GetMap("TiledTestMap");
 
-        public EntityLayer(CollisionEngine collisionEngine, ActionProvider actionProvider, GameObjectProvider gameObjectProvider, DisplayManager displayManager, Movement movement, TileSetProvider tileSetProvider, MapProvider mapProvider):base(movement, mapProvider, collisionEngine)
+        public EntityLayer(CollisionEngine collisionEngine, ActionProvider actionProvider, GameObjectProvider gameObjectProvider, 
+            DisplayManager displayManager, Movement movement, MapProvider mapProvider, TextureProvider textureProvider):base(movement, mapProvider, collisionEngine, textureProvider)
         {
             _actionProvider = actionProvider;
             _gameObjectProvider = gameObjectProvider;

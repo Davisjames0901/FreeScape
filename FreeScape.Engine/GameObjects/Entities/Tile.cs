@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
-using FreeScape.Engine.Config.TileSet;
 using FreeScape.Engine.Physics;
 using FreeScape.Engine.Physics.Collisions.Colliders;
 using SFML.Graphics;
@@ -10,25 +8,18 @@ namespace FreeScape.Engine.GameObjects.Entities
 {
     public class Tile : IGameObject, ICollidable
     {
-        public readonly CachedTileSetTile _tileInfo;
-
         public Vector2 Scale { get; set; } = Vector2.One;
         public Vector2 Size { get; set; }
         public Vector2 Position { get; set; }
 
-        public Sprite Sprite;
-        public Tile(Vector2 position, Vector2 size, CachedTileSetTile tileInfo, Texture texture)
+        public Sprite Sprite { get; }
+
+        public Tile(Vector2 position, Vector2 size, Sprite sprite)
         {
-            _tileInfo = tileInfo;
             Size = size;
             Position = position;
-            var tile = new Sprite(texture);
-            tile.TextureRect = tileInfo.TextureLocation;
-
-            tile.Texture = texture;
-            tile.Position = new Vector2(Position.X, Position.Y);
-            Sprite = tile;
-
+            Sprite = sprite;
+            Sprite.Position = new Vector2(Position.X, Position.Y);
             Colliders = new List<ICollider>();
         }
 
@@ -44,12 +35,7 @@ namespace FreeScape.Engine.GameObjects.Entities
             target.Draw(Sprite);
         }
 
-        public void Tick()
-        {
-        }
-        public void Init()
-        {
-
-        }
+        public void Tick() { }
+        public void Init() { }
     }
 }

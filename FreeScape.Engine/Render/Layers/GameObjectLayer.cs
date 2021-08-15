@@ -21,6 +21,7 @@ namespace FreeScape.Engine.Render.Layers
         private readonly MapProvider _mapProvider;
         private readonly Movement _movement;
         private readonly CollisionEngine _collisionEngine;
+        private readonly TextureProvider _textureProvider;
 
         protected readonly List<IGameObject> GameObjects;
 
@@ -30,9 +31,10 @@ namespace FreeScape.Engine.Render.Layers
         public abstract int ZIndex { get; }
 
 
-        public GameObjectLayer(Movement movement, MapProvider mapProvider, CollisionEngine collisionEngine)
+        public GameObjectLayer(Movement movement, MapProvider mapProvider, CollisionEngine collisionEngine, TextureProvider textureProvider)
         {
             _collisionEngine = collisionEngine;
+            _textureProvider = textureProvider;
             _mapProvider = mapProvider;
             _movement = movement;
             GameObjects = new List<IGameObject>();
@@ -47,27 +49,18 @@ namespace FreeScape.Engine.Render.Layers
         {
             foreach (var mapGameObject in Map.Layers.Where(x => x.Type == "objectgroup" && x.Name == "TerrainObjects").First().Objects)
             {
-                CachedTileSet tileSet = _mapProvider.GetTileSetBy(mapGameObject.GId);
-                CachedTileSetTile tileSetTile = _mapProvider.GetTileSetTile(tileSet, mapGameObject.GId - tileSet.FirstGid);
+                var tileSetTile = _mapProvider.GetTile((uint)mapGameObject.GId);
                 if (tileSetTile == null)
                 {
                     continue;
                 }
-                MapGameObject gameObject = null;
-
+                
                 var objectPosition = new Vector2((float)mapGameObject.x, (float)mapGameObject.y - (float)mapGameObject.Height);
                 var objectSize = new Vector2((float)mapGameObject.Width, (float)mapGameObject.Height);
                 var objectRotation = 0; // (float)mapGameObject.Rotation;
-                var scale = objectSize / (new Vector2(tileSet.TileWidth, tileSet.TileHeight));
-
-                if (tileSetTile.UsesSheet)
-                {
-                    gameObject = new MapGameObject(objectPosition, objectSize, scale, objectRotation, tileSetTile, tileSet.Sheet);
-                }
-                else if (!tileSetTile.UsesSheet)
-                {
-                    gameObject = new MapGameObject(objectPosition, objectSize, scale, objectRotation, tileSetTile);
-                }
+                var scale = objectSize / (new Vector2(Map.TileWidth, Map.TileHeight));
+                var sprite = _textureProvider.GetSprite($"tiled:{mapGameObject.GId}");
+                var gameObject = new MapGameObject(objectPosition, objectSize, scale, objectRotation, tileSetTile, sprite);
 
                 if (tileSetTile.Properties != null && tileSetTile.Properties.Any(x => x.Name == "HasCollider" && x.Value))
                 {

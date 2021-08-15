@@ -33,7 +33,6 @@ namespace FreeScape.Engine
             services.AddSingleton<GameManager>();
             services.AddSingleton<FrameTimeProvider>();
             services.AddSingleton<Movement>();
-            services.AddSingleton<TileSetProvider>();
             services.AddSingleton<AnimationProvider>();
             services.AddSingleton<ColliderProvider>();
             services.AddSingleton<CollisionEngine>(); 
