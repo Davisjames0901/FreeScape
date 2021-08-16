@@ -17,7 +17,6 @@ namespace FreeScape.GameObjects
         private readonly UserInputMovement _movement;
         private readonly DisplayManager _displayManager;
         private readonly AnimationProvider _animationProvider;
-        private CircleShape _shape;
         public int ZIndex { get; set; }
         public float Weight { get; set; }
         public Vector2 Size { get; set; }
@@ -44,8 +43,6 @@ namespace FreeScape.GameObjects
             Size = new Vector2(4.0f, 4.0f);
             Position = new Vector2(300, 500);
             _displayManager.CurrentPerspective.WorldView.Center= Position;
-            _shape = new CircleShape(Size.X);
-            _shape.FillColor = Color.Red;
             var bodyCollider = new CircleCollider(Position, Position / Size * Scale, Size.X * Scale.X);
             bodyCollider.ColliderType = ColliderType.Solid;
             Colliders = new List<ICollider>();
