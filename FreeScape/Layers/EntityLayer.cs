@@ -6,6 +6,7 @@ using FreeScape.Engine.GameObjects.UI;
 using FreeScape.GameObjects;
 using FreeScape.Engine.Config.Map;
 using FreeScape.Engine.Physics.Collisions;
+using FreeScape.GameObjects.Player;
 
 namespace FreeScape.Layers
 {

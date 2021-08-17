@@ -5,6 +5,7 @@ using FreeScape.Engine;
 using FreeScape.Engine.Config;
 using FreeScape.Engine.Config.UserSettings;
 using FreeScape.GameObjects;
+using FreeScape.GameObjects.Player;
 using FreeScape.Layers;
 using FreeScape.Layers.MainMenu;
 using FreeScape.Scenes;
@@ -34,7 +35,7 @@ namespace FreeScape
                 ScreenHeight = 1080,
                 ScreenWidth = 1920,
                 VSyncEnabled = false,
-                RefreshRate = 99999999
+                RefreshRate = int.MaxValue
             };
             
             services.AddUnitStrapper();

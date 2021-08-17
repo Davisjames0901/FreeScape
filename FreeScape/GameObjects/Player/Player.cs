@@ -1,84 +1,51 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using FreeScape.Engine.GameObjects.Entities;
-using FreeScape.Engine.Managers;
 using FreeScape.Engine.Physics;
-using FreeScape.Engine.Physics.Movements;
 using FreeScape.Engine.Physics.Collisions.Colliders;
+using FreeScape.Engine.Physics.Movements;
 using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Animations;
-using SFML.Graphics;
 
-namespace FreeScape.GameObjects
+namespace FreeScape.GameObjects.Player
 {
-    public class Player : IMovable, ICollidable 
+    public class Player : BaseEntity
     {
-        private readonly UserInputMovement _movement;
-        private readonly DisplayManager _displayManager;
         private readonly AnimationProvider _animationProvider;
-        public int ZIndex { get; set; }
-        public float Weight { get; set; }
-        public Vector2 Size { get; set; }
-        public Vector2 Scale { get; set; }
-        public float Speed { get; set; }
-        public HeadingVector HeadingVector { get; private set; }
-        public List<ICollider> Colliders { get; set; }
-        public Vector2 Position { get; set; }
-        private DirectionAnimation _currentAnimation;
-
-        public Player(UserInputMovement movement, DisplayManager displayManager, AnimationProvider animationProvider)
+        public int ZIndex => 999;
+        public override Vector2 Size => new (4.0f, 4.0f);
+        public override Vector2 Scale => new (2.0f, 2.0f);
+        public override float Speed => _speed;
+        private float _speed;
+        
+        public Player(UserInputMovement movement, AnimationProvider animationProvider)
         {
-            _movement = movement;
-            _displayManager = displayManager;
             _animationProvider = animationProvider;
+            Movement = movement;
         }
 
-        public void Init()
+        public override void Init()
         {
-            //TileSetName = "CharacterSprites";
-            ZIndex = 999;
-            Speed = 0.1f;
-            Scale = new Vector2(2.0f, 2.0f);
-            Size = new Vector2(4.0f, 4.0f);
+            base.Init();
+            _speed = 0.1f;
             Position = new Vector2(300, 500);
-            _displayManager.CurrentPerspective.WorldView.Center= Position;
             var bodyCollider = new CircleCollider(Position, Position / Size * Scale, Size.X * Scale.X);
             bodyCollider.ColliderType = ColliderType.Solid;
-            Colliders = new List<ICollider>();
             Colliders.Add(bodyCollider);
-            _currentAnimation = _animationProvider.GetDirectionAnimation<CyclicAnimation>("idle", this);
         }
 
-        public void Tick()
+        public override IEnumerable<(Func<bool>, IAnimation)> RegisterMovementAnimations()
         {
-            _movement.Tick();
-            HeadingVector = _movement.HeadingVector;
-            var attack = _movement.CurrentActionProvider.IsActionActivated("LeftClick");
-            var block = _movement.CurrentActionProvider.IsActionActivated("RightClick");
-            var roll = _movement.CurrentActionProvider.IsActionActivated("Roll");
-
-            //ActionTick(HeadingVector, roll, attack, block);
-
-            foreach(var collider in Colliders)
-            {
-                collider.Position = Position - Size / 2 * Scale;
-            }
-            //base.Tick();
+            yield return (() => HeadingVector.Vector == Vector2.Zero, _animationProvider.GetDirectionAnimation<CyclicAnimation>("idle", this));
+            yield return (() => HeadingVector.Vector != Vector2.Zero, _animationProvider.GetDirectionAnimation<CyclicAnimation>("walk", this));
         }
-        
-        public void Render(RenderTarget target)
+
+        public override IEnumerable<(Func<bool>, IAnimation)> RegisterActionAnimations()
         {
-            _currentAnimation.Advance();
-            var sprite = _currentAnimation.CurrentSprite;
-            if (sprite == null)
-                return;
-            sprite.Position = Position - new Vector2(sprite.TextureRect.Width / 2, sprite.TextureRect.Height / 2) * Scale;
-            sprite.Scale = Scale;
-            target.Draw(sprite);
+            return default;
         }
 
-        public void CollisionEnter(ICollidable collidable)
+        public override void CollisionEnter(ICollidable collidable)
         {
             
         }

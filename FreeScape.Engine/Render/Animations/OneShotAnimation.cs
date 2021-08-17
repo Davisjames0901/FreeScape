@@ -3,7 +3,7 @@ using SFML.Graphics;
 
 namespace FreeScape.Engine.Render.Animations
 {
-    public class OneShotAnimation : IAnimation
+    public class OneShotAnimation : ISingleAnimation
     {
 
         public Sprite CurrentSprite { get; private set; }
@@ -18,7 +18,7 @@ namespace FreeScape.Engine.Render.Animations
             throw new System.NotImplementedException();
         }
 
-        void IAnimation.LoadFrames(List<AnimationFrame> frames)
+        void ISingleAnimation.LoadFrames(List<AnimationFrame> frames)
         {
             throw new System.NotImplementedException();
         }

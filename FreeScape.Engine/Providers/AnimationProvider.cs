@@ -1,7 +1,6 @@
 ﻿using FreeScape.Engine.Config.TileSet;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using FreeScape.Engine.Physics;
 using FreeScape.Engine.Physics.Movements;
 using FreeScape.Engine.Render.Animations;
@@ -28,11 +27,11 @@ namespace FreeScape.Engine.Providers
             {
                 frame.TileId += gid;
             }
-            Console.WriteLine($"Name: {name}, Frames: {string.Join(' ', frames.Select(x=> x.TileId))}");
+            //Console.WriteLine($"Name: {name}, Frames: {string.Join(' ', frames.Select(x=> x.TileId))}");
             _animations.Add(name, frames);
         }
 
-        public T GetAnimation<T>(string name) where T : IAnimation
+        public T GetAnimation<T>(string name) where T : IAnimation, ISingleAnimation
         {
             var animation = _serviceProvider.GetService<T>();
             if (animation == null)
@@ -55,28 +54,26 @@ namespace FreeScape.Engine.Providers
             return animation;
         }
 
-        public DirectionAnimation GetDirectionAnimation<T>(string animationName, IMovable moveable) where T : IAnimation
+        /// <summary>
+        /// Gets a group of ISingleAnimations for each movement direction and returns as an IAnimation
+        /// </summary>
+        /// <param name="animationName">Base animation name, variations will be applied to this like :up, :down etc...</param>
+        /// <param name="movable">This is so we can capture direction information</param>
+        /// <typeparam name="T">The style of animation you want to have for all the directions</typeparam>
+        /// <returns>Aggregate animation</returns>
+        public IAnimation GetDirectionAnimation<T>(string animationName, IMovable movable) where T : ISingleAnimation
         {
-            var animation = new DirectionAnimation();
+            var animation = new DirectionAnimation() as ISwitchedGroupAnimation<Direction>;
             List<(IAnimation animation, Direction direction)> animations = new();
             animations.Add((GetAnimation<T>(animationName + ":up"), Direction.Up));
             animations.Add((GetAnimation<T>(animationName + ":down"), Direction.Down));
             animations.Add((GetAnimation<T>(animationName + ":left"), Direction.Left));
             animations.Add((GetAnimation<T>(animationName + ":right"), Direction.Right));
             
-            animation.LoadAnimations(animations, moveable);
+            //The selector func should capture allocate the IMovable here
+            animation.LoadAnimations(animations, () => movable.HeadingVector.GetLastDirection());
             
             return animation;
         }
-        // public List<Animation> GetMovementAnimations(string name)
-        // {
-        //     List<Animation> animations = new();
-        //     animations.Add(GetAnimation(name + ":up"));
-        //     animations.Add(GetAnimation(name + ":down"));
-        //     animations.Add(GetAnimation(name + ":left"));
-        //     animations.Add(GetAnimation(name + ":right"));
-        //
-        //     return animations;
-        // }
     }
 }

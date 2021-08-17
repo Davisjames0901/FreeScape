@@ -20,12 +20,12 @@ namespace FreeScape.Engine.Providers
         
         internal void Tick()
         {
-            //_lastMss.Enqueue(DeltaTimeMilliSeconds);
-            //if (_lastMss.Count > 1000)
-            //{
-            //    Console.WriteLine($"Last 1000 frames statistics. Average: {_lastMss.Average():F}ms; Min: {_lastMss.Min():F}ms; Max: {_lastMss.Max():F}ms");
-            //    _lastMss.Clear();
-            //}
+            _lastMss.Enqueue(DeltaTimeMilliSeconds);
+            if (_lastMss.Count > 1000)
+            {
+                Console.WriteLine($"Last 1000 frames statistics. Average: {_lastMss.Average():F}ms; Min: {_lastMss.Min():F}ms; Max: {_lastMss.Max():F}ms");
+                _lastMss.Clear();
+            }
             _lastTicks = _stopwatch.ElapsedTicks;
             _stopwatch.Restart();
         }

@@ -1,3 +1,4 @@
+using System;
 using FreeScape.Engine.Providers;
 
 namespace FreeScape.Engine.Physics.Movements
@@ -12,12 +13,12 @@ namespace FreeScape.Engine.Physics.Movements
         }
 
         public ActionProvider CurrentActionProvider => _keyboardMovement.ActionProvider;
-        
-        public HeadingVector HeadingVector { get; private set; }
+
+        public HeadingVector HeadingVector => _keyboardMovement.HeadingVector;
         public void Tick()
         {
             _keyboardMovement.Tick();
-            HeadingVector = _keyboardMovement.HeadingVector;
+            //HeadingVector = _keyboardMovement.HeadingVector;
         }
     }
 }

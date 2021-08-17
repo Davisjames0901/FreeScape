@@ -21,10 +21,5 @@ namespace FreeScape.Engine.Render.Animations
         /// </summary>
         void Reset();
         
-        /// <summary>
-        /// Load in the frames for the animation
-        /// </summary>
-        /// <param name="frames"></param>
-        internal void LoadFrames(List<AnimationFrame> frames);
     }
 }

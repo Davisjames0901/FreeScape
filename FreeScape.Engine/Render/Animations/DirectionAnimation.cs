@@ -1,22 +1,18 @@
+using System;
 using System.Collections.Generic;
-using FreeScape.Engine.Physics;
 using FreeScape.Engine.Physics.Movements;
 using SFML.Graphics;
 
 namespace FreeScape.Engine.Render.Animations
 {
-    public class DirectionAnimation
+    public class DirectionAnimation: ISwitchedGroupAnimation<Direction>
     {
-        private readonly Dictionary<Direction, IAnimation> _animations;
-        private IMovable _headingVector;
-        private (IAnimation animation, Direction direction)? _currentAnimation;
+        private Dictionary<Direction, IAnimation> _animations;
+        private (IAnimation animation, Direction direction) _currentAnimation;
+        private Func<Direction> _selectDirection;
+        
+        public Sprite CurrentSprite => _currentAnimation.animation.CurrentSprite;
 
-        public DirectionAnimation()
-        {
-            _animations = new();
-        }
-
-        public Sprite? CurrentSprite => _currentAnimation?.animation.CurrentSprite;
         public void Advance()
         {
             foreach (var animation in _animations.Values)
@@ -24,31 +20,32 @@ namespace FreeScape.Engine.Render.Animations
                 animation.Advance();
             }
 
-            var collapsedDirection = _headingVector?.HeadingVector?.CollapseDirection();
-            if (collapsedDirection == null || collapsedDirection == Direction.None )
+            var collapsedDirection = _selectDirection();
+            if (collapsedDirection == Direction.None || _currentAnimation.direction == collapsedDirection)
                 return;
             
-            if (_currentAnimation?.direction == collapsedDirection)
-                return;
-            
-            _currentAnimation = (_animations[collapsedDirection.Value], collapsedDirection.Value);
+            _currentAnimation = (_animations[collapsedDirection], collapsedDirection);
         }
 
         public void Reset()
         {
-            foreach (var animation in _animations.Values)
+            _currentAnimation = (_animations[Direction.Down], Direction.Down);
+            foreach (var item in _animations)
             {
-                animation.Advance();
+                item.Value.Reset();
             }
         }
 
-        public void LoadAnimations(List<(IAnimation animation, Direction direction)> animations, IMovable headingVector)
+        void ISwitchedGroupAnimation<Direction>.LoadAnimations(List<(IAnimation animation, Direction groupingKey)> animations, Func<Direction> selector)
         {
-            _headingVector = headingVector;
+            _animations = new();
+            _selectDirection = selector;
             foreach (var animation in animations)
             {
-                _animations.Add(animation.direction, animation.animation);
+                _animations.Add(animation.groupingKey, animation.animation);
             }
+
+            Reset();
         }
     }
 }

@@ -4,7 +4,7 @@ using SFML.Graphics;
 
 namespace FreeScape.Engine.Render.Animations
 {
-    public class CyclicAnimation : IAnimation
+    public class CyclicAnimation : ISingleAnimation
     {
         private readonly FrameTimeProvider _timeProvider;
         private readonly Queue<AnimationFrame> _animationQueue;
@@ -44,7 +44,7 @@ namespace FreeScape.Engine.Render.Animations
             _currentFrame = _animationQueue.Dequeue();
         }
 
-        void IAnimation.LoadFrames(List<AnimationFrame> frames)
+        void ISingleAnimation.LoadFrames(List<AnimationFrame> frames)
         {
             _animationCache = frames;
             Reset();

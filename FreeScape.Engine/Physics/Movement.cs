@@ -1,4 +1,3 @@
-using System;
 using FreeScape.Engine.Providers;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,21 +9,22 @@ namespace FreeScape.Engine.Physics
 {
     public class Movement
     {
-        FrameTimeProvider _frameTime;
-
-        public List<ICollider> Colliders;
+        private readonly FrameTimeProvider _frameTime;
+        private readonly List<ICollider> _colliders;
 
         public Movement(FrameTimeProvider frameTime)
         {
             _frameTime = frameTime;
-            Colliders = new List<ICollider>();
+            _colliders = new List<ICollider>();
         }
 
         public void BasicMove(IMovable movable)
         {
+            if (movable.HeadingVector.Vector == Vector2.Zero)
+                return;
             var deltaTime = (float) _frameTime.DeltaTimeMilliSeconds;
-            var velocity = Maths.GetDistance(movable.HeadingVector.Vector, movable.Speed, deltaTime);
-            movable.Position = movable.Position + velocity;
+            var distance = Maths.GetDistance(movable.HeadingVector.Vector, movable.Speed, deltaTime);
+            movable.Position += distance;
         }
 
         public Vector2 CheckCollision(IMovable sourceMovable, ICollider collider, Vector2 desiredPosition)
@@ -32,8 +32,7 @@ namespace FreeScape.Engine.Physics
             var collidedX = false;
             var collidedY = false;
             var source = collider.Vertices;
-            var desiredPositionVerts = source.Select(x => x + desiredPosition).ToArray();
-            foreach (var target in Colliders)
+            foreach (var target in _colliders)
             {
                 if (collidedX && collidedY)
                     return sourceMovable.Position;
@@ -43,14 +42,14 @@ namespace FreeScape.Engine.Physics
                 if (!collidedX)
                 {
                     var onlyX = new Vector2(desiredPosition.X, sourceMovable.Position.Y);
-                    desiredPositionVerts = source.Select(x => x + onlyX).ToArray();
+                    var desiredPositionVerts = source.Select(x => x + onlyX).ToArray();
                     collidedX = GJKCollision.GJKCheckCollision(desiredPositionVerts, targetShape, out _);
                 }
 
                 if (!collidedY)
                 {
                     var onlyY = new Vector2(sourceMovable.Position.X, desiredPosition.Y);
-                    desiredPositionVerts = source.Select(x => x + onlyY).ToArray();
+                    var desiredPositionVerts = source.Select(x => x + onlyY).ToArray();
                     collidedY = GJKCollision.GJKCheckCollision(desiredPositionVerts, targetShape, out _);
                 }
             }
@@ -70,7 +69,7 @@ namespace FreeScape.Engine.Physics
 
         public void RegisterCollider(ICollider collider)
         {
-            Colliders.Add(collider);
+            _colliders.Add(collider);
         }
     }
 }
