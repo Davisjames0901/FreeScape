@@ -12,7 +12,7 @@ namespace FreeScape.GameObjects.Player
     public class Player : BaseEntity
     {
         private readonly AnimationProvider _animationProvider;
-        public int ZIndex => 999;
+        private readonly UserInputMovement _input;
         public override Vector2 Size => new (4.0f, 4.0f);
         public override Vector2 Scale => new (2.0f, 2.0f);
         public override float Speed => _speed;
@@ -21,6 +21,7 @@ namespace FreeScape.GameObjects.Player
         public Player(UserInputMovement movement, AnimationProvider animationProvider)
         {
             _animationProvider = animationProvider;
+            _input = movement;
             Movement = movement;
         }
 
@@ -42,7 +43,8 @@ namespace FreeScape.GameObjects.Player
 
         public override IEnumerable<(Func<bool>, IAnimation)> RegisterActionAnimations()
         {
-            return default;
+            yield return (() => _input.CurrentActionProvider.IsActionActivated("LeftClick"), 
+                _animationProvider.GetDirectionAnimation<OneShotAnimation>("attack", this));
         }
 
         public override void CollisionEnter(ICollidable collidable)

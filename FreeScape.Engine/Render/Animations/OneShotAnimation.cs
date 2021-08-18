@@ -1,26 +1,56 @@
 using System.Collections.Generic;
+using FreeScape.Engine.Providers;
 using SFML.Graphics;
 
 namespace FreeScape.Engine.Render.Animations
 {
     public class OneShotAnimation : ISingleAnimation
     {
+        private readonly FrameTimeProvider _timeProvider;
+        private readonly Queue<AnimationFrame> _animationQueue;
+        private List<AnimationFrame> _animationCache;
+        private double _frameTimeRemaining;
+        private AnimationFrame _currentFrame;
 
-        public Sprite CurrentSprite { get; private set; }
+        public Sprite CurrentSprite => _currentFrame?.Sprite;
 
+        public OneShotAnimation(FrameTimeProvider timeProvider)
+        {
+            _timeProvider = timeProvider;
+            _animationCache = new();
+            _animationQueue = new();
+        }
+        
         public void Advance()
         {
-            throw new System.NotImplementedException();
+            if (_frameTimeRemaining > 0)
+                _frameTimeRemaining -= _timeProvider.DeltaTimeMilliSeconds;
+            else if (_animationQueue.TryDequeue(out var newFrame))
+            {
+                _currentFrame = newFrame;
+                _frameTimeRemaining = newFrame.Duration;
+            }
+            else
+            {
+                _currentFrame = null;
+            }
         }
 
         public void Reset()
         {
-            throw new System.NotImplementedException();
+            _animationQueue.Clear();
+            foreach (var frame in _animationCache)
+            {
+                _animationQueue.Enqueue(frame);
+            }
+
+            _currentFrame = _animationQueue.Dequeue();
         }
 
         void ISingleAnimation.LoadFrames(List<AnimationFrame> frames)
         {
-            throw new System.NotImplementedException();
+            _animationCache = frames;
+            Reset();
         }
     }
 }

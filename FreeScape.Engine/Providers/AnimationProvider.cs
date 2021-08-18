@@ -1,6 +1,7 @@
 ﻿using FreeScape.Engine.Config.TileSet;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FreeScape.Engine.Physics;
 using FreeScape.Engine.Physics.Movements;
 using FreeScape.Engine.Render.Animations;
@@ -27,7 +28,7 @@ namespace FreeScape.Engine.Providers
             {
                 frame.TileId += gid;
             }
-            //Console.WriteLine($"Name: {name}, Frames: {string.Join(' ', frames.Select(x=> x.TileId))}");
+            Console.WriteLine($"Name: {name}, Frames: {string.Join(' ', frames.Select(x=> x.TileId))}");
             _animations.Add(name, frames);
         }
 

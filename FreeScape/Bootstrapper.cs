@@ -27,7 +27,7 @@ namespace FreeScape
             var sound = new SoundSettings
             {
                 SfxVolume = 100.0f,
-                MusicVolume = 10.0f
+                MusicVolume = 0.0f
             };
 
             var graphics = new GraphicsSettings

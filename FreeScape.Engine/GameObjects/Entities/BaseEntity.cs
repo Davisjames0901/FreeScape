@@ -21,6 +21,8 @@ namespace FreeScape.GameObjects
         protected IAnimation CurrentAnimation { get; private set; }
         
         private List<(Func<bool> selector, IAnimation animation)> _animations;
+        private List<(Func<bool> selector, IAnimation animation)> _actionAnimations;
+        private bool _isActioning;
 
         public BaseEntity()
         {
@@ -30,8 +32,10 @@ namespace FreeScape.GameObjects
         public virtual void Init()
         {
             HeadingVector = Movement.HeadingVector;
-            _animations = new List<(Func<bool>, IAnimation)>();
+            _animations = new();
             _animations.AddRange(RegisterMovementAnimations());
+            _actionAnimations = new();
+            _actionAnimations.AddRange(RegisterActionAnimations());
         }
 
         public virtual void Tick()
@@ -46,7 +50,6 @@ namespace FreeScape.GameObjects
         public virtual void Render(RenderTarget target)
         {
             SetCurrentAnimation();
-            CurrentAnimation.Advance();
             var sprite = CurrentAnimation.CurrentSprite;
             if (sprite == null)
                 return;
@@ -57,10 +60,30 @@ namespace FreeScape.GameObjects
 
         private void SetCurrentAnimation()
         {
+            CurrentAnimation?.Advance();
+            if (CurrentAnimation?.CurrentSprite == null)
+                _isActioning = false;
+
+            if (_isActioning)
+                return;
+            
+            foreach (var animation in _actionAnimations)
+            {
+                if (animation.selector())
+                {
+                    _isActioning = true;
+                    CurrentAnimation = animation.animation;
+                    return;
+                }
+            }
             foreach (var animation in _animations)
             {
                 if (animation.selector())
+                {
                     CurrentAnimation = animation.animation;
+                    return;
+                }
+                
             }
         }
 

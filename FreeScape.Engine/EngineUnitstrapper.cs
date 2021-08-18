@@ -51,6 +51,7 @@ namespace FreeScape.Engine
             services.AddSingleton<SoundProvider>();
 
             services.AddTransient<CyclicAnimation>();
+            services.AddTransient<OneShotAnimation>();
             
             return services;
         }
