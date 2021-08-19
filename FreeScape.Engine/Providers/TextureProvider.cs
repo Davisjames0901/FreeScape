@@ -45,7 +45,7 @@ namespace FreeScape.Engine.Providers
             if(!_textureCache.ContainsKey(path))
                 _textureCache.Add(path, new Texture(path));
             
-            Console.WriteLine($"Gtl: {{gtl}}, {descriptor.File}");
+            Console.WriteLine($"Gtl: {gtl}, {descriptor.File}");
             _spriteSelectors.Add(gtl, () => new Sprite(_textureCache[path], descriptor.Location));
         }
 

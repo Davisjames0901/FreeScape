@@ -73,6 +73,7 @@ namespace FreeScape.GameObjects
                 {
                     _isActioning = true;
                     CurrentAnimation = animation.animation;
+                    CurrentAnimation.Reset();
                     return;
                 }
             }
