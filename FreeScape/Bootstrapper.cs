@@ -2,8 +2,7 @@ using System.IO;
 using System.Reflection;
 using AsperandLabs.UnitStrap.Core.Extenstions;
 using FreeScape.Engine;
-using FreeScape.Engine.Config;
-using FreeScape.Engine.Config.UserSettings;
+using FreeScape.Engine.Settings;
 using FreeScape.GameObjects;
 using FreeScape.GameObjects.Player;
 using FreeScape.Layers;
@@ -39,7 +38,7 @@ namespace FreeScape
             };
             
             services.AddUnitStrapper();
-            services.AddUnit<EngineUnitstrapper, GameInfo>(config);
+            services.AddUnit<EngineUnitStrapper, GameInfo>(config);
             services.AddSingleton(sound);
             services.AddSingleton(graphics);
 

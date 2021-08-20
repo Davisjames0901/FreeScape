@@ -1,8 +1,9 @@
 using System;
 using System.Numerics;
-using FreeScape.Engine.GameObjects;
-using FreeScape.Engine.Providers;
-using FreeScape.Engine.Utilities;
+using FreeScape.Engine.Core;
+using FreeScape.Engine.Core.GameObjects;
+using FreeScape.Engine.Core.GameObjects.Entities;
+using FreeScape.Engine.Core.Utilities;
 using SFML.Graphics;
 
 namespace FreeScape.Engine.Render

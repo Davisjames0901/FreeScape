@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using FreeScape.Engine.Providers;
+using FreeScape.Engine.Core;
 using NUnit.Framework;
 
 namespace FreeScape.Engine.Tests.ProviderTests

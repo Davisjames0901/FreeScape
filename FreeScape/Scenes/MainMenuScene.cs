@@ -1,9 +1,10 @@
 using System;
-using FreeScape.Engine.Config.UserSettings;
-using FreeScape.Engine.Managers;
-using FreeScape.Engine.Providers;
+using FreeScape.Engine.Core.Managers;
+using FreeScape.Engine.Input;
+using FreeScape.Engine.Render.Layers;
 using FreeScape.Engine.Render.Scenes;
-using FreeScape.Layers;
+using FreeScape.Engine.Settings;
+using FreeScape.Engine.Sfx;
 using FreeScape.Layers.MainMenu;
 
 namespace FreeScape.Scenes

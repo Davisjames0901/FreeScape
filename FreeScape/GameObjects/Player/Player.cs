@@ -1,28 +1,30 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using FreeScape.Engine.Core.GameObjects.Entities;
+using FreeScape.Engine.Input.Controllers;
 using FreeScape.Engine.Physics;
+using FreeScape.Engine.Physics.Collisions;
 using FreeScape.Engine.Physics.Collisions.Colliders;
-using FreeScape.Engine.Physics.Movements;
-using FreeScape.Engine.Providers;
 using FreeScape.Engine.Render.Animations;
+using FreeScape.Engine.Render.Animations.AnimationTypes;
 
 namespace FreeScape.GameObjects.Player
 {
     public class Player : BaseEntity
     {
         private readonly AnimationProvider _animationProvider;
-        private readonly UserInputMovement _input;
+        private readonly UserInputController _input;
         public override Vector2 Size => new (4.0f, 4.0f);
         public override Vector2 Scale => new (2.0f, 2.0f);
         public override float Speed => _speed;
         private float _speed;
         
-        public Player(UserInputMovement movement, AnimationProvider animationProvider)
+        public Player(UserInputController controller, AnimationProvider animationProvider)
         {
             _animationProvider = animationProvider;
-            _input = movement;
-            Movement = movement;
+            _input = controller;
+            Controller = controller;
         }
 
         public override void Init()

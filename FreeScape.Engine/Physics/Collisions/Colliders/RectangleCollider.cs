@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using FreeScape.Engine.Utilities;
+using FreeScape.Engine.Core.Utilities;
 
 namespace FreeScape.Engine.Physics.Collisions.Colliders
 {
@@ -23,11 +23,6 @@ namespace FreeScape.Engine.Physics.Collisions.Colliders
             _vertices.Add(new Vector2(Size.X, 0));
             _vertices.Add(Size);
             _vertices.Add(new Vector2(0, Size.Y));
-        }
-
-        public Vector2? GetIntersectionPoint(Line line)
-        {
-            return null;
         }
         
         public bool Collides(Vector2 point)

@@ -1,5 +1,5 @@
 using System.Numerics;
-using FreeScape.Engine.Utilities;
+using FreeScape.Engine.Core.Utilities;
 using NUnit.Framework;
 
 namespace FreeScape.Engine.Tests.UtilitiesTests
