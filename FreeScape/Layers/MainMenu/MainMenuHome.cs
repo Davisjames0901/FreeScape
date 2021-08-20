@@ -1,9 +1,10 @@
 ﻿using System.Numerics;
-using FreeScape.Engine.Config.UI;
-using FreeScape.Engine.GameObjects.UI;
-using FreeScape.Engine.Managers;
-using FreeScape.Engine.Providers;
+using FreeScape.Engine.Core;
+using FreeScape.Engine.Core.GameObjects.UI;
+using FreeScape.Engine.Core.Managers;
+using FreeScape.Engine.Input;
 using FreeScape.Engine.Render.Layers;
+using FreeScape.Engine.Render.Layers.LayerTypes;
 using FreeScape.Scenes;
 
 namespace FreeScape.Layers.MainMenu

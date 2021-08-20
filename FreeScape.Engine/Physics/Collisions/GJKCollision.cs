@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
 
-namespace FreeScape.Engine.Physics
+namespace FreeScape.Engine.Physics.Collisions
 {
 
 

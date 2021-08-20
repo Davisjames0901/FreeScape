@@ -1,7 +1,8 @@
-using FreeScape.Engine.Providers;
+using FreeScape.Engine.Input;
+using FreeScape.Engine.Render.Layers;
 using FreeScape.Engine.Render.Scenes;
+using FreeScape.Engine.Sfx;
 using FreeScape.Layers;
-using SFML.Graphics;
 
 namespace FreeScape.Scenes
 {

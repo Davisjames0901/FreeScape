@@ -1,11 +1,11 @@
-﻿using FreeScape.Engine.GameObjects;
-using FreeScape.Engine.GameObjects.Entities;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FreeScape.Engine.Core.GameObjects;
+using FreeScape.Engine.Core.GameObjects.Entities;
 
 namespace FreeScape.Engine.Physics.Collisions
 {
@@ -62,10 +62,7 @@ namespace FreeScape.Engine.Physics.Collisions
                                 var secondVertices = staticCollider.GetVerticesRelativeToPosition();
                                 if(staticCollidable is Tile mgo)
                                 {
-                                    if (mgo._tileInfo.Type == "Water" && mgo.Position.Y > 300)
-                                    {
-                                        //Console.WriteLine();
-                                    }
+                                    
                                 }
                                 if (GJKCollision.GJKCheckCollision(firstVertices, secondVertices, out var test))
                                 {

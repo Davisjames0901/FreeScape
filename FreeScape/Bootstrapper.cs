@@ -2,9 +2,9 @@ using System.IO;
 using System.Reflection;
 using AsperandLabs.UnitStrap.Core.Extenstions;
 using FreeScape.Engine;
-using FreeScape.Engine.Config;
-using FreeScape.Engine.Config.UserSettings;
+using FreeScape.Engine.Settings;
 using FreeScape.GameObjects;
+using FreeScape.GameObjects.Player;
 using FreeScape.Layers;
 using FreeScape.Layers.MainMenu;
 using FreeScape.Scenes;
@@ -26,7 +26,7 @@ namespace FreeScape
             var sound = new SoundSettings
             {
                 SfxVolume = 100.0f,
-                MusicVolume = 10.0f
+                MusicVolume = 0.0f
             };
 
             var graphics = new GraphicsSettings
@@ -34,11 +34,11 @@ namespace FreeScape
                 ScreenHeight = 1080,
                 ScreenWidth = 1920,
                 VSyncEnabled = false,
-                RefreshRate = 99999999
+                RefreshRate = int.MaxValue
             };
             
             services.AddUnitStrapper();
-            services.AddUnit<EngineUnitstrapper, GameInfo>(config);
+            services.AddUnit<EngineUnitStrapper, GameInfo>(config);
             services.AddSingleton(sound);
             services.AddSingleton(graphics);
 

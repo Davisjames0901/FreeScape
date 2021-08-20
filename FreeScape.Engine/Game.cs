@@ -1,4 +1,4 @@
-using FreeScape.Engine.Managers;
+using FreeScape.Engine.Core.Managers;
 using FreeScape.Engine.Physics.Collisions;
 using FreeScape.Engine.Render.Scenes;
 

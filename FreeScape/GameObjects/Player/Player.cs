@@ -1,117 +1,57 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using FreeScape.Engine.GameObjects.Entities;
-using FreeScape.Engine.Managers;
+using FreeScape.Engine.Core.GameObjects.Entities;
+using FreeScape.Engine.Input.Controllers;
 using FreeScape.Engine.Physics;
-using FreeScape.Engine.Physics.Movements;
 using FreeScape.Engine.Physics.Collisions;
 using FreeScape.Engine.Physics.Collisions.Colliders;
-using FreeScape.Engine.Providers;
-using SFML.Graphics;
+using FreeScape.Engine.Render.Animations;
+using FreeScape.Engine.Render.Animations.AnimationTypes;
 
-namespace FreeScape.GameObjects
+namespace FreeScape.GameObjects.Player
 {
-    public class Player : PlayerActions, IMovable, ICollidable 
+    public class Player : BaseEntity
     {
-        private readonly UserInputMovement _movement;
-        private readonly DisplayManager _displayManager;
-        private CircleShape _shape;
-        public int ZIndex { get; set; }
-        public float Weight { get; set; }
-        public Vector2 Size { get; set; }
-        public Vector2 Scale { get; set; }
-        private float speed = 0;
-        public float Speed { 
-            get { return speed * PlayerActionSpeedModifier; }
-            set { speed = value; } }
-        public HeadingVector HeadingVector { get; private set; }
-        public List<ICollider> Colliders { get; set; }
-        public Vector2 Velocity { get; set; }
-        public Vector2 Position { get; set; }
-
-        public Player(UserInputMovement movement, ActionProvider actionProvider, SoundProvider soundProvider, DisplayManager displayManager, FrameTimeProvider frameTimeProvider, AnimationProvider animationProvider, MapProvider mapProvider) : base(soundProvider, frameTimeProvider, animationProvider, mapProvider)
+        private readonly AnimationProvider _animationProvider;
+        private readonly UserInputController _input;
+        public override Vector2 Size => new (4.0f, 4.0f);
+        public override Vector2 Scale => new (2.0f, 2.0f);
+        public override float Speed => _speed;
+        private float _speed;
+        
+        public Player(UserInputController controller, AnimationProvider animationProvider)
         {
-            _movement = movement;
-            _displayManager = displayManager;
+            _animationProvider = animationProvider;
+            _input = controller;
+            Controller = controller;
         }
 
         public override void Init()
         {
-            TileSetName = "CharacterSprites";
-            ZIndex = 999;
-            Velocity = new Vector2(0, 0);
-            Speed = 0.1f;
-            Scale = new Vector2(2.0f, 2.0f);
-            Size = new Vector2(4.0f, 4.0f);
+            base.Init();
+            _speed = 0.1f;
             Position = new Vector2(300, 500);
-            _displayManager.CurrentPerspective.WorldView.Center= Position;
-            _shape = new CircleShape(Size.X);
-            _shape.FillColor = Color.Red;
             var bodyCollider = new CircleCollider(Position, Position / Size * Scale, Size.X * Scale.X);
             bodyCollider.ColliderType = ColliderType.Solid;
-            Colliders = new List<ICollider>();
             Colliders.Add(bodyCollider);
-            GetAnimations();
-
-            base.Init();
         }
 
-        private void GetAnimations()
+        public override IEnumerable<(Func<bool>, IAnimation)> RegisterMovementAnimations()
         {
-            foreach(var animation in _animationProvider.GetMovementAnimation("idle"))
-            {
-                Animations.Add(animation.Type, animation);
-            }
-            foreach (var animation in _animationProvider.GetMovementAnimation("walk"))
-            {
-                Animations.Add(animation.Type, animation);
-            }
-            foreach (var animation in _animationProvider.GetMovementAnimation("attack"))
-            {
-                Animations.Add(animation.Type, animation);
-            }
-
-            foreach (var animation in _animationProvider.GetMovementAnimation("roll"))
-            {
-                Animations.Add(animation.Type, animation);
-            }
-            foreach (var animation in _animationProvider.GetMovementAnimation("block"))
-            {
-                Animations.Add(animation.Type, animation);
-            }
-        }
-        
-        new public void Tick()
-        {
-            _movement.Tick();
-            HeadingVector = _movement.HeadingVector;
-            var attack = _movement.CurrentActionProvider.IsActionActivated("LeftClick");
-            var block = _movement.CurrentActionProvider.IsActionActivated("RightClick");
-            var roll = _movement.CurrentActionProvider.IsActionActivated("Roll");
-
-            ActionTick(HeadingVector, roll, attack, block);
-
-            foreach(var collider in Colliders)
-            {
-                collider.Position = Position - Size / 2 * Scale;
-            }
-            base.Tick();
-        }
-        
-        public void Render(RenderTarget target)
-        {
-            AnimationSprite.Position = Position - new Vector2(AnimationSprite.TextureRect.Width / 2, AnimationSprite.TextureRect.Height / 2) * Scale;
-            AnimationSprite.Scale = Scale;
-            target.Draw(AnimationSprite);
+            yield return (() => HeadingVector.Vector == Vector2.Zero, _animationProvider.GetDirectionAnimation<CyclicAnimation>("idle", this));
+            yield return (() => HeadingVector.Vector != Vector2.Zero, _animationProvider.GetDirectionAnimation<CyclicAnimation>("walk", this));
         }
 
-        public void CollisionEnter(ICollidable collidable)
+        public override IEnumerable<(Func<bool>, IAnimation)> RegisterActionAnimations()
         {
-            if (collidable is Tile tile)
-                Console.WriteLine("player is colliding with a " + tile._tileInfo.Type);
-            if (collidable is MapGameObject mgo)
-                Console.WriteLine("player is colliding with a " + mgo._tileInfo.Type);
+            yield return (() => _input.CurrentActionProvider.IsActionActivated("LeftClick"), 
+                _animationProvider.GetDirectionAnimation<OneShotAnimation>("attack", this));
+        }
+
+        public override void CollisionEnter(ICollidable collidable)
+        {
+            
         }
     }
 }

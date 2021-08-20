@@ -1,26 +1,31 @@
-﻿using FreeScape.Engine.Physics;
+﻿using FreeScape.Engine.Core;
+using FreeScape.Engine.Core.GameObjects.UI;
+using FreeScape.Engine.Core.Managers;
+using FreeScape.Engine.Input;
+using FreeScape.Engine.Physics;
 using FreeScape.Engine.Render.Layers;
-using FreeScape.Engine.Providers;
-using FreeScape.Engine.Managers;
-using FreeScape.Engine.GameObjects.UI;
 using FreeScape.GameObjects;
-using FreeScape.Engine.Config.Map;
 using FreeScape.Engine.Physics.Collisions;
+using FreeScape.Engine.Physics.Movement;
+using FreeScape.Engine.Render.Layers.LayerTypes;
+using FreeScape.Engine.Render.Textures;
+using FreeScape.Engine.Render.Tiled;
+using FreeScape.GameObjects.Player;
 
 namespace FreeScape.Layers
 {
     public class EntityLayer : GameObjectLayer
     {
-
         private readonly GameObjectProvider _gameObjectProvider;
         private readonly DisplayManager _displayManager;
         private readonly ActionProvider _actionProvider;
         private readonly MapProvider _mapProvider;
 
         public override int ZIndex => 999;
-        protected override MapInfo Map => _mapProvider.GetMap("TiledTestMap");
+        protected override TiledMap Map => _mapProvider.GetMap("TiledTestMap");
 
-        public EntityLayer(CollisionEngine collisionEngine, ActionProvider actionProvider, GameObjectProvider gameObjectProvider, DisplayManager displayManager, Movement movement, TileSetProvider tileSetProvider, MapProvider mapProvider):base(movement, mapProvider, collisionEngine)
+        public EntityLayer(CollisionEngine collisionEngine, ActionProvider actionProvider, GameObjectProvider gameObjectProvider, 
+            DisplayManager displayManager, Movement movement, MapProvider mapProvider, TextureProvider textureProvider):base(movement, mapProvider, collisionEngine, textureProvider)
         {
             _actionProvider = actionProvider;
             _gameObjectProvider = gameObjectProvider;

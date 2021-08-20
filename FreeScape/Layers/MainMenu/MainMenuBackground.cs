@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Numerics;
-using FreeScape.Engine.Managers;
-using FreeScape.Engine.Providers;
+using FreeScape.Engine.Core.Managers;
+using FreeScape.Engine.Core.Utilities;
 using FreeScape.Engine.Render;
 using FreeScape.Engine.Render.Layers;
-using FreeScape.Engine.Utilities;
+using FreeScape.Engine.Render.Layers.LayerTypes;
+using FreeScape.Engine.Render.Textures;
 using SFML.Graphics;
 
 namespace FreeScape.Layers.MainMenu

@@ -1,4 +1,5 @@
 ﻿using FreeScape.Engine.Render.Layers;
+using FreeScape.Engine.Render.Layers.LayerTypes;
 
 namespace FreeScape.Layers.MainMenu
 {
